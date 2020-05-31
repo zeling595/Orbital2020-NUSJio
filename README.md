@@ -22,7 +22,7 @@ Clone the project to your local machine
 
 
 
-`$ git clone https://github.com/zeling595/Orbital2020-NUSJio.git`
+`$ git clone repository_link`
 
 Change into new project directory
 
@@ -35,7 +35,7 @@ Set up a new remote that points to the original project so that you can grab any
 2. remote_name points to the main GitHub repository. You can only read from this project
 
 
-`$ git remote add remote_name https://github.com/zeling595/Orbital2020-NUSJio.git`
+`$ git remote add remote_name repository_link`
 
 After you have done your changes, branch out from master branch for fixing bug or development branch for adding new features
 
