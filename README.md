@@ -8,7 +8,7 @@ Link to our project proposal: https://docs.google.com/document/d/1DJ5l0XoyVsnLq2
 ![user_flow_diagram_simple](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/user_flow_diagram_simple.jpg)
 
 ## UML Diagram
-![UML_diagram](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/UML_diagram_improved.pdf)
+![UML_diagram](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/UML_diagram.pdf)
 
 ## Video of Mockup
 <a href="https://youtu.be/K5IUJBgolqE
