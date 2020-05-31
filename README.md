@@ -5,14 +5,14 @@ NUSJio is a mobile application that provides NUS students with a platform to wid
 Link to our project proposal: https://docs.google.com/document/d/1DJ5l0XoyVsnLq2kthwsDtnDrQmAb0Jr9w-VV3m0pjek/edit?usp=sharing
 
 ## User Flow Diagram
-![user_flow_diagram_simple](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/user_flow_diagram_simple.jpg)
+
 
 ## UML Diagram
-![UML_diagram](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/UML_diagram_improved.pdf)
+
 
 ## Video of Mockup
 <a href="https://youtu.be/K5IUJBgolqE
-" target="_blank"><img src="https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/mockup_video_thumbnail.jpg" 
+" target="_blank"><img src="" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 ## GitHub Rules of Engagement
@@ -22,7 +22,7 @@ Clone the project to your local machine
 
 
 
-`$ git clone repository_link`
+`$ git clone https://github.com/zeling595/Orbital2020-NUSJio.git`
 
 Change into new project directory
 
@@ -35,7 +35,7 @@ Set up a new remote that points to the original project so that you can grab any
 2. remote_name points to the main GitHub repository. You can only read from this project
 
 
-`$ git remote add remote_name repository_link`
+`$ git remote add remote_name https://github.com/zeling595/Orbital2020-NUSJio.git`
 
 After you have done your changes, branch out from master branch for fixing bug or development branch for adding new features
 
