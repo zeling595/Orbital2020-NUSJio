@@ -5,18 +5,18 @@ NUSJio is a mobile application that provides NUS students with a platform to wid
 Link to our project proposal: https://docs.google.com/document/d/1DJ5l0XoyVsnLq2kthwsDtnDrQmAb0Jr9w-VV3m0pjek/edit?usp=sharing
 
 ## User Flow Diagram
-
+![user_flow_diagram_simple](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/user_flow_diagram_simple.jpg)
 
 ## UML Diagram
-
+![UML_diagram](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/UML_diagram_improved.pdf)
 
 ## Video of Mockup
 <a href="https://youtu.be/K5IUJBgolqE
-" target="_blank"><img src="" 
+" target="_blank"><img src="https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/mockup_video_thumbnail.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 ## GitHub Rules of Engagement
-To create a copy of the repository in your own GitHub account, you need to click 'fork' button in GitHub.
+To create a copy of the repository in your own GitHub account, you need to click 'fork' button in GitHub
 
 Clone the project to your local machine
 
