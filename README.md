@@ -10,10 +10,10 @@ Link to our project proposal: https://docs.google.com/document/d/1DJ5l0XoyVsnLq2
 ## UML Diagram
 ![UML_diagram](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/UML_diagram.pdf)
 
-## Video of Mockup
+## Video of Prototype
 <a href="https://youtu.be/K5IUJBgolqE
 " target="_blank"><img src="https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/mockup_video_thumbnail.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="240" height="520" border="10" /></a>
 
 ## GitHub Rules of Engagement
 To create a copy of the repository in your own GitHub account, you need to click 'fork' button in GitHub
@@ -90,6 +90,3 @@ This will create the branch on your GitHub project. The -u flag links this branc
 `$ git push origin`
 
 Go to your fork of the project and your new branch is listed at the top. Click “Compare & pull request” button. Fill in the form and click "Create pull request". Code maintainers will review your code.
-
-## Project Log
-Link to our project Log: https://docs.google.com/document/d/1uL6GFDatGKhYDMpq8yx2I5anDB_F_b6Rh3VdZXertcQ/edit?usp=sharing
