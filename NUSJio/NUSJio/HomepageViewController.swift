@@ -1,14 +1,14 @@
 //
-//  LoginViewController.swift
+//  HomepageViewController.swift
 //  NUSJio
 //
-//  Created by Zeling Long on 2020/5/30.
+//  Created by Zeling Long on 2020/6/3.
 //  Copyright © 2020 Zeling Long. All rights reserved.
 //
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class HomepageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
