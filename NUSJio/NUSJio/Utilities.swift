@@ -25,13 +25,14 @@ class Utilities {
     }
     
     static func isDefaultNUSEmail (_ NUSEmail: String) -> Bool {
+
         for i in 1...7 {
             let index = NUSEmail.index(NUSEmail.startIndex, offsetBy: i)
             if !NUSEmail[index].isNumber {
                 return false
             }
         }
-        return NUSEmail.count == 18
+        return true
     }
     
     static func isDefaultNUSEmailValid(_ NUSEmail: String) -> Bool {

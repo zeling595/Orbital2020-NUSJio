@@ -45,8 +45,10 @@ class SignUpViewController: UIViewController {
         let cleanNUSEmail = NUSEmailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         
-        if Utilities.isDefaultNUSEmail(cleanNUSEmail) && !Utilities.isDefaultNUSEmailValid(cleanNUSEmail) {
-            return "Default email should follow the format of e1234567@u.nus.edu"
+        if !Utilities.isDefaultNUSEmailValid(cleanNUSEmail) {
+            if Utilities.isDefaultNUSEmail(cleanNUSEmail) {
+                return "Default email should follow the format of e1234567@u.nus.edu"
+            }
         } else if !Utilities.isFriendlyNUSEmailValid(cleanNUSEmail) {
             return "Please enter your NUS email ending in @u.nus.edu or @nus.edu.sg"
         }

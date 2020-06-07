@@ -118,11 +118,13 @@ class ViewController: UIViewController {
         let cleanNUSEmail = NUSNETIDTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         // bug here, need to come up with a better way to distingush between default and friendly email
-        if Utilities.isNUSNETIDValid(cleanNUSEmail) && !Utilities.isDefaultNUSEmailValid(cleanNUSEmail) {
-              return "Default email should follow the format of e1234567@u.nus.edu"
-          } else if !Utilities.isFriendlyNUSEmailValid(cleanNUSEmail) {
-              return "Please enter your NUS email ending in @u.nus.edu or @nus.edu.sg"
-          }
+        if !Utilities.isDefaultNUSEmailValid(cleanNUSEmail) {
+            if Utilities.isDefaultNUSEmail(cleanNUSEmail) {
+                 return "Default email should follow the format of e1234567@u.nus.edu"
+            }
+        }else if !Utilities.isFriendlyNUSEmailValid(cleanNUSEmail) {
+            return "Please enter your NUS email ending in @u.nus.edu or @nus.edu.sg"
+        }
               
         
         if passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
