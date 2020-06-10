@@ -24,26 +24,10 @@ class Utilities {
         return NUSNETIDTest1.evaluate(with: NUSNETID) || NUSNETIDTest2.evaluate(with: NUSNETID) || NUSNETIDTest3.evaluate(with: NUSNETID) || NUSNETIDTest4.evaluate(with: NUSNETID) || NUSNETIDTest5.evaluate(with: NUSNETID) || NUSNETIDTest6.evaluate(with: NUSNETID)
     }
     
-    static func isDefaultNUSEmail (_ NUSEmail: String) -> Bool {
-
-        for i in 1...7 {
-            let index = NUSEmail.index(NUSEmail.startIndex, offsetBy: i)
-            if !NUSEmail[index].isNumber {
-                return false
-            }
-        }
-        return true
-    }
-    
-    static func isDefaultNUSEmailValid(_ NUSEmail: String) -> Bool {
+    static func isNUSEmailValid(_ NUSEmail: String) -> Bool {
         let defaultEmailTest = NSPredicate(format: "SELF MATCHES %@","[a-z][0-9]{7}@u.nus.edu")
-        return defaultEmailTest.evaluate(with: NUSEmail)
-    }
-    
-    static func isFriendlyNUSEmailValid(_ NUSEmail: String) -> Bool {
         let friendlyEmailTest1 = NSPredicate(format: "SELF MATCHES %@","[a-zA-Z0-9._]+@nus.edu.sg")
         let friendlyEmailTest2 = NSPredicate(format: "SELF MATCHES %@","[a-zA-Z0-9._]+@u.nus.edu")
-        return friendlyEmailTest1.evaluate(with: NUSEmail) || friendlyEmailTest2.evaluate(with: NUSEmail)
+        return defaultEmailTest.evaluate(with: NUSEmail) || friendlyEmailTest1.evaluate(with: NUSEmail) || friendlyEmailTest2.evaluate(with: NUSEmail)
     }
-    
 }

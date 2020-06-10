@@ -45,14 +45,9 @@ class SignUpViewController: UIViewController {
         let cleanNUSEmail = NUSEmailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         
-        if !Utilities.isDefaultNUSEmailValid(cleanNUSEmail) {
-            if Utilities.isDefaultNUSEmail(cleanNUSEmail) {
-                return "Default email should follow the format of e1234567@u.nus.edu"
-            }
-        } else if !Utilities.isFriendlyNUSEmailValid(cleanNUSEmail) {
-            return "Please enter your NUS email ending in @u.nus.edu or @nus.edu.sg"
+        if !Utilities.isNUSEmailValid(cleanNUSEmail) {
+            return "Please enter your NUS email ending in @u.nus.edu or @nus.edu.sg. For default NUS email, please follow the format of e1234567@u.nus.edu."
         }
-        
         
         if passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return "Please enter your password."
@@ -60,12 +55,12 @@ class SignUpViewController: UIViewController {
         let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if confirmPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-            return "Please confirm your password"
+            return "Please confirm your password."
         }
         let confirmedPassword = confirmPasswordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if confirmedPassword != password {
-            return "Confirmed password does not match"
+            return "Confirmed password does not match."
         }
         
         return nil
