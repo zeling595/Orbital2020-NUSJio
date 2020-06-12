@@ -163,8 +163,8 @@ class ViewController: UIViewController {
     }
     
     func transitionToHomepage() {
-        let homepageViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homepageViewController) as? HomepageViewController
-        view.window?.rootViewController = homepageViewController
+        let tabBarViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.tabBarViewController) as? TabBarViewController
+        view.window?.rootViewController = tabBarViewController
         view.window?.makeKeyAndVisible()
     }
 }

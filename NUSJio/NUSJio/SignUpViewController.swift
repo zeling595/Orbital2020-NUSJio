@@ -72,11 +72,19 @@ class SignUpViewController: UIViewController {
         errorLabel.alpha = 1.0
     }
     
-    func transitionToHome() {
-        let homepageViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homepageViewController) as? HomepageViewController
-        view.window?.rootViewController = homepageViewController
-        view.window?.makeKeyAndVisible()
-    }
+//    func transitionToHome() {
+//        let homepageViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homepageViewController) as? HomepageViewController
+//        view.window?.rootViewController = homepageViewController
+//        view.window?.makeKeyAndVisible()
+//    }
+    
+    func transitionToHomepage() {
+    //        let homepageViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homepageViewController) as? HomepageViewController
+            let tabBarViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.tabBarViewController) as? TabBarViewController
+            // view.window?.rootViewController = homepageViewController
+            view.window?.rootViewController = tabBarViewController
+            view.window?.makeKeyAndVisible()
+        }
 
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         // validate the fields
@@ -110,7 +118,7 @@ class SignUpViewController: UIViewController {
                         }
                     }
                     // transition to home
-                    self.transitionToHome()
+                    self.transitionToHomepage()
                 }
             }
         }
