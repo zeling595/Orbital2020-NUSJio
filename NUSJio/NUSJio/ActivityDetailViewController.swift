@@ -10,21 +10,49 @@ import UIKit
 
 class ActivityDetailViewController: UIViewController {
 
+    var activity: Activity?
+    
+    @IBOutlet var coverImageView: UIImageView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var tagLabel: UILabel!
+    @IBOutlet var descriptionTextView: UITextView!
+    @IBOutlet var startJioButton: UIButton!
+    @IBOutlet var viewChatButton: UIButton!
+    @IBOutlet var editButton: UIButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        setUpElements()
     }
     
-
-    /*
+    func setUpElements() {
+        coverImageView.image = activity?.coverPicture
+        titleLabel.text = activity?.title
+        timeLabel.text = Activity.timeDateFormatter.string(for: activity?.time)
+        // tagLabel.text =
+        descriptionTextView.text = activity?.description
+    }
+    
+    @IBAction func unwindToActivityDetail(segue: UIStoryboardSegue) {
+        guard segue.identifier == Constants.Storyboard.saveUnwindToActivityDetail else {return}
+        let sourceViewController = segue.source as! ActivityDetailViewController
+        if let activity = sourceViewController.activity {
+            sourceViewController.activity = activity
+        }
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == Constants.Storyboard.editActivitySegue, let navController = segue.destination as? UINavigationController,
+            let editActivityTableViewController = navController.topViewController as?
+                EditActivityTableViewController {
+            editActivityTableViewController.activity = activity
+        }
     }
-    */
 
 }

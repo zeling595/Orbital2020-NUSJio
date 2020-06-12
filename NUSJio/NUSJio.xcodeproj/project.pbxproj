@@ -9,6 +9,16 @@
 /* Begin PBXBuildFile section */
 		040C9B5795D489B422669459 /* Pods_NUSJio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2289C23A43B3C92F928A4C8 /* Pods_NUSJio.framework */; };
 		0EE7EBED0AB74E9538239F7E /* Pods_NUSJioTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5287A67E733A02D338BDBEC9 /* Pods_NUSJioTests.framework */; };
+		128DE3BE24908B9D009353D5 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3BD24908B9D009353D5 /* CustomTabBarController.swift */; };
+		128DE3C02490AE34009353D5 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3BF2490AE34009353D5 /* Activity.swift */; };
+		128DE3C22490B5C5009353D5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3C12490B5C5009353D5 /* User.swift */; };
+		128DE3C92490B7A5009353D5 /* MyActivitiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3C82490B7A5009353D5 /* MyActivitiesTableViewController.swift */; };
+		128DE3CB2490DAED009353D5 /* AddActivityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CA2490DAED009353D5 /* AddActivityTableViewController.swift */; };
+		128DE3CD2490DB39009353D5 /* ExploreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */; };
+		128DE3CF2490DB56009353D5 /* MessagesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CE2490DB56009353D5 /* MessagesTableViewController.swift */; };
+		128DE3D12490DB92009353D5 /* MeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3D02490DB92009353D5 /* MeTableViewController.swift */; };
+		128DE3D324921A92009353D5 /* ActivityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3D224921A92009353D5 /* ActivityDetailViewController.swift */; };
+		128DE3D524922DF6009353D5 /* EditActivityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3D424922DF6009353D5 /* EditActivityTableViewController.swift */; };
 		12F8B88B248CE30B004D8BE9 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */; };
 		12FCB66724824CED00DA5CF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB66624824CED00DA5CF7 /* AppDelegate.swift */; };
 		12FCB66924824CEE00DA5CF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB66824824CEE00DA5CF7 /* SceneDelegate.swift */; };
@@ -21,7 +31,6 @@
 		12FCB6992482548300DA5CF7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12FCB6982482548300DA5CF7 /* GoogleService-Info.plist */; };
 		12FCB69E2483494100DA5CF7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12FCB69D2483494100DA5CF7 /* GoogleService-Info.plist */; };
 		12FCB7182487C91C00DA5CF7 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB7172487C91C00DA5CF7 /* Styles.swift */; };
-		12FCB71A2487CAF100DA5CF7 /* HomepageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB7192487CAF100DA5CF7 /* HomepageViewController.swift */; };
 		12FCB79E2488F1E300DA5CF7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB79D2488F1E300DA5CF7 /* Utilities.swift */; };
 		12FCB7A02489264400DA5CF7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB79F2489264400DA5CF7 /* Constants.swift */; };
 		43D57FDC246EC47996E2E737 /* Pods_NUSJio_NUSJioUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FFF14BCD0851B177B3EA84 /* Pods_NUSJio_NUSJioUITests.framework */; };
@@ -45,6 +54,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		128DE3BD24908B9D009353D5 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		128DE3BF2490AE34009353D5 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		128DE3C12490B5C5009353D5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		128DE3C82490B7A5009353D5 /* MyActivitiesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActivitiesTableViewController.swift; sourceTree = "<group>"; };
+		128DE3CA2490DAED009353D5 /* AddActivityTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityTableViewController.swift; sourceTree = "<group>"; };
+		128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreTableViewController.swift; sourceTree = "<group>"; };
+		128DE3CE2490DB56009353D5 /* MessagesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesTableViewController.swift; sourceTree = "<group>"; };
+		128DE3D02490DB92009353D5 /* MeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeTableViewController.swift; sourceTree = "<group>"; };
+		128DE3D224921A92009353D5 /* ActivityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailViewController.swift; sourceTree = "<group>"; };
+		128DE3D424922DF6009353D5 /* EditActivityTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditActivityTableViewController.swift; sourceTree = "<group>"; };
 		12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		12FCB66324824CED00DA5CF7 /* NUSJio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NUSJio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FCB66624824CED00DA5CF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +82,6 @@
 		12FCB6982482548300DA5CF7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12FCB69D2483494100DA5CF7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12FCB7172487C91C00DA5CF7 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
-		12FCB7192487CAF100DA5CF7 /* HomepageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageViewController.swift; sourceTree = "<group>"; };
 		12FCB79D2488F1E300DA5CF7 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		12FCB79F2489264400DA5CF7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		46FFF14BCD0851B177B3EA84 /* Pods_NUSJio_NUSJioUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NUSJio_NUSJioUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +123,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		128DE3C42490B6F6009353D5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				128DE3BF2490AE34009353D5 /* Activity.swift */,
+				128DE3C12490B5C5009353D5 /* User.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		128DE3C62490B740009353D5 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				12FCB79F2489264400DA5CF7 /* Constants.swift */,
+				12FCB7172487C91C00DA5CF7 /* Styles.swift */,
+				12FCB79D2488F1E300DA5CF7 /* Utilities.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		128DE3C72490B768009353D5 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				128DE3D724923E04009353D5 /* Activity */,
+				12FCB66A24824CEE00DA5CF7 /* ViewController.swift */,
+				128DE3BD24908B9D009353D5 /* CustomTabBarController.swift */,
+				128DE3D02490DB92009353D5 /* MeTableViewController.swift */,
+				128DE3CE2490DB56009353D5 /* MessagesTableViewController.swift */,
+				128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */,
+				12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		128DE3D724923E04009353D5 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				128DE3C82490B7A5009353D5 /* MyActivitiesTableViewController.swift */,
+				128DE3D224921A92009353D5 /* ActivityDetailViewController.swift */,
+				128DE3D424922DF6009353D5 /* EditActivityTableViewController.swift */,
+				128DE3CA2490DAED009353D5 /* AddActivityTableViewController.swift */,
+			);
+			name = Activity;
+			sourceTree = "<group>";
+		};
 		12FCB65A24824CED00DA5CF7 = {
 			isa = PBXGroup;
 			children = (
@@ -131,15 +193,12 @@
 		12FCB66524824CED00DA5CF7 /* NUSJio */ = {
 			isa = PBXGroup;
 			children = (
+				128DE3C72490B768009353D5 /* ViewController */,
+				128DE3C62490B740009353D5 /* Helpers */,
+				128DE3C42490B6F6009353D5 /* Model */,
 				12FCB66624824CED00DA5CF7 /* AppDelegate.swift */,
-				12FCB79F2489264400DA5CF7 /* Constants.swift */,
-				12FCB7172487C91C00DA5CF7 /* Styles.swift */,
-				12FCB79D2488F1E300DA5CF7 /* Utilities.swift */,
 				12FCB66824824CEE00DA5CF7 /* SceneDelegate.swift */,
-				12FCB66A24824CEE00DA5CF7 /* ViewController.swift */,
 				12FCB66C24824CEE00DA5CF7 /* Main.storyboard */,
-				12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */,
-				12FCB7192487CAF100DA5CF7 /* HomepageViewController.swift */,
 				12FCB66F24824CF200DA5CF7 /* Assets.xcassets */,
 				12FCB67124824CF200DA5CF7 /* LaunchScreen.storyboard */,
 				12FCB67424824CF200DA5CF7 /* Info.plist */,
@@ -431,13 +490,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				12FCB79E2488F1E300DA5CF7 /* Utilities.swift in Sources */,
+				128DE3BE24908B9D009353D5 /* CustomTabBarController.swift in Sources */,
+				128DE3CD2490DB39009353D5 /* ExploreTableViewController.swift in Sources */,
 				12FCB66B24824CEE00DA5CF7 /* ViewController.swift in Sources */,
 				12F8B88B248CE30B004D8BE9 /* SignUpViewController.swift in Sources */,
+				128DE3CB2490DAED009353D5 /* AddActivityTableViewController.swift in Sources */,
 				12FCB66724824CED00DA5CF7 /* AppDelegate.swift in Sources */,
 				12FCB7182487C91C00DA5CF7 /* Styles.swift in Sources */,
+				128DE3C02490AE34009353D5 /* Activity.swift in Sources */,
+				128DE3CF2490DB56009353D5 /* MessagesTableViewController.swift in Sources */,
+				128DE3C92490B7A5009353D5 /* MyActivitiesTableViewController.swift in Sources */,
+				128DE3D12490DB92009353D5 /* MeTableViewController.swift in Sources */,
+				128DE3D524922DF6009353D5 /* EditActivityTableViewController.swift in Sources */,
+				128DE3D324921A92009353D5 /* ActivityDetailViewController.swift in Sources */,
 				12FCB7A02489264400DA5CF7 /* Constants.swift in Sources */,
+				128DE3C22490B5C5009353D5 /* User.swift in Sources */,
 				12FCB66924824CEE00DA5CF7 /* SceneDelegate.swift in Sources */,
-				12FCB71A2487CAF100DA5CF7 /* HomepageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
