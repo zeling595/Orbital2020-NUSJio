@@ -24,21 +24,9 @@ struct Activity {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
+        formatter.dateFormat = "yyyy/MM/dd HH:mm"
         return formatter
     }()
-    
-    // for creating new activity
-//    init(title title: String, description description: String?, host host: User?, location location: String?, time time: Date, coverPicture coverPicture: UIImage) {
-//        self.title = title
-//        self.description = description
-//        self.host = host
-//        self.participants = nil
-//        self.location = location
-//        self.time = time
-//        self.tags = nil
-//        self.isComplete = false
-//        self.coverPicture = coverPicture
-//    }
     
     static func loadActivities() -> [Activity]? {
         // retrieve the array of items stored on disk and returns them if the disk contains any items
@@ -46,11 +34,41 @@ struct Activity {
     }
     
     static func loadSampleActivities() -> [Activity] {
-        let activity1 = Activity(title: "Dinner @The Deck", description: nil, host: User(username: "Cherry"), participants: nil, location: "The Deck", time: Date(), tags: nil, isComplete: false, coverPicture: nil)
+        let activity1 = Activity(
+            title: "Dinner @The Deck",
+            description: nil,
+            host: User(username: "Cherry"),
+            participants: nil,
+            location: "The Deck",
+            time: timeDateFormatter.date(from: "2020/10/08 22:31")!,
+            tags: nil,
+            isComplete: false,
+            coverPicture: UIImage(named: "The-Deck")
+        )
         
-        let activity2 = Activity(title: "Swimming @Utown", description: nil, host: User(username: "Sherry"), participants: nil, location: "Utown", time: Date(), tags: nil, isComplete: false, coverPicture: nil)
+        let activity2 = Activity(
+            title: "Swimming @Utown",
+            description: nil,
+            host: User(username: "Sherry"),
+            participants: nil,
+            location: "Utown",
+            time: timeDateFormatter.date(from: "2020/11/11 11:11")!,
+            tags: nil,
+            isComplete: false,
+            coverPicture: nil //UIImage(named: "Fine-Food")
+        )
         
-        let activity3 = Activity(title: "Jogging @Track", description: nil, host: User(username: "Henry"), participants: nil, location: "Track", time: Date(), tags: nil, isComplete: false, coverPicture: nil)
+        let activity3 = Activity(
+            title: "Jogging @Track",
+            description: nil,
+            host: User(username: "Henry"),
+            participants: nil,
+            location: "Track",
+            time: timeDateFormatter.date(from: "2020/07/31 03:00")!,
+            tags: nil,
+            isComplete: false,
+            coverPicture: nil //UIImage(named: "Outdoor-Pool")
+        )
         
         return [activity1, activity2, activity3]
     }

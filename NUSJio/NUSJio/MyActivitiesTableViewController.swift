@@ -8,7 +8,11 @@
 
 import UIKit
 
-class MyActivitiesTableViewController: UITableViewController {
+protocol ActivityDetailDelegate: class {
+    func passEditedActivity(editedActivity: Activity, activityIndexPath: IndexPath)
+}
+
+class MyActivitiesTableViewController: UITableViewController, ActivityDetailDelegate {
 
     // TODO: Implement this using priority queue
     var activities = [Activity]()
@@ -16,7 +20,7 @@ class MyActivitiesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.Storyboard.activityCellIdentifier)
+//        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.Storyboard.activityCellIdentifier)
         
         if let savedActivities = Activity.loadActivities() {
             activities = savedActivities
@@ -25,6 +29,12 @@ class MyActivitiesTableViewController: UITableViewController {
         }
         
         navigationItem.leftBarButtonItem = editButtonItem
+    }
+    
+    func passEditedActivity(editedActivity: Activity, activityIndexPath: IndexPath) {
+        print("\(editedActivity)")
+        activities[activityIndexPath.row] = editedActivity
+        tableView.reloadRows(at: [activityIndexPath], with: .none)
     }
 
     // MARK: - Table view data source
@@ -39,13 +49,37 @@ class MyActivitiesTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Storyboard.activityCellIdentifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Storyboard.activityCellIdentifier, for: indexPath) as? ActivityCell else {
+            fatalError("Could not dequeue a cell")
+        }
 
         // Configure the cell...
         let activity = activities[indexPath.row]
-        cell.textLabel?.text = activity.title
+        updateCellUI(cell: cell, activity: activity)
 
         return cell
+    }
+    
+    func updateCellUI(cell: ActivityCell, activity: Activity) {
+        cell.imageView?.image = activity.coverPicture
+        cell.titleLabel.text = activity.title
+        cell.timeLabel.text = Activity.timeDateFormatter.string(from: activity.time)
+        // cell.tagsLabel = activity.tags
+        let participantCount = 0
+        let countStr = String(participantCount)
+        cell.participantsLabel.text = "Number of participants is \(countStr)"
+        let now = Date()
+        let timeStr = calculateTimeDiffInMins(now: now, activityTime: activity.time)
+        cell.countdownLabel.text = "Jio starts in \(timeStr)"
+        
+    }
+    
+    func calculateTimeDiffInMins(now: Date, activityTime: Date) -> String {
+        let countdown = activityTime.timeIntervalSince(now)
+        let hours = floor(countdown / 60 / 60)
+        let minutes = floor((countdown - (hours * 60 * 60)) / 60)
+        let timeStr = "\(Int(hours)) hours \(Int(minutes)) minutes"
+        return timeStr
     }
 
     // Override to support conditional editing of the table view.
@@ -87,9 +121,11 @@ class MyActivitiesTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Storyboard.viewActivityDetailSegue,
             let activityDetailController = segue.destination as? ActivityDetailViewController {
-                let indexPath = tableView.indexPathForSelectedRow!
-                let selectedActivity = activities[indexPath.row]
-                activityDetailController.activity = selectedActivity
+            let indexPath = tableView.indexPathForSelectedRow!
+            let selectedActivity = activities[indexPath.row]
+            activityDetailController.activity = selectedActivity
+            activityDetailController.activityIndexPath = indexPath
+            activityDetailController.delegate = self
         }
     }
 

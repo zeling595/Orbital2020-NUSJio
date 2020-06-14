@@ -10,7 +10,10 @@ import UIKit
 
 class ActivityDetailViewController: UIViewController {
 
-    var activity: Activity?
+    var activity: Activity!
+    var activityIndexPath: IndexPath!
+    // var isEdited: Bool = false
+    weak var delegate: ActivityDetailDelegate?
     
     @IBOutlet var coverImageView: UIImageView!
     @IBOutlet var titleLabel: UILabel!
@@ -25,22 +28,28 @@ class ActivityDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpElements()
+        updateUI()
     }
     
-    func setUpElements() {
-        coverImageView.image = activity?.coverPicture
-        titleLabel.text = activity?.title
-        timeLabel.text = Activity.timeDateFormatter.string(for: activity?.time)
+    override func willMove(toParent parent: UIViewController?) {
+        print("will move to parent")
+        delegate?.passEditedActivity(editedActivity: activity, activityIndexPath: activityIndexPath)
+    }
+    
+    func updateUI() {
+        coverImageView.image = activity.coverPicture
+        titleLabel.text = activity.title
+        timeLabel.text = Activity.timeDateFormatter.string(for: activity.time)
         // tagLabel.text =
-        descriptionTextView.text = activity?.description
+        descriptionTextView.text = activity.description
     }
     
     @IBAction func unwindToActivityDetail(segue: UIStoryboardSegue) {
         guard segue.identifier == Constants.Storyboard.saveUnwindToActivityDetail else {return}
-        let sourceViewController = segue.source as! ActivityDetailViewController
+        let sourceViewController = segue.source as! EditActivityTableViewController
         if let activity = sourceViewController.activity {
-            sourceViewController.activity = activity
+            self.activity = activity
+            updateUI()
         }
     }
     
