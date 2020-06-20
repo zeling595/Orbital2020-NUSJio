@@ -8,19 +8,16 @@
 
 import UIKit
 
-protocol ActivityDetailDelegate: class {
-    func passEditedActivity(editedActivity: Activity, activityIndexPath: IndexPath)
-}
-
-class MyActivitiesTableViewController: UITableViewController, ActivityDetailDelegate {
+class MyActivitiesTableViewController: UITableViewController, ActivityDetailDelegate, ActivityCellDelegate {
 
     // TODO: Implement this using priority queue
     var activities = [Activity]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-//        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.Storyboard.activityCellIdentifier)
+        
+        // remove separator
+        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         if let savedActivities = Activity.loadActivities() {
             activities = savedActivities
@@ -32,9 +29,31 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
     
     func passEditedActivity(editedActivity: Activity, activityIndexPath: IndexPath) {
-        print("\(editedActivity)")
+        print("(print from my activities) \(editedActivity)")
         activities[activityIndexPath.row] = editedActivity
         tableView.reloadRows(at: [activityIndexPath], with: .none)
+        // save to disk
+        // Activity.saveActivities(activities)
+    }
+    
+    func deleteActivity(activityIndexPath: IndexPath) {
+        activities.remove(at: activityIndexPath.row)
+        tableView.deleteRows(at: [activityIndexPath], with: .fade)
+        // save to disk
+        // Activity.saveActivities(activities)
+    }
+    
+    func startButtonTapped(sender: ActivityCell) {
+        if let indexPath = tableView.indexPath(for: sender) {
+            // need to change the appearance of the button, reference the personality quiz project
+            var activity = activities[indexPath.row]
+            activity.isComplete = true
+            activities[indexPath.row] = activity
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            
+            // save to disk
+            // Activity.saveActivities(activities)
+        }
     }
 
     // MARK: - Table view data source
@@ -54,6 +73,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         }
 
         // Configure the cell...
+        cell.delegate = self
         let activity = activities[indexPath.row]
         updateCellUI(cell: cell, activity: activity)
 
@@ -61,7 +81,8 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
     
     func updateCellUI(cell: ActivityCell, activity: Activity) {
-        cell.imageView?.image = activity.coverPicture
+        cell.layer.cornerRadius = 6
+        cell.coverImageView.image = activity.coverPicture
         cell.titleLabel.text = activity.title
         cell.timeLabel.text = Activity.timeDateFormatter.string(from: activity.time)
         // cell.tagsLabel = activity.tags
@@ -81,6 +102,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         let timeStr = "\(Int(hours)) hours \(Int(minutes)) minutes"
         return timeStr
     }
+    
 
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -96,6 +118,9 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
             // Delete the row from the data source
             activities.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            // save to disk
+            // Activity.saveActivities(activities)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -107,12 +132,16 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
     
     @IBAction func unwindToMyActivities(segue: UIStoryboardSegue) {
+        // unwind from add activity
         guard segue.identifier == Constants.Storyboard.saveUnwindToMyActivities else {return}
         let sourceViewController = segue.source as! AddActivityTableViewController
         if let activity = sourceViewController.activity {
             let newIndexPath = IndexPath(row: activities.count, section: 0)
             activities.append(activity)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
+            
+            // save to disk
+            // Activity.saveActivities(activities)
         }
     }
 

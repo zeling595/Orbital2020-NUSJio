@@ -8,11 +8,17 @@
 
 import UIKit
 
+protocol ActivityDetailDelegate: class {
+    func passEditedActivity(editedActivity: Activity, activityIndexPath: IndexPath)
+    func deleteActivity(activityIndexPath: IndexPath)
+}
+
 class ActivityDetailViewController: UIViewController {
 
     var activity: Activity!
     var activityIndexPath: IndexPath!
-    // var isEdited: Bool = false
+    var isDeleteAction = false
+    
     weak var delegate: ActivityDetailDelegate?
     
     @IBOutlet var coverImageView: UIImageView!
@@ -32,8 +38,10 @@ class ActivityDetailViewController: UIViewController {
     }
     
     override func willMove(toParent parent: UIViewController?) {
-        print("will move to parent")
-        delegate?.passEditedActivity(editedActivity: activity, activityIndexPath: activityIndexPath)
+        if !isDeleteAction {
+            delegate?.passEditedActivity(editedActivity: activity, activityIndexPath: activityIndexPath)
+        }
+        
     }
     
     func updateUI() {
@@ -42,6 +50,26 @@ class ActivityDetailViewController: UIViewController {
         timeLabel.text = Activity.timeDateFormatter.string(for: activity.time)
         // tagLabel.text =
         descriptionTextView.text = activity.description
+    }
+    
+    @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
+        // show alert
+        let alertController = UIAlertController(title: nil, message: "Are you sure you want to delete this activity?", preferredStyle: .alert)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
+            self.delegate?.deleteActivity(activityIndexPath: self.activityIndexPath)
+            // go back to my activity page
+            // print("(print from activity detail vc) \(self.activityIndexPath)")
+            self.isDeleteAction = true
+            self.navigationController?.popViewController(animated: false)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func unwindToActivityDetail(segue: UIStoryboardSegue) {

@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol ActivityCellDelegate: class {
+    func startButtonTapped(sender: ActivityCell)
+}
+
 class ActivityCell: UITableViewCell {
+    
+    weak var delegate: ActivityCellDelegate?
 
     @IBOutlet var coverImageView: UIImageView!
     @IBOutlet var titleLabel: UILabel!
@@ -23,11 +29,14 @@ class ActivityCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
 
+    @IBAction func startButtonTapped() {
+        delegate?.startButtonTapped(sender: self)
+    }
 }

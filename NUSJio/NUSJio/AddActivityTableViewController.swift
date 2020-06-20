@@ -11,21 +11,34 @@ import UIKit
 class AddActivityTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var activity: Activity?
-    // IB outlets, location has not implemented
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var descriptionTextView: UITextView!
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var timeDatePicker: UIDatePicker!
+    @IBOutlet var chosenLocationLabel: UILabel!
     @IBOutlet var cameraButton: UIButton!
     @IBOutlet var saveButton: UIBarButtonItem!
     @IBOutlet var coverImageView: UIImageView!
     
+    // description
+    let descriptionTextViewIndexPath = IndexPath(row: 1, section: 0)
+    
+    // time and location section
     var isPickerHidden = true
     let timeLabelIndexPath = IndexPath(row: 0, section: 1)
     let datePickerIndexPath = IndexPath(row: 1, section: 1)
-    let descriptionTextViewIndexPath = IndexPath(row: 1, section: 0)
+    
+    var isChosenLocationHidden = true {
+        didSet {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+    let chosenLocationLabelIndexPath = IndexPath(row: 3, section: 1)
+    
+    // cover image
     var isCoverImageHidden = true {
-        didSet{
+        didSet {
             tableView.beginUpdates()
             tableView.endUpdates()
         }
@@ -74,6 +87,15 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         updateTimeLabel(date: timeDatePicker.date)
     }
     
+    // TO DO
+    // --- configure location picker ---
+    // need to set is location hidden to false here
+    @IBAction func unwindToAddActivity(segue: UIStoryboardSegue) {
+        // unwind from location page
+        let location = chosenLocationLabel.text ?? ""
+        isChosenLocationHidden = location.isEmpty
+    }
+    
     // --- configure image picker ---
     @IBAction func cameraButtonTapped(_ sender: UIButton) {
         let imagePicker = UIImagePickerController()
@@ -114,9 +136,6 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
            dismiss(animated: true, completion: nil)
     }
     
-    // TODO
-    // --- configure location picker ---
-    
     // --- configure date picker, description and image picker ---
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath {
@@ -125,6 +144,9 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
             
         case descriptionTextViewIndexPath:
             return largeCellHeight
+            
+        case chosenLocationLabelIndexPath:
+            return isChosenLocationHidden ? 0 : normalCellHeight
             
         case coverImageViewIndexPath:
             print("height for row \(isCoverImageHidden)")
@@ -148,6 +170,7 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     }
 
     // MARK: - Navigation
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)

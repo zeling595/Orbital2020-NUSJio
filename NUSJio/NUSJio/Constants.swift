@@ -16,13 +16,17 @@ struct Constants {
         static let addActivityTableViewController = "AddActivityTableViewController"
         static let editActivityTableViewController = "EditActivityTableViewController"
         
+        static let locationSearchTableViewController = "LocationSearchTableViewController"
+        
         // cell identifiers
         static let activityCellIdentifier = "ActivityCellIdentifier"
+        static let searchResultCellIdentifier = "SearchResultCellIdentifier"
         
         // segue
         static let editActivitySegue = "EditActivitySegue"
         static let viewActivityDetailSegue = "ViewActivityDetailSegue"
         static let saveUnwindToMyActivities = "SaveUnwindToMyActivities"
         static let saveUnwindToActivityDetail = "SaveUnwindToActivityDetail"
+        static let saveUnwindToAddActivity = "SaveUnwindToAddActivity"
     }
 }

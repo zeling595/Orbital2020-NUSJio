@@ -20,6 +20,9 @@ struct Activity {
     var isComplete: Bool
     var coverPicture: UIImage?
     
+//    static let DocumentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("activities").appendingPathExtension("plist")
+   
     static let timeDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -30,8 +33,18 @@ struct Activity {
     
     static func loadActivities() -> [Activity]? {
         // retrieve the array of items stored on disk and returns them if the disk contains any items
+//        guard let codedActivities = try? Data(contentsOf: ArchiveURL) else {return nil}
+//
+//        let propertyListDecoder = PropertyListDecoder()
+//        return try? propertyListDecoder.decode(Array<Activity>.self, from: codedActivities)
         return nil
     }
+    
+//    static func saveActivities(_ activities: [Activity]) {
+//        let propertyListEncoder = PropertyListEncoder()
+//        let codedActivities = try? propertyListEncoder.encode(activities)
+//        try? codedActivities?.write(to: ArchiveURL, options: .noFileProtection)
+//    }
     
     static func loadSampleActivities() -> [Activity] {
         let activity1 = Activity(
@@ -44,6 +57,7 @@ struct Activity {
             tags: nil,
             isComplete: false,
             coverPicture: UIImage(named: "The-Deck")
+            // coverPictureString: "The-Deck"
         )
         
         let activity2 = Activity(
@@ -55,7 +69,8 @@ struct Activity {
             time: timeDateFormatter.date(from: "2020/11/11 11:11")!,
             tags: nil,
             isComplete: false,
-            coverPicture: nil //UIImage(named: "Fine-Food")
+            coverPicture: UIImage(named: "Fine-Food")
+            // coverPictureString: "Fine-Food"
         )
         
         let activity3 = Activity(
@@ -67,7 +82,8 @@ struct Activity {
             time: timeDateFormatter.date(from: "2020/07/31 03:00")!,
             tags: nil,
             isComplete: false,
-            coverPicture: nil //UIImage(named: "Outdoor-Pool")
+            coverPicture: UIImage(named: "Outdoor-Pool")
+            // coverPictureString: "Outdoor-Pool"
         )
         
         return [activity1, activity2, activity3]
