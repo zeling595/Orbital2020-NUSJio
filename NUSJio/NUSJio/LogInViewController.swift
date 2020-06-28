@@ -22,7 +22,7 @@ extension UITextField {
     }
 }
 
-class ViewController: UIViewController {
+class LogInViewController: UIViewController {
     
     // outlets
     let userIcon = UIImage(systemName: "person.crop.circle")
@@ -50,6 +50,9 @@ class ViewController: UIViewController {
     @IBOutlet var signUpButton: UIButton!
     @IBOutlet var orLabel: UILabel!
     
+//    var handle: AuthStateDidChangeListenerHandle?
+//    var userManager: UserManagerProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -60,11 +63,19 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
+//        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+//            if let user = user {
+//
+//            }
+//        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         navigationController?.setNavigationBarHidden(false, animated: false)
+        
+//        Auth.auth().removeStateDidChangeListener(handle!)
     }
     
     func setUpElements() {
@@ -89,25 +100,6 @@ class ViewController: UIViewController {
         dontHaveAnAccountLabel.textColor = UIColor.lightGray
         orLabel.textColor = UIColor.lightGray
     }
-    
-//    func validateNUSNETID() -> String? {
-//        // check all fields are filled in
-//        if NUSNETIDTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-//            return "Enter your user ID in the format \"domain\\user\" or \"user@domain\"."
-//        }
-//
-//        if Utilities.isNUSNETIDValid(NUSNETIDTextField.text!) {
-//            return "Enter your user ID in the format \"domain\\user\" or \"user@domain\"."
-//        }
-//        return nil
-//    }
-    
-//    func validatePassword() -> String? {
-//        if passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
-//            return "Enter your password"
-//        }
-//        return nil
-//    }
     
     func validateFields() -> String? {
         // may need to change to NUSEmailTextField!!!
@@ -141,6 +133,7 @@ class ViewController: UIViewController {
             let NUSNETID = NUSNETIDTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             // sign in user
+            // userManager?.signIn(email: NUSNETID, password: password, loginVC: self)
             Auth.auth().signIn(withEmail: NUSNETID, password: password) { [weak self] authResult, error in
               guard let strongSelf = self else { return }
                 if error != nil {

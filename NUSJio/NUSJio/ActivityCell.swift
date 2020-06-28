@@ -40,3 +40,5 @@ class ActivityCell: UITableViewCell {
         delegate?.startButtonTapped(sender: self)
     }
 }
+
+

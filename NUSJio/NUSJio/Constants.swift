@@ -28,5 +28,6 @@ struct Constants {
         static let saveUnwindToMyActivities = "SaveUnwindToMyActivities"
         static let saveUnwindToActivityDetail = "SaveUnwindToActivityDetail"
         static let saveUnwindToAddActivity = "SaveUnwindToAddActivity"
+        static let saveToActivityDetail = "SaveToActivityDetail"
     }
 }

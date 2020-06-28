@@ -7,10 +7,17 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class AddActivityTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    var delegate: CustomTabBarDelegate?
+    let dataController = DataController()
+    var currentUser: User!
     var activity: Activity?
+    var isEditEvent: Bool = false
+    
+    // MARK: UI
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var descriptionTextView: UITextView!
     @IBOutlet var timeLabel: UILabel!
@@ -19,6 +26,7 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     @IBOutlet var cameraButton: UIButton!
     @IBOutlet var saveButton: UIBarButtonItem!
     @IBOutlet var coverImageView: UIImageView!
+    @IBOutlet var uploadImageProgressView: UIProgressView!
     
     // description
     let descriptionTextViewIndexPath = IndexPath(row: 1, section: 0)
@@ -44,17 +52,58 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         }
     }
     let coverImageLabelIndexPath = IndexPath(row: 0, section: 3)
-    let coverImageViewIndexPath = IndexPath(row: 1, section: 3)
+    let coverImageViewIndexPath = IndexPath(row: 2, section: 3)
     
+    // progress view
+    var isProgressViewHidden = true {
+           didSet {
+               tableView.beginUpdates()
+               tableView.endUpdates()
+           }
+       }
+    let progressViewIndexPath = IndexPath(row: 1, section: 3)
     
     let normalCellHeight: CGFloat = 44.0
     let largeCellHeight: CGFloat = 120.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateSaveButtonState()
-        timeDatePicker.date = Date().addingTimeInterval(60*30)
-        updateTimeLabel(date: timeDatePicker.date)
+         uploadImageProgressView.progress = 0.0
+        if let activity = activity {
+            isEditEvent = true
+            navigationItem.title = "Edit Activity"
+            titleTextField.text = activity.title
+            descriptionTextView.text = activity.description
+            if let time = activity.time {
+                 timeLabel.text = Activity.timeDateFormatter.string(from: time)
+            } else {
+                timeLabel.text = "No fixed time yet"
+            }
+            chosenLocationLabel.text = activity.location
+            dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
+                if let imageData = imageData {
+                    self.coverImageView.image = UIImage(data: imageData)
+                    self.isCoverImageHidden = false
+                }
+            })
+        } else {
+            updateSaveButtonState()
+            timeDatePicker.date = Date().addingTimeInterval(60*30)
+            updateTimeLabel(date: timeDatePicker.date)
+        }
+        
+        // get current user
+        if let firebaseUser = Auth.auth().currentUser {
+            let uuid = firebaseUser.uid
+            dataController.fetchUser(userId: uuid) { (user) in
+                if let user = user {
+                    self.currentUser = user
+                }
+            }
+        } else {
+            print("oops no current user")
+        }
+        
     }
     
     // --- configure title text field ---
@@ -65,6 +114,44 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     func updateSaveButtonState() {
         let title = titleTextField.text ?? ""
         saveButton.isEnabled = !title.isEmpty
+    }
+    
+    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
+        // need to save the data
+        var uuid = ""
+        if isEditEvent {
+            uuid = activity!.uuid
+        } else {
+            uuid = UUID.init().uuidString
+        }
+        let title = titleTextField.text!
+        let description = descriptionTextView.text
+        let hostId = currentUser!.uuid
+        let time = timeDatePicker.date
+        let location = chosenLocationLabel.text!
+        // let filters
+        let coverImage = coverImageView.image
+        
+        // upload image
+        var imageURLStr = ""
+        isProgressViewHidden = false
+        dataController.uploadImageAndGetURL(image: coverImage!, progressView: uploadImageProgressView) {(urlStr) in
+            if let urlStr = urlStr {
+                imageURLStr = urlStr
+                print("\(imageURLStr)")
+                self.activity = Activity(uuid: uuid, title: title, description: description, hostId: hostId, participantIds: nil, location: location, time: time, tags: nil, isComplete: false, imageURLStr:imageURLStr)
+                
+                self.dataController.saveActivity(activity: self.activity!)
+                self.delegate?.goTo(index: 0, activity: self.activity!)
+                self.navigationController?.dismiss(animated: true, completion: {
+                    print("dismiss \(self.navigationController!.viewControllers)")
+                })
+            }
+        }
+    }
+    
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        navigationController?.dismiss(animated: true, completion: nil)
     }
     
     // will fire whenever the Editing Changed control event takes place
@@ -148,8 +235,10 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         case chosenLocationLabelIndexPath:
             return isChosenLocationHidden ? 0 : normalCellHeight
             
+        case progressViewIndexPath:
+            return isProgressViewHidden ? 0 : normalCellHeight
+            
         case coverImageViewIndexPath:
-            print("height for row \(isCoverImageHidden)")
             return isCoverImageHidden ? 0 : coverImageView.frame.height
             
         default:
@@ -168,23 +257,4 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
             tableView.endUpdates()
         }
     }
-
-    // MARK: - Navigation
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        guard segue.identifier == Constants.Storyboard.saveUnwindToMyActivities else {return}
-        
-        let title = titleTextField.text!
-        let description = descriptionTextView.text
-        let time = timeDatePicker.date
-        // let location
-        // let filters
-        let coverImage = coverImageView.image
-        
-        activity = Activity(title: title, description: description, host: nil, participants: nil, location: nil, time: time, tags: nil, isComplete: false, coverPicture: coverImage)
-    }
-
 }

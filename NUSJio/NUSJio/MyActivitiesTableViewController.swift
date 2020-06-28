@@ -7,40 +7,57 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MyActivitiesTableViewController: UITableViewController, ActivityDetailDelegate, ActivityCellDelegate {
 
     // TODO: Implement this using priority queue
     var activities = [Activity]()
+    var currentUser: User!
+    let dataController = DataController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // get current user
+        if let firebaseUser = Auth.auth().currentUser {
+            let uuid = firebaseUser.uid
+            print("(print from my activities) uuid \(uuid)")
+            dataController.fetchUser(userId: uuid) { (user) in
+                if let user = user {
+                    self.currentUser = user
+                    print("(print from my activities) \(self.currentUser)")
+                    
+                    self.dataController.fetchUserActivities(user: self.currentUser) { (fetchedActivities) in
+                        if let fetchedActivities = fetchedActivities, !fetchedActivities.isEmpty {
+                            self.activities = fetchedActivities
+                            print(fetchedActivities)
+//                            self.activities.sorted { (acticity1, activity2) -> Bool in
+//                                // need to fix when there is no time
+//                                return acticity1.time?.compare(activity2.time!) == .orderedDescending
+//                            }
+                            self.tableView.reloadData()
+                        }
+                    }
+                    
+                } else {
+                    print("oops cannot fetch user")
+                }
+            }
+        } else {
+            print("oops no current user")
+        }
+        
         // remove separator
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        
-        if let savedActivities = Activity.loadActivities() {
-            activities = savedActivities
-        } else {
-            activities = Activity.loadSampleActivities()
-        }
         
         navigationItem.leftBarButtonItem = editButtonItem
     }
     
-    func passEditedActivity(editedActivity: Activity, activityIndexPath: IndexPath) {
-        print("(print from my activities) \(editedActivity)")
-        activities[activityIndexPath.row] = editedActivity
-        tableView.reloadRows(at: [activityIndexPath], with: .none)
-        // save to disk
-        // Activity.saveActivities(activities)
-    }
-    
     func deleteActivity(activityIndexPath: IndexPath) {
+        dataController.deleteActivity(activityToBeDeleted: activities[activityIndexPath.row])
         activities.remove(at: activityIndexPath.row)
         tableView.deleteRows(at: [activityIndexPath], with: .fade)
-        // save to disk
-        // Activity.saveActivities(activities)
     }
     
     func startButtonTapped(sender: ActivityCell) {
@@ -64,6 +81,11 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if activities.count == 0 {
+            tableView.setEmptyView(title: "Create your own or explore more activities", message: "You activities will be here")
+        } else {
+            tableView.restore()
+        }
         return activities.count
     }
 
@@ -75,6 +97,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         // Configure the cell...
         cell.delegate = self
         let activity = activities[indexPath.row]
+        print(activity)
         updateCellUI(cell: cell, activity: activity)
 
         return cell
@@ -82,17 +105,29 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     
     func updateCellUI(cell: ActivityCell, activity: Activity) {
         cell.layer.cornerRadius = 6
-        cell.coverImageView.image = activity.coverPicture
+        dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
+            if let imageData = imageData {
+                cell.coverImageView.image = UIImage(data: imageData)
+            }
+        })
         cell.titleLabel.text = activity.title
-        cell.timeLabel.text = Activity.timeDateFormatter.string(from: activity.time)
+        if let time = activity.time {
+            cell.timeLabel.text = Activity.timeDateFormatter.string(from: time)
+        } else {
+            cell.timeLabel.text = "No fixed time yet"
+        }
+        
         // cell.tagsLabel = activity.tags
         let participantCount = 0
         let countStr = String(participantCount)
         cell.participantsLabel.text = "Number of participants is \(countStr)"
         let now = Date()
-        let timeStr = calculateTimeDiffInMins(now: now, activityTime: activity.time)
-        cell.countdownLabel.text = "Jio starts in \(timeStr)"
-        
+        if let time = activity.time {
+            let timeStr = calculateTimeDiffInMins(now: now, activityTime: time)
+            cell.setLabelImage(label: cell.countdownLabel, imageName: "clock", text: "Jio starts in \(timeStr)")
+        } else {
+            cell.setLabelImage(label: cell.countdownLabel, imageName: "clock", text: "Jio starts in the future")
+        }
     }
     
     func calculateTimeDiffInMins(now: Date, activityTime: Date) -> String {
@@ -116,11 +151,10 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            activities.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+//            activities.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+            deleteActivity(activityIndexPath: indexPath)
             
-            // save to disk
-            // Activity.saveActivities(activities)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -129,20 +163,6 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: Constants.Storyboard.viewActivityDetailSegue, sender: indexPath.row)
-    }
-    
-    @IBAction func unwindToMyActivities(segue: UIStoryboardSegue) {
-        // unwind from add activity
-        guard segue.identifier == Constants.Storyboard.saveUnwindToMyActivities else {return}
-        let sourceViewController = segue.source as! AddActivityTableViewController
-        if let activity = sourceViewController.activity {
-            let newIndexPath = IndexPath(row: activities.count, section: 0)
-            activities.append(activity)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-            
-            // save to disk
-            // Activity.saveActivities(activities)
-        }
     }
 
     // MARK: - Navigation
@@ -158,4 +178,58 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         }
     }
 
+}
+
+extension UITableView {
+    func setEmptyView(title: String, message: String) {
+        let emptyView = UIView(frame: CGRect(x: self.center.x, y: self.center.y, width: self.bounds.size.width, height: self.bounds.size.height))
+        let titleLabel = UILabel()
+        let messageLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = UIColor.black
+        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
+        messageLabel.textColor = UIColor.lightGray
+        messageLabel.font = UIFont(name: "HelveticaNeue-Regular", size: 17)
+        emptyView.addSubview(titleLabel)
+        emptyView.addSubview(messageLabel)
+        titleLabel.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20).isActive = true
+        messageLabel.leftAnchor.constraint(equalTo: emptyView.leftAnchor, constant: 20).isActive = true
+        messageLabel.rightAnchor.constraint(equalTo: emptyView.rightAnchor, constant: -20).isActive = true
+        titleLabel.text = title
+        messageLabel.text = message
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        // The only tricky part is here:
+        self.backgroundView = emptyView
+        self.separatorStyle = .none
+    }
+    func restore() {
+        self.backgroundView = nil
+    }
+}
+
+extension ActivityCell {
+    func setLabelImage(label: UILabel, imageName: String, text: String) {
+        // Create Attachment
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(systemName: imageName)
+        imageAttachment.image?.withTintColor(UIColor.secondaryLabel)
+        // Set bound to reposition
+        let imageOffsetY: CGFloat = -5.0
+        imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: imageAttachment.image!.size.width, height: imageAttachment.image!.size.height)
+        // Create string with attachment
+        let attachmentString = NSAttributedString(attachment: imageAttachment)
+        // Initialize mutable string
+        let completeText = NSMutableAttributedString(string: "")
+        // Add image to mutable string
+        completeText.append(attachmentString)
+        // Add your text to mutable string
+        let textAfterIcon = NSAttributedString(string: text)
+        completeText.append(textAfterIcon)
+        label.textAlignment = .left
+        label.attributedText = completeText
+    }
 }

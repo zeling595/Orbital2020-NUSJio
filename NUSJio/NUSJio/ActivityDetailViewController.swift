@@ -9,21 +9,26 @@
 import UIKit
 
 protocol ActivityDetailDelegate: class {
-    func passEditedActivity(editedActivity: Activity, activityIndexPath: IndexPath)
     func deleteActivity(activityIndexPath: IndexPath)
 }
 
 class ActivityDetailViewController: UIViewController {
 
+    let dataController = DataController()
+    
     var activity: Activity!
-    var activityIndexPath: IndexPath!
+    var activityIndexPath: IndexPath?
     var isDeleteAction = false
+    var isEditAction = false
+    var isCreateAction = false
     
     weak var delegate: ActivityDetailDelegate?
+    weak var tabBarDelegate: CustomTabBarDelegate?
     
     @IBOutlet var coverImageView: UIImageView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var locationLabel: UILabel!
     @IBOutlet var tagLabel: UILabel!
     @IBOutlet var descriptionTextView: UITextView!
     @IBOutlet var startJioButton: UIButton!
@@ -37,19 +42,20 @@ class ActivityDetailViewController: UIViewController {
         updateUI()
     }
     
-    override func willMove(toParent parent: UIViewController?) {
-        if !isDeleteAction {
-            delegate?.passEditedActivity(editedActivity: activity, activityIndexPath: activityIndexPath)
-        }
-        
-    }
-    
     func updateUI() {
-        coverImageView.image = activity.coverPicture
-        titleLabel.text = activity.title
-        timeLabel.text = Activity.timeDateFormatter.string(for: activity.time)
-        // tagLabel.text =
-        descriptionTextView.text = activity.description
+        dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
+            if let imageData = imageData {
+                self.coverImageView.image = UIImage(data: imageData)
+                DispatchQueue.main.async {
+                    // coverImageView.image = activity.coverPicture
+                    self.titleLabel.text = self.activity.title
+                    self.timeLabel.text = Activity.timeDateFormatter.string(for: self.activity.time)
+                    self.locationLabel.text = self.activity.location
+                    // tagLabel.text =
+                    self.descriptionTextView.text = self.activity.description
+                }
+            }
+        })
     }
     
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
@@ -57,10 +63,7 @@ class ActivityDetailViewController: UIViewController {
         let alertController = UIAlertController(title: nil, message: "Are you sure you want to delete this activity?", preferredStyle: .alert)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
-            self.delegate?.deleteActivity(activityIndexPath: self.activityIndexPath)
-            // go back to my activity page
-            // print("(print from activity detail vc) \(self.activityIndexPath)")
-            self.isDeleteAction = true
+            self.delegate?.deleteActivity(activityIndexPath: self.activityIndexPath!)
             self.navigationController?.popViewController(animated: false)
         }
         
@@ -72,13 +75,9 @@ class ActivityDetailViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    @IBAction func unwindToActivityDetail(segue: UIStoryboardSegue) {
-        guard segue.identifier == Constants.Storyboard.saveUnwindToActivityDetail else {return}
-        let sourceViewController = segue.source as! EditActivityTableViewController
-        if let activity = sourceViewController.activity {
-            self.activity = activity
-            updateUI()
-        }
+    @IBAction func editButtonTapped(_ sender: UIButton) {
+        let tabBarVC = view.window?.rootViewController as? CustomTabBarController
+        tabBarVC?.goTo(index: 2, activity: activity)
     }
     
     // MARK: - Navigation
@@ -86,9 +85,16 @@ class ActivityDetailViewController: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Storyboard.editActivitySegue, let navController = segue.destination as? UINavigationController,
-            let editActivityTableViewController = navController.topViewController as?
-                EditActivityTableViewController {
-            editActivityTableViewController.activity = activity
+            let addActivityTableViewController = navController.topViewController as?
+                AddActivityTableViewController {
+            addActivityTableViewController.activity = activity
+            
+            // assign delegate, so delegate not nil???
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let tabBarVC = storyboard.instantiateViewController(identifier: "CustomTabBarController") as! CustomTabBarDelegate
+            addActivityTableViewController.delegate = tabBarVC
+            print("(print from activity detail) prepare \(addActivityTableViewController.delegate)")
+            
         }
     }
 

@@ -12,11 +12,35 @@ import Firebase
 import FirebaseFirestore
 
 class SignUpViewController: UIViewController {
+    
+    let userIcon = UIImage(systemName: "person.crop.circle")
+    let emailIcon = UIImage(systemName: "envelope.circle")
+    let passwordIcon = UIImage(systemName: "lock.circle")
 
-    @IBOutlet var usernameTextField: UITextField!
-    @IBOutlet var NUSEmailTextField: UITextField!
-    @IBOutlet var passwordTextField: UITextField!
-    @IBOutlet var confirmPasswordTextField: UITextField!
+    @IBOutlet var usernameTextField: UITextField! {
+        didSet {
+            usernameTextField.tintColor = UIColor.lightGray
+            usernameTextField.setIcon(userIcon!)
+        }
+    }
+    @IBOutlet var NUSEmailTextField: UITextField! {
+        didSet {
+            NUSEmailTextField.tintColor = UIColor.lightGray
+            NUSEmailTextField.setIcon(emailIcon!)
+        }
+    }
+    @IBOutlet var passwordTextField: UITextField! {
+        didSet {
+            passwordTextField.tintColor = UIColor.lightGray
+            passwordTextField.setIcon(passwordIcon!)
+        }
+    }
+    @IBOutlet var confirmPasswordTextField: UITextField! {
+        didSet {
+            confirmPasswordTextField.tintColor = UIColor.lightGray
+            confirmPasswordTextField.setIcon(passwordIcon!)
+        }
+    }
     @IBOutlet var signUpButton: UIButton!
     @IBOutlet var errorLabel: UILabel!
     
@@ -72,12 +96,6 @@ class SignUpViewController: UIViewController {
         errorLabel.alpha = 1.0
     }
     
-//    func transitionToHome() {
-//        let homepageViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homepageViewController) as? HomepageViewController
-//        view.window?.rootViewController = homepageViewController
-//        view.window?.makeKeyAndVisible()
-//    }
-    
     func transitionToHomepage() {
             let customTabBarController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.customTabBarController) as? CustomTabBarController
             view.window?.rootViewController = customTabBarController
@@ -103,20 +121,27 @@ class SignUpViewController: UIViewController {
                 if error != nil {
                     // There is a error
                     // error.localizedDescription
-                    self.showError("Error creating user")
+                    self.showError("Error creating user: \(error?.localizedDescription)")
                 } else {
                     // User is created successfully
                     let db = Firestore.firestore()
-                    db.collection("users").addDocument(data: ["username": username, "uid": authResult!.user.uid]) { (error) in
+                    let newUser = User(uuid: authResult!.user.uid, username: username, email: NUSEmail, password: password, myActivityIds: [], joinedActivityIds: [])
+                    let newUserDictionary = User.UserToDictionary(user: newUser)
+                    print("(print from sign up vc) user dictionary \(newUserDictionary)")
+                    db.collection("users").document("user-\(authResult!.user.uid)").setData(newUserDictionary) {(error) in
                         if error != nil {
                             // user account is created but cannot be saved
                             self.showError("Username cannot be saved in database side")
         
                             // other option: try save again later, ask for username again
+                        } else {
+                            print("(print from sign up vc) add user successfully \(newUser)")
+                            // transition to home
+                            self.transitionToHomepage()
                         }
                     }
-                    // transition to home
-                    self.transitionToHomepage()
+//                    // transition to home
+//                    self.transitionToHomepage()
                 }
             }
         }
