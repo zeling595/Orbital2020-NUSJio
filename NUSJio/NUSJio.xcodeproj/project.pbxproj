@@ -24,6 +24,10 @@
 		12D61A1C249CE7B900E657AE /* LocationSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */; };
 		12D61A1F249DC4B900E657AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D61A1E249DC4B800E657AE /* GoogleService-Info.plist */; };
 		12D61A2324A5C2AB00E657AE /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A2224A5C2AB00E657AE /* UserManager.swift */; };
+		12D7FF9B24A9EC4E00C9552B /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7FF9A24A9EC4E00C9552B /* ExploreViewController.swift */; };
+		12D7FF9D24A9EC5E00C9552B /* ExploreDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7FF9C24A9EC5E00C9552B /* ExploreDetailViewController.swift */; };
+		12D7FF9F24A9EC7900C9552B /* DefaultExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7FF9E24A9EC7900C9552B /* DefaultExploreCell.swift */; };
+		12D7FFA124A9EC8100C9552B /* DefaultExploreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D7FFA024A9EC8100C9552B /* DefaultExploreCell.xib */; };
 		12F8B88B248CE30B004D8BE9 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */; };
 		12FCB66724824CED00DA5CF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB66624824CED00DA5CF7 /* AppDelegate.swift */; };
 		12FCB66924824CEE00DA5CF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB66824824CEE00DA5CF7 /* SceneDelegate.swift */; };
@@ -72,6 +76,10 @@
 		12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewController.swift; sourceTree = "<group>"; };
 		12D61A1E249DC4B800E657AE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12D61A2224A5C2AB00E657AE /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		12D7FF9A24A9EC4E00C9552B /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
+		12D7FF9C24A9EC5E00C9552B /* ExploreDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDetailViewController.swift; sourceTree = "<group>"; };
+		12D7FF9E24A9EC7900C9552B /* DefaultExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultExploreCell.swift; sourceTree = "<group>"; };
+		12D7FFA024A9EC8100C9552B /* DefaultExploreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DefaultExploreCell.xib; sourceTree = "<group>"; };
 		12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		12FCB66324824CED00DA5CF7 /* NUSJio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NUSJio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FCB66624824CED00DA5CF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -153,6 +161,7 @@
 		128DE3C72490B768009353D5 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				12D7FFA224A9EC8800C9552B /* Explore */,
 				12D61A1D249CE7FB00E657AE /* Location */,
 				128DE3D724923E04009353D5 /* Activity */,
 				12FCB66A24824CEE00DA5CF7 /* LogInViewController.swift */,
@@ -183,6 +192,17 @@
 				12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */,
 			);
 			name = Location;
+			sourceTree = "<group>";
+		};
+		12D7FFA224A9EC8800C9552B /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				12D7FF9C24A9EC5E00C9552B /* ExploreDetailViewController.swift */,
+				12D7FF9A24A9EC4E00C9552B /* ExploreViewController.swift */,
+				12D7FF9E24A9EC7900C9552B /* DefaultExploreCell.swift */,
+				12D7FFA024A9EC8100C9552B /* DefaultExploreCell.xib */,
+			);
+			name = Explore;
 			sourceTree = "<group>";
 		};
 		12FCB65A24824CED00DA5CF7 = {
@@ -374,6 +394,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12D7FFA124A9EC8100C9552B /* DefaultExploreCell.xib in Resources */,
 				12FCB67324824CF200DA5CF7 /* LaunchScreen.storyboard in Resources */,
 				12D61A1F249DC4B900E657AE /* GoogleService-Info.plist in Resources */,
 				12FCB67024824CF200DA5CF7 /* Assets.xcassets in Resources */,
@@ -512,6 +533,7 @@
 				12D61A1C249CE7B900E657AE /* LocationSearchTableViewController.swift in Sources */,
 				128DE3CD2490DB39009353D5 /* ExploreTableViewController.swift in Sources */,
 				12FCB66B24824CEE00DA5CF7 /* LogInViewController.swift in Sources */,
+				12D7FF9D24A9EC5E00C9552B /* ExploreDetailViewController.swift in Sources */,
 				126A2A362494BA6F005070AE /* ActivityCell.swift in Sources */,
 				12F8B88B248CE30B004D8BE9 /* SignUpViewController.swift in Sources */,
 				12D61A2324A5C2AB00E657AE /* UserManager.swift in Sources */,
@@ -525,7 +547,9 @@
 				128DE3D324921A92009353D5 /* ActivityDetailViewController.swift in Sources */,
 				12FCB7A02489264400DA5CF7 /* Constants.swift in Sources */,
 				128DE3C22490B5C5009353D5 /* User.swift in Sources */,
+				12D7FF9B24A9EC4E00C9552B /* ExploreViewController.swift in Sources */,
 				12FCB66924824CEE00DA5CF7 /* SceneDelegate.swift in Sources */,
+				12D7FF9F24A9EC7900C9552B /* DefaultExploreCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,6 +18,31 @@ class DataController {
     let usersCollection = Firestore.firestore().collection("users")
     
     // MARK: Fetch Activities
+    func fetchAllActivities(completion: @escaping ([Activity]?) -> Void) {
+        let database = Firestore.firestore();
+        var activitiesForExplore: [Activity] = []
+        database.collection("activities").getDocuments{ (snapshot, error) in
+            if let error = error {
+                print("error fetching activities: \(error)")
+            }
+            
+            if let snapshot = snapshot, !snapshot.isEmpty {
+                for document in snapshot.documents {
+                    let activity = Activity.DictionaryToActivity(dictionary: document.data())
+                    activitiesForExplore.append(activity)
+                }
+                completion(activitiesForExplore.sorted { (acticity1, activity2) -> Bool in
+                    // need to fix when there is no time
+                    return acticity1.time?.compare(activity2.time!) == .orderedAscending
+                })
+            } else {
+                print("snapshot is empty")
+            }
+            
+            
+        }
+    }
+    
     func fetchUserActivities(user: User, completion: @escaping ([Activity]?) -> Void) {
         var activitiesToDisplay: [Activity] = []
         // get user id

@@ -8,6 +8,7 @@
 
 import UIKit
 
+// not in use
 class ExploreTableViewController: UITableViewController {
 
     override func viewDidLoad() {

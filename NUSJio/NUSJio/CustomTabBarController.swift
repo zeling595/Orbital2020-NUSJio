@@ -89,6 +89,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate, Cu
 //            self.present(vc!, animated: true, completion: nil)
 //        }
         print("(print from tabbar controller) \(tabBarController.selectedIndex)")
+        // if tabBarItem.tag == 
     }
 
     /*
