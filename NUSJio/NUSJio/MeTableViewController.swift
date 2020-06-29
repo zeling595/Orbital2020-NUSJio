@@ -25,7 +25,7 @@ class MeTableViewController: UITableViewController {
     let dataController = DataController()
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        
         if let firebaseUser = Auth.auth().currentUser {
             let uuid = firebaseUser.uid
             dataController.fetchUser(userId: uuid) { (user) in
@@ -41,7 +41,7 @@ class MeTableViewController: UITableViewController {
             print("oops no current user")
         }
         
-        
+        super.viewDidLoad()
     }
     
     func signOut() {

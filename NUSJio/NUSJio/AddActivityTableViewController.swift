@@ -68,14 +68,15 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         uploadImageProgressView.progress = 0.0
+        uploadImageProgressView.progress = 0.0
+        timeDatePicker.minimumDate = Date()
         if let activity = activity {
             isEditEvent = true
             navigationItem.title = "Edit Activity"
             titleTextField.text = activity.title
             descriptionTextView.text = activity.description
             if let time = activity.time {
-                 timeLabel.text = Activity.timeDateFormatter.string(from: time)
+                timeLabel.text = Activity.timeDateFormatter.string(from: time)
             } else {
                 timeLabel.text = "No fixed time yet"
             }
