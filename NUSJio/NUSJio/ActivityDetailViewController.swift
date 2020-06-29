@@ -37,23 +37,19 @@ class ActivityDetailViewController: UIViewController {
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
         updateUI()
+        super.viewDidLoad()
     }
     
     func updateUI() {
+        titleLabel.text = activity.title
+        timeLabel.text = Activity.timeDateFormatter.string(for: activity.time)
+        locationLabel.text = activity.location
+        // tagLabel.text =
+        descriptionTextView.text = activity.description
         dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
             if let imageData = imageData {
                 self.coverImageView.image = UIImage(data: imageData)
-                DispatchQueue.main.async {
-                    // coverImageView.image = activity.coverPicture
-                    self.titleLabel.text = self.activity.title
-                    self.timeLabel.text = Activity.timeDateFormatter.string(for: self.activity.time)
-                    self.locationLabel.text = self.activity.location
-                    // tagLabel.text =
-                    self.descriptionTextView.text = self.activity.description
-                }
             }
         })
     }
@@ -93,7 +89,7 @@ class ActivityDetailViewController: UIViewController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let tabBarVC = storyboard.instantiateViewController(identifier: "CustomTabBarController") as! CustomTabBarDelegate
             addActivityTableViewController.delegate = tabBarVC
-            print("(print from activity detail) prepare \(addActivityTableViewController.delegate)")
+            // print("(print from activity detail) prepare \(addActivityTableViewController.delegate)")
             
         }
     }

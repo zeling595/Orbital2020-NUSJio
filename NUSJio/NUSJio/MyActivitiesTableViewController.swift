@@ -18,7 +18,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.showBlurLoader()
         // get current user
         if let firebaseUser = Auth.auth().currentUser {
             let uuid = firebaseUser.uid
@@ -26,18 +26,16 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
             dataController.fetchUser(userId: uuid) { (user) in
                 if let user = user {
                     self.currentUser = user
-                    print("(print from my activities) \(self.currentUser)")
+                    // print("(print from my activities) \(self.currentUser)")
                     
                     self.dataController.fetchUserActivities(user: self.currentUser) { (fetchedActivities) in
                         if let fetchedActivities = fetchedActivities, !fetchedActivities.isEmpty {
                             self.activities = fetchedActivities
-                            print(fetchedActivities)
-//                            self.activities.sorted { (acticity1, activity2) -> Bool in
-//                                // need to fix when there is no time
-//                                return acticity1.time?.compare(activity2.time!) == .orderedDescending
-//                            }
+                            // print(fetchedActivities)
                             self.tableView.reloadData()
+                            
                         }
+                        
                     }
                     
                 } else {
@@ -81,6 +79,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        self.view.removeBluerLoader()
         if activities.count == 0 {
             tableView.setEmptyView(title: "Create your own or explore more activities", message: "You activities will be here")
         } else {
@@ -215,8 +214,10 @@ extension ActivityCell {
     func setLabelImage(label: UILabel, imageName: String, text: String) {
         // Create Attachment
         let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(systemName: imageName)
-        imageAttachment.image?.withTintColor(UIColor.secondaryLabel)
+        let originalImage = UIImage(systemName: imageName)
+        let tintedImage = originalImage?.withRenderingMode(.alwaysTemplate)
+        tintedImage?.withTintColor(UIColor.secondaryLabel)
+        imageAttachment.image = tintedImage
         // Set bound to reposition
         let imageOffsetY: CGFloat = -5.0
         imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: imageAttachment.image!.size.width, height: imageAttachment.image!.size.height)
@@ -231,5 +232,48 @@ extension ActivityCell {
         completeText.append(textAfterIcon)
         label.textAlignment = .left
         label.attributedText = completeText
+    }
+}
+
+extension UIView {
+    func showBlurLoader() {
+        let blurLoader = BlurLoader(frame: frame)
+        self.addSubview(blurLoader)
+    }
+
+    func removeBluerLoader() {
+        if let blurLoader = subviews.first(where: { $0 is BlurLoader }) {
+            blurLoader.removeFromSuperview()
+        }
+    }
+}
+
+
+class BlurLoader: UIView {
+
+    var blurEffectView: UIVisualEffectView?
+
+    override init(frame: CGRect) {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = frame
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.blurEffectView = blurEffectView
+        super.init(frame: frame)
+        addSubview(blurEffectView)
+        addLoader()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func addLoader() {
+        guard let blurEffectView = blurEffectView else { return }
+        let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
+        activityIndicator.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        blurEffectView.contentView.addSubview(activityIndicator)
+        activityIndicator.center = blurEffectView.contentView.center
+        activityIndicator.startAnimating()
     }
 }

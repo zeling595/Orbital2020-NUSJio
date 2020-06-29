@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CryptoKit
 import Firebase
 import FirebaseFirestore
 import FirebaseStorage
@@ -151,16 +152,28 @@ class DataController {
                 print("Transaction successfully committed!")
             }
         }
+        
+        // delete image when activity is completely deleted
+        let imageRef = Storage.storage().reference(forURL: activityToBeDeleted.imageURLStr)
+        imageRef.delete { (error) in
+            if let error = error {
+                print("Error deleting image: \(error)")
+            }
+        }
     }
     
     // MARK: Image
+    // currently not in use
     func uploadImage(image: UIImage, progressView: UIProgressView) {
         // create random image without overriding each other
-        let randomID = UUID.init().uuidString
-        // get a cloud storage reference
-        let uploadRef = Storage.storage().reference(withPath: "activities/\(randomID).jpg")
+        // if using hashing the uuid is kind of useless?
+        // let randomID = UUID.init().uuidString
+        
         // convert uiimage into a data obj, jpeg type
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {return}
+        let hashedStr = SHA256.hash(data: imageData).description
+        // get a cloud storage reference
+        let uploadRef = Storage.storage().reference(withPath: "activities/\(hashedStr).jpg")
         let uploadMetadata = StorageMetadata.init()
         uploadMetadata.contentType = "image/jpeg"
         
@@ -182,13 +195,14 @@ class DataController {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {return}
         let uploadMetadata = StorageMetadata.init()
         uploadMetadata.contentType = "image/jpeg"
-        
+                
         let taskReference = uploadRef.putData(imageData, metadata: uploadMetadata) { (downloadMetadata, error) in
             if let error = error {
                 print("Error uploading image \(error.localizedDescription)")
                 return
+            } else {
+                print("Put is complete and I got this back: \(downloadMetadata)")
             }
-            print("Put is complete and I got this back: \(downloadMetadata)")
             
             // can do this anytime after upload image
             uploadRef.downloadURL { (url, error) in
@@ -204,7 +218,7 @@ class DataController {
             
         }
         
-        // uploading task remove the observer automatically when they are done
+        //uploading task remove the observer automatically when they are done
         taskReference.observe(.progress) { [weak self] (snapshot) in
             guard let pctThere = snapshot.progress?.fractionCompleted else {return}
             print("You are \(pctThere) complete")
