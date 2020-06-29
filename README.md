@@ -42,12 +42,13 @@ The app employs a classic structure with five navigation controllers embedded in
 1. Log in and sign up view controllers are complete. When user sign up, the app will check whether the email is valid nus email (friendly or default) and give out corresponding error messages. When user transits from log in or sign up view to my activities view, a loading overlay is added to smooth out the transition.
 2. "My Activities" page is the first tab of the tab bar controller. It displays the currently signed in user's activities, including both activities that he/she created and joined. The activities are ordered by time with the most recent at the top. User can click any activity to view the activity detail. Host of the activity is able to edit it. The transition from "Activity Detail" to "Add/Edit Activity" is done by programmatically walking up and down the navigation hierarchy to root view tab bar controller to switch tab.
 3. "Activity Detail" page allows the user to view the detail
-4. Yuqing TODO: Search page
-5. "Add/Edit Activity" page is the third tab of the tab bar controller. It allows user to create an activity by specifying the name, location, time and upload an image as the cover picture. A progress view is used to show the progress is image uploading. A map view and search function is also implement so that users can find their desired place easier. It is present modally by overriding the tab bar delegate method shouldSelect. Users can arrive at this page either by the "Edit" button in "Activity Detail" page or by pressing the middle button of the tab bar. Transition from "Activity Detail" to "Add/Edit Activity" is similarly achieved by programmatically walking up and down the navigation hierarchy. When user save the activity, the tab switching from this page to "Activity Detail" page is done by the same trick. Customised delegate is used to pass down the saved activity to the destination view controller. 
-6. "Me" page currently displays user information such as username, email, uuid and password. User can sign out here. 
-7. User and activity data are stored in two separate collection in cloud firestore. Images are stored in firestorage. Functions that communicate with firebase are all abstracted away in a single swift file DataController.swift in compliance to the Open Close principle, making it easier to build on the project in the future. As most backend events happen asynchronously, transaction is used to ensure no one join the to-be-deleted activity when delete is happening.
-8. Security rules in the server side allows everyone to write into the collection("users") to create user but only authenticated user can read data from collection("users"). For collection("activities"), only authenticated users are allowed to read and update activity. Furthermore, the title of the activity cannot be null for the create and updated to proceed, which is in accordance to the client code in "Add/Edit Activity" page. Only host of an activity is allowed to delete it.
-9. Splash screen and app logo are designed by ourselves. 
+4. "Add/Edit Activity" page is the third tab of the tab bar controller. It allows user to create an activity by specifying the name, location, time and upload an image as the cover picture. A progress view is used to show the progress is image uploading. A map view and search function is also implement so that users can find their desired place easier. It is present modally by overriding the tab bar delegate method shouldSelect. Users can arrive at this page either by the "Edit" button in "Activity Detail" page or by pressing the middle button of the tab bar. Transition from "Activity Detail" to "Add/Edit Activity" is similarly achieved by programmatically walking up and down the navigation hierarchy. When user save the activity, the tab switching from this page to "Activity Detail" page is done by the same trick. Customised delegate is used to pass down the saved activity to the destination view controller. 
+5. "Explore" page lists all the valid activities stored in our database with a table view. Users will be able to see the cover image, title and brief description for every activity listed. Users can access the details of the activity simply by tapping on the activity cell. It will direct users to "Activity Detail (explore)" page. Within the the Explore page, users can also search for activities in a text field. All activities that contains the relevant text (either from title, location, description or tags) will be shown.
+6. "Activity Detail (explore)" page: this page is similar to "Activity Detail" page. However, the "Activity Detail" page will have access/segue to "Add/Edit Activity" page while this page will not. This page is for users to view activities created by others, they will not have the permission to edit. Nevertheless, users will be able to join/start chat with activity host or choose to join the activiy (these two functions will be implemented later in milestone 3). 
+7. "Me" page currently displays user information such as username, email, uuid and password. User can sign out here. 
+8. User and activity data are stored in two separate collection in cloud firestore. Images are stored in firestorage. Functions that communicate with firebase are all abstracted away in a single swift file DataController.swift in compliance to the Open Close principle, making it easier to build on the project in the future. As most backend events happen asynchronously, transaction is used to ensure no one join the to-be-deleted activity when delete is happening.
+9. Security rules in the server side allows everyone to write into the collection("users") to create user but only authenticated user can read data from collection("users"). For collection("activities"), only authenticated users are allowed to read and update activity. Furthermore, the title of the activity cannot be null for the create and updated to proceed, which is in accordance to the client code in "Add/Edit Activity" page. Only host of an activity is allowed to delete it.
+10. Splash screen and app logo are designed by ourselves. 
 
 ## Features to be Completed in Milestone 3
 1. Divide my activities page to two section. One for activities of today and one for the future activities.
@@ -56,10 +57,17 @@ The app employs a classic structure with five navigation controllers embedded in
 4. User will be able to join and postpone the activity
 5. Implement real time listener/ refresh functionality to update participants for every activity.
 6. Remove expired activities 
+7. Activities displayed in explore page will be sorted based on chronological order or user's location.
 
 ## Testing
 User testing is done as shown in the updated project video.
-(Yuqing TODO: Add the youtube link here)
+for core function testing:
+https://youtu.be/CLG5RVDGTcQ
+
+for app flow (may not include some avaible function):
+https://youtu.be/sEEXFjMxYp4
+(also, in this video, all images are default/empty because we have reached the quota for firebase, hence we are not allowed to read or write data temporarily)
+
 
 ## User Flow Diagram
 ![user_flow_diagram_simple](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/user_flow_diagram_simple.jpg)
