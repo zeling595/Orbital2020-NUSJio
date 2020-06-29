@@ -47,6 +47,7 @@ class ActivityDetailViewController: UIViewController {
         locationLabel.text = activity.location
         // tagLabel.text =
         descriptionTextView.text = activity.description
+        descriptionTextView.isEditable = false
         dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
             if let imageData = imageData {
                 self.coverImageView.image = UIImage(data: imageData)

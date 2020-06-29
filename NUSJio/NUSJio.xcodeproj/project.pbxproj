@@ -161,9 +161,9 @@
 		128DE3C72490B768009353D5 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				128DE3D724923E04009353D5 /* Activity */,
 				12D7FFA224A9EC8800C9552B /* Explore */,
 				12D61A1D249CE7FB00E657AE /* Location */,
-				128DE3D724923E04009353D5 /* Activity */,
 				12FCB66A24824CEE00DA5CF7 /* LogInViewController.swift */,
 				128DE3BD24908B9D009353D5 /* CustomTabBarController.swift */,
 				128DE3D02490DB92009353D5 /* MeTableViewController.swift */,

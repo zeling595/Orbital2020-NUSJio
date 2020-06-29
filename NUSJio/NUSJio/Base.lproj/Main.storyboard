@@ -261,7 +261,7 @@ nusext\userid</string>
                                         <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KoJ-Lz-3ML">
                                             <rect key="frame" x="16" y="8" width="382" height="334"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bkI-GK-nht">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="bkI-GK-nht">
                                                     <rect key="frame" x="0.0" y="0.0" width="382" height="184"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="382" id="0YU-TW-azk"/>
@@ -402,7 +402,7 @@ nusext\userid</string>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="lZF-n2-b05">
                                 <rect key="frame" x="20" y="88" width="374" height="725"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="emE-Qq-Gev">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="emE-Qq-Gev">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="219"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="219" id="pUf-Tt-TDH"/>
@@ -761,17 +761,17 @@ nusext\userid</string>
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Yue-c5-tfF">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Yue-c5-tfF">
                                                     <rect key="frame" x="8" y="4" width="398" height="35.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cover Picture (Optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Wt-0N-ByV">
-                                                            <rect key="frame" x="0.0" y="0.0" width="184.5" height="35.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="352" height="35.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IXz-lp-dqc">
-                                                            <rect key="frame" x="374" y="0.0" width="24" height="35.5"/>
+                                                            <rect key="frame" x="352" y="0.0" width="46" height="35.5"/>
                                                             <state key="normal" image="camera" catalog="system"/>
                                                             <connections>
                                                                 <action selector="cameraButtonTapped:" destination="JGl-MH-bTm" eventType="touchUpInside" id="hNX-Kw-zhK"/>
@@ -881,6 +881,11 @@ nusext\userid</string>
                         <viewLayoutGuide key="safeArea" id="kSc-3i-DCj"/>
                     </view>
                     <navigationItem key="navigationItem" id="5QT-vA-yjT">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="fJH-kG-atM">
+                            <connections>
+                                <segue destination="wgf-jm-Lr9" kind="unwind" unwindAction="unwindToAddActivityWithSegue:" id="h3D-qp-9Aq"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="acA-vh-nnF">
                             <connections>
                                 <segue destination="wgf-jm-Lr9" kind="unwind" identifier="SaveUnwindToAddActivity" unwindAction="unwindToAddActivityWithSegue:" id="nTg-57-agG"/>
@@ -1265,6 +1270,7 @@ nusext\userid</string>
         <image name="message.fill" catalog="system" width="128" height="113"/>
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="placeholder" width="493" height="391"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="sun.min" catalog="system" width="128" height="121"/>
         <image name="sun.min.fill" catalog="system" width="128" height="121"/>

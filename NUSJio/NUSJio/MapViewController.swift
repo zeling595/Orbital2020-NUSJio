@@ -67,6 +67,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         
         updateSaveButtonState()
     }
+    
+    
 
     // MARK: - Navigation
 
@@ -74,12 +76,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         if segue.identifier == Constants.Storyboard.saveUnwindToAddActivity {
             if let addActivityViewController = segue.destination as? AddActivityTableViewController,
                 let selectedPin = selectedPin {
-                let locationStr = "\(selectedPin.thoroughfare ?? ""), \(selectedPin.locality ?? ""), \(selectedPin.subLocality ?? ""), \(selectedPin.administrativeArea ?? ""), \(selectedPin.postalCode ?? ""), \(selectedPin.country ?? "")"
+                let locationStr = "\(selectedPin.thoroughfare ?? ""), \(selectedPin.locality ?? ""), \(selectedPin.postalCode ?? ""), \(selectedPin.country ?? "")"
                 addActivityViewController.chosenLocationLabel.text = locationStr
             }
         }
     }
-
 }
 
 extension MapViewController {

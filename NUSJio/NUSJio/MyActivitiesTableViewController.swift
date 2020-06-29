@@ -33,7 +33,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
                             self.activities = fetchedActivities
                             // print(fetchedActivities)
                             self.tableView.reloadData()
-                            
+                            self.view.removeBluerLoader()
                         }
                         
                     }
@@ -79,7 +79,6 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.view.removeBluerLoader()
         if activities.count == 0 {
             tableView.setEmptyView(title: "Create your own or explore more activities", message: "You activities will be here")
         } else {
@@ -254,7 +253,7 @@ class BlurLoader: UIView {
     var blurEffectView: UIVisualEffectView?
 
     override init(frame: CGRect) {
-        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffect = UIBlurEffect(style: .light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = frame
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
