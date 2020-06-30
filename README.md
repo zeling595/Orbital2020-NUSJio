@@ -41,7 +41,7 @@ Link to our project proposal: https://docs.google.com/document/d/1DJ5l0XoyVsnLq2
 The app employs a classic structure with five navigation controllers embedded in a tab bar controller. After the user signs up/ logs in, the tab bar controller becomes the root view controller of the app. The followings are our current progress:
 1. Log in and sign up view controllers are complete. When user sign up, the app will check whether the email is valid nus email (friendly or default) and give out corresponding error messages. When user transits from log in or sign up view to my activities view, a loading overlay is added to smooth out the transition.
 2. "My Activities" page is the first tab of the tab bar controller. It displays the currently signed in user's activities, including both activities that he/she created and joined. The activities are ordered by time with the most recent at the top. User can click any activity to view the activity detail. Host of the activity is able to edit it. The transition from "Activity Detail" to "Add/Edit Activity" is done by programmatically walking up and down the navigation hierarchy to root view tab bar controller to switch tab.
-3. "Activity Detail" page allows the user to view the detail
+3. "Activity Detail" page allows the user to view the detail.
 4. "Add/Edit Activity" page is the third tab of the tab bar controller. It allows user to create an activity by specifying the name, location, time and upload an image as the cover picture. A progress view is used to show the progress is image uploading. A map view and search function is also implement so that users can find their desired place easier. It is present modally by overriding the tab bar delegate method shouldSelect. Users can arrive at this page either by the "Edit" button in "Activity Detail" page or by pressing the middle button of the tab bar. Transition from "Activity Detail" to "Add/Edit Activity" is similarly achieved by programmatically walking up and down the navigation hierarchy. When user save the activity, the tab switching from this page to "Activity Detail" page is done by the same trick. Customised delegate is used to pass down the saved activity to the destination view controller. 
 5. "Explore" page lists all the valid activities stored in our database with a table view. Users will be able to see the cover image, title and brief description for every activity listed. Users can access the details of the activity simply by tapping on the activity cell. It will direct users to "Activity Detail (explore)" page. Within the the Explore page, users can also search for activities in a text field. All activities that contains the relevant text (either from title, location, description or tags) will be shown.
 6. "Activity Detail (explore)" page: this page is similar to "Activity Detail" page. However, the "Activity Detail" page will have access/segue to "Add/Edit Activity" page while this page will not. This page is for users to view activities created by others, they will not have the permission to edit. Nevertheless, users will be able to join/start chat with activity host or choose to join the activiy (these two functions will be implemented later in milestone 3). 
@@ -62,7 +62,7 @@ The app employs a classic structure with five navigation controllers embedded in
 ## Testing
 User testing is done as shown in the updated project video.
 for core function testing:
-https://youtu.be/CLG5RVDGTcQ
+https://youtu.be/Oow_QF4C-ps
 
 for app flow (may not include some avaible function):
 https://youtu.be/sEEXFjMxYp4
