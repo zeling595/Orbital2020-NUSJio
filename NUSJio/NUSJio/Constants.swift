@@ -30,4 +30,8 @@ struct Constants {
         static let saveUnwindToAddActivity = "SaveUnwindToAddActivity"
         static let saveToActivityDetail = "SaveToActivityDetail"
     }
+    
+    // filter
+    static let faculties = ["FASS", "BIZ", "SoC", "SCALE", "FoD", "SDE", "Duke-NUS", "Engineering", "NGS", "Law", "Medicine", "Music", "Public Health", "Public Policy", "Science", "USP", "Yale-NUS"]
+    static let numOfFaculties = faculties.count
 }

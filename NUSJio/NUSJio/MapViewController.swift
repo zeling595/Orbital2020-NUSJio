@@ -94,7 +94,8 @@ extension MapViewController {
         }
     }
     
-    // his gets called when location information comes back. You get an array of locations, but you’re only interested in the first item.
+    // this gets called when location information comes back. You get an array of locations, but you’re only interested in the first item.
+    // only called once when map view first loaded??
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             print("location: \(location)")
@@ -103,7 +104,11 @@ extension MapViewController {
             // region consists of a centre and zoom level (span)
             let region = MKCoordinateRegion(center: location.coordinate, span: span)
             // once you set the region, you can zoom
-            mapView.setRegion(region, animated: true)
+//            mapView.setRegion(region, animated: true)
+            
+            let sgSpan = MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
+            let sgRegion = MKCoordinateRegion(center: CLLocationCoordinate2DMake(1.3521, 103.8198), span: sgSpan)
+            mapView.setRegion(sgRegion, animated: true)
         }
     }
     
@@ -132,7 +137,7 @@ extension MapViewController: HandleMapSearch {
         mapView.setRegion(region, animated: true)
     }
     
-    // not suppose to be here but since this extension passed a reference...
+    // not supposed to be here but since this extension passed a reference...
     func updateSaveButtonState() {
           print("(print from map view)\(selectedPin == nil)")
           saveButton.isEnabled = !(selectedPin == nil)

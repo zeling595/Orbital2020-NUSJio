@@ -22,4 +22,5 @@ target 'NUSJio' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
 
+  pod "AlignedCollectionViewFlowLayout"
 end

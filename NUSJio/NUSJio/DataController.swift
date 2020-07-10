@@ -31,6 +31,7 @@ class DataController {
                     let activity = Activity.DictionaryToActivity(dictionary: document.data())
                     activitiesForExplore.append(activity)
                 }
+                // if snapshot empty, completion handler is not run???
                 completion(activitiesForExplore.sorted { (acticity1, activity2) -> Bool in
                     // need to fix when there is no time
                     return acticity1.time?.compare(activity2.time!) == .orderedAscending
@@ -53,12 +54,13 @@ class DataController {
             if let error = error {
                 print(error.localizedDescription)
             } else {
-                guard let snapshot = snapshot, !snapshot.isEmpty else {return}
-                for document in snapshot.documents {
-                    print("\(document.documentID) => \(document.data())")
-                    let myActivity = Activity.DictionaryToActivity(dictionary: document.data())
-                    print(myActivity)
-                    activitiesToDisplay.append(myActivity)
+                if let snapshot = snapshot, !snapshot.isEmpty {
+                    for document in snapshot.documents {
+                        // print("\(document.documentID) => \(document.data())")
+                        let myActivity = Activity.DictionaryToActivity(dictionary: document.data())
+                        // print(myActivity)
+                        activitiesToDisplay.append(myActivity)
+                    }
                 }
                 completion(activitiesToDisplay.sorted { (acticity1, activity2) -> Bool in
                     // need to fix when there is no time
@@ -83,7 +85,7 @@ class DataController {
     // MARK: Fetch User
     func fetchUser(userId: String, completion: @escaping (User?) -> Void) {
         let userDocRef = usersCollection.document("user-\(userId)")
-        print("(print from data controller) fetch user \(userId)")
+        // print("(print from data controller) fetch user \(userId)")
         userDocRef.getDocument { (snapshot, error) in
             guard let snapshot = snapshot, snapshot.exists,
                 let data = snapshot.data() else {return}
@@ -206,7 +208,7 @@ class DataController {
             if let error = error {
                 print("Error uploading image \(error.localizedDescription)")
             } else {
-                print("Put is complete and I got this back: \(downloadMetadata)")
+                print("Put is complete and I got this back: \(String(describing: downloadMetadata))")
             }
         }
     }
@@ -218,6 +220,7 @@ class DataController {
         let uploadRef = Storage.storage().reference(withPath: "activities/\(randomID).jpg")
         // convert uiimage into a data obj, jpeg type
         guard let imageData = image.jpegData(compressionQuality: 0.75) else {return}
+        print(imageData.count)
         let uploadMetadata = StorageMetadata.init()
         uploadMetadata.contentType = "image/jpeg"
                 

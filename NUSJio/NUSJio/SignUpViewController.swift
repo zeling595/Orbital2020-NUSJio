@@ -121,7 +121,7 @@ class SignUpViewController: UIViewController {
                 if error != nil {
                     // There is a error
                     // error.localizedDescription
-                    self.showError("Error creating user: \(error?.localizedDescription)")
+                    self.showError("Error creating user: \(String(describing: error?.localizedDescription))")
                 } else {
                     // User is created successfully
                     let db = Firestore.firestore()

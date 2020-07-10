@@ -11,7 +11,6 @@ import FirebaseAuth
 
 class MyActivitiesTableViewController: UITableViewController, ActivityDetailDelegate, ActivityCellDelegate {
 
-    // TODO: Implement this using priority queue
     var activities = [Activity]()
     var currentUser: User!
     let dataController = DataController()
@@ -22,7 +21,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         // get current user
         if let firebaseUser = Auth.auth().currentUser {
             let uuid = firebaseUser.uid
-            print("(print from my activities) uuid \(uuid)")
+            // print("(print from my activities) uuid \(uuid)")
             dataController.fetchUser(userId: uuid) { (user) in
                 if let user = user {
                     self.currentUser = user
@@ -33,9 +32,8 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
                             self.activities = fetchedActivities
                             // print(fetchedActivities)
                             self.tableView.reloadData()
-                            self.view.removeBluerLoader()
                         }
-                        
+                        self.view.removeBluerLoader()
                     }
                     
                 } else {
@@ -50,6 +48,10 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         navigationItem.leftBarButtonItem = editButtonItem
+        
+        // self-sizing
+        tableView.estimatedRowHeight = 350
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     func deleteActivity(activityIndexPath: IndexPath) {
@@ -94,8 +96,12 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
 
         // Configure the cell...
         cell.delegate = self
+        cell.contentView.isUserInteractionEnabled = false
         let activity = activities[indexPath.row]
-        print(activity)
+        // print(activity)
+        cell.tags = Activity.getTagsArray(activity: activity)
+        cell.tagsCollectionView.reloadData()
+        cell.tagsCollectionView.layoutIfNeeded()
         updateCellUI(cell: cell, activity: activity)
 
         return cell
@@ -115,10 +121,12 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
             cell.timeLabel.text = "No fixed time yet"
         }
         
-        // cell.tagsLabel = activity.tags
-        let participantCount = 0
-        let countStr = String(participantCount)
-        cell.participantsLabel.text = "Number of participants is \(countStr)"
+        if let location = activity.location {
+            cell.locationLabel.text = location
+        } else {
+            cell.locationLabel.text = "No fixed location yet"
+        }
+        
         let now = Date()
         if let time = activity.time {
             let timeStr = calculateTimeDiffInMins(now: now, activityTime: time)
@@ -148,9 +156,6 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-//            activities.remove(at: indexPath.row)
-//            tableView.deleteRows(at: [indexPath], with: .fade)
             deleteActivity(activityIndexPath: indexPath)
             
         } else if editingStyle == .insert {
@@ -183,19 +188,34 @@ extension UITableView {
         let emptyView = UIView(frame: CGRect(x: self.center.x, y: self.center.y, width: self.bounds.size.width, height: self.bounds.size.height))
         let titleLabel = UILabel()
         let messageLabel = UILabel()
+        let nusjioImage = UIImage(named: "NUSJioLogoGrey20")
+        let imageView = UIImageView(image: nusjioImage)
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
         titleLabel.textColor = UIColor.black
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 18)
         messageLabel.textColor = UIColor.lightGray
         messageLabel.font = UIFont(name: "HelveticaNeue-Regular", size: 17)
+        
         emptyView.addSubview(titleLabel)
         emptyView.addSubview(messageLabel)
-        titleLabel.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor).isActive = true
+        emptyView.addSubview(imageView)
+        
+        // my attempt
+        titleLabel.topAnchor.constraint(equalTo: emptyView.topAnchor, constant: 290).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
         messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20).isActive = true
         messageLabel.leftAnchor.constraint(equalTo: emptyView.leftAnchor, constant: 20).isActive = true
         messageLabel.rightAnchor.constraint(equalTo: emptyView.rightAnchor, constant: -20).isActive = true
+        imageView.topAnchor.constraint(equalTo: messageLabel.topAnchor, constant: 30).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
+        
+        
         titleLabel.text = title
         messageLabel.text = message
         messageLabel.numberOfLines = 0

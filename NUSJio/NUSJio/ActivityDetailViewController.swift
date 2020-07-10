@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import AlignedCollectionViewFlowLayout
 
 protocol ActivityDetailDelegate: class {
     func deleteActivity(activityIndexPath: IndexPath)
 }
 
-class ActivityDetailViewController: UIViewController {
+class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     let dataController = DataController()
     
@@ -22,6 +23,10 @@ class ActivityDetailViewController: UIViewController {
     var isEditAction = false
     var isCreateAction = false
     
+    var tags: [String] {
+        return Activity.getTagsArray(activity: activity)
+    }
+    
     weak var delegate: ActivityDetailDelegate?
     weak var tabBarDelegate: CustomTabBarDelegate?
     
@@ -29,7 +34,7 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var locationLabel: UILabel!
-    @IBOutlet var tagLabel: UILabel!
+    @IBOutlet var tagsCollectionView: UICollectionView!
     @IBOutlet var descriptionTextView: UITextView!
     @IBOutlet var startJioButton: UIButton!
     @IBOutlet var viewChatButton: UIButton!
@@ -39,13 +44,25 @@ class ActivityDetailViewController: UIViewController {
     override func viewDidLoad() {
         updateUI()
         super.viewDidLoad()
+        
+        tagsCollectionView.delegate = self
+        tagsCollectionView.dataSource = self
+        let alignedFlowLayout = tagsCollectionView.collectionViewLayout as? AlignedCollectionViewFlowLayout
+        alignedFlowLayout?.horizontalAlignment = .left
+        
+        // make cell self-sizing
+        if let collectionViewLayout = tagsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            collectionViewLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        }
+        
+        tagsCollectionView.reloadData()
+        tagsCollectionView.layoutIfNeeded()
     }
     
     func updateUI() {
         titleLabel.text = activity.title
         timeLabel.text = Activity.timeDateFormatter.string(for: activity.time)
         locationLabel.text = activity.location
-        // tagLabel.text =
         descriptionTextView.text = activity.description
         descriptionTextView.isEditable = false
         dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
@@ -53,6 +70,17 @@ class ActivityDetailViewController: UIViewController {
                 self.coverImageView.image = UIImage(data: imageData)
             }
         })
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tags.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tagCollectionViewCell", for: indexPath) as! TagCollectionViewCell
+        cell.tagLabel.text = tags[indexPath.item]
+        cell.tagLabel.textColor = UIColor.white
+        return cell
     }
     
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
@@ -78,8 +106,6 @@ class ActivityDetailViewController: UIViewController {
     }
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.Storyboard.editActivitySegue, let navController = segue.destination as? UINavigationController,
             let addActivityTableViewController = navController.topViewController as?

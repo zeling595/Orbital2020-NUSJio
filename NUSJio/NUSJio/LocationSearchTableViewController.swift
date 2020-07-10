@@ -37,7 +37,26 @@ class LocationSearchTableViewController: UITableViewController {
         // Configure the cell...
         let selectedItem = matchingItems[indexPath.row].placemark
         cell.textLabel?.text = selectedItem.name
-        let address = "\(selectedItem.thoroughfare ?? ""), \(selectedItem.locality ?? ""), \(selectedItem.subLocality ?? ""), \(selectedItem.administrativeArea ?? ""), \(selectedItem.postalCode ?? ""), \(selectedItem.country ?? "")"
+        var address = ""
+        if selectedItem.thoroughfare != nil {
+            address = address + selectedItem.thoroughfare! + ", "
+        }
+        if selectedItem.locality != nil {
+            address = address + selectedItem.locality! + ", "
+        }
+        if selectedItem.subLocality != nil {
+            address = address + selectedItem.subLocality! + ", "
+        }
+        if selectedItem.administrativeArea != nil {
+            address = address + selectedItem.administrativeArea! + ", "
+        }
+        if selectedItem.postalCode != nil {
+            address = address + selectedItem.postalCode! + ", "
+        }
+        if selectedItem.country != nil {
+            address = address + selectedItem.country! + ", "
+        }
+//        let address = "\(selectedItem.thoroughfare ?? "") \(selectedItem.locality ?? ""), \(selectedItem.subLocality ?? ""), \(selectedItem.administrativeArea ?? ""), \(selectedItem.postalCode ?? ""), \(selectedItem.country ?? "")"
         
         cell.detailTextLabel?.text = address
 

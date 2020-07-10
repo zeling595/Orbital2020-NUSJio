@@ -73,7 +73,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate, Cu
             self.present(nav, animated: true) {
                 if let addActivityVC = nav.topViewController as? AddActivityTableViewController {
                     addActivityVC.delegate = self
-                    print("(print from tab bar should select \(addActivityVC.delegate)")
+                    // print("(print from tab bar should select \(addActivityVC.delegate)")
                 }
             }
             return false
@@ -103,12 +103,12 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate, Cu
     */
     
     func goTo(index: Int, activity: Activity) {
-        print("(print from tab bar) go to \(activity)")
+        // print("(print from tab bar) go to \(activity)")
         if index == 0 {
             self.selectedIndex = index
             goToActivityDetail(activity: activity)
         } else if index == 2 {
-            print("(print from tab bar go to) \(selectedIndex)")
+            // print("(print from tab bar go to) \(selectedIndex)")
             goBackToAddActivity(activity: activity)
         }
         

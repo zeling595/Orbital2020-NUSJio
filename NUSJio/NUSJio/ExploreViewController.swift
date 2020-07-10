@@ -17,7 +17,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var listOfActivities: UITableView!
     
     //examples:
-    var examples = Activity.loadSampleActivities();
+    // var examples = Activity.loadSampleActivities();
     var allActivities : [Activity] = [];
     let dataController = DataController()
     
