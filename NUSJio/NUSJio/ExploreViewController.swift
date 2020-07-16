@@ -11,17 +11,20 @@ import Firebase
 import Foundation
 
 
-class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate {
     
-    @IBOutlet var SearchField: UITextField!
     @IBOutlet var listOfActivities: UITableView!
+    @IBOutlet var searchBar: UISearchBar!
     
     //examples:
     var examples = Activity.loadSampleActivities();
     var allActivities : [Activity] = [];
+    var filteredActivities: [Activity] = [];
     let dataController = DataController()
+    var filtered = false;
     
     override func viewWillAppear(_ animated: Bool) {
+        filtered = false;
         dataController.fetchAllActivities { (activities) in
             if let activities = activities {
                 print(activities)
@@ -32,13 +35,19 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        filtered = false;
+        filteredActivities = [];
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        filtered = false;
         listOfActivities.delegate = self;
-        // check whether the datasource should be self
         listOfActivities.dataSource = self;
+        searchBar.delegate = self;
         
     }
     
@@ -77,32 +86,40 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print(allActivities.count)
-        return self.allActivities.count;
+        guard filtered == true else {
+            return self.allActivities.count;
+        }
+        
+        return filteredActivities.count;
+        
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = listOfActivities.dequeueReusableCell(withIdentifier: "cell" , for: indexPath)
         
-//        cell.textLabel?.text = self.allActivities[indexPath.row].title;
-//        cell.detailTextLabel?.text = self.allActivities[indexPath.row].description;
-//        if (self.allActivities[indexPath.row].coverPicture != nil) {
-//            cell.imageView?.image = self.allActivities[indexPath.row].coverPicture;
-//        } else {
-//            //TODO: add default image
-//            cell.imageView?.image = nil;
-//        }
+
+        if filteredActivities.isEmpty {
+            
+            let activity = allActivities[indexPath.row]
+            updateCellUI(cell: cell, activity: activity)
+            return cell;
+            
+        } else {
+            let activity = filteredActivities[indexPath.row]
+            updateCellUI(cell: cell, activity: activity)
+            return cell;
+        }
         
-        let activity = allActivities[indexPath.row]
-        updateCellUI(cell: cell, activity: activity)
-        
-        return cell;
     }
     
+    
+    //TODO: make image not compulsory
     func updateCellUI(cell: UITableViewCell, activity: Activity) {
         // cell.layer.cornerRadius = 6
         dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
             if let imageData = imageData {
-//                cell.coverImageView.image = UIImage(data: imageData)
+                cell.imageView!.image = UIImage(data: imageData)
                 print("imageData is fetched")
             }
         })
@@ -111,61 +128,46 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     
-//    func userByID(ID: String) -> User {
-//        let database = Firestore.firestore();
-//        var userName: String = "No Name Yet";
-//        var user: User = User(username: "No Name Yet");
-//
-//        database.collection("users").document("user-" + ID).getDocument { (doc, error) in
-//            if error == nil {
-//                if doc != nil && doc!.exists {
-//                    userName = doc!.get("username") as! String
-//                    user = User(username: userName);
-//                }
-//            }
-//        }
-//
-//        return user;
-//    }
-    
-    @IBAction func searchFieldTyped(_ sender: Any) {
-//        var text = SearchField.text;
-//        var database = Firestore.firestore();
-//        var filteredActivities : [Activity] = [];
-//
-//        database.collection("activities").whereField("title", arrayContains: text ?? "").getDocuments{ (snapshot, error) in
-//            if (error == nil && snapshot != nil) {
-//                for activity in snapshot!.documents {
-//
-//                    var participants = [User]()
-//                    for id in activity.get("participantIds") as! [String] {
-//                        participants.append(self.userByID(ID: id));
-//                    }
-//
-//
-//                    let url = URL(string:activity.get("imageURLStr") as! String)
-//                    let data = try! Data(contentsOf: url!);
-//                    let image = UIImage(data: data)!;
-//
-//
-//                    let timestamp = activity.get("time") as! Timestamp;
-//    //TODO: format time
-//                    var time = Activity.timeDateFormatter.date(from: "2020/11/11 11:11")!
-//
-//                    let currentActivity = Activity.init(
-//                        title: activity.get("title") as! String  ,
-//                        description:activity.get("description") as! String,
-//                        host: self.userByID(ID: activity.get("hostId") as! String),
-//                        participants: participants,
-//                        location: activity.get("location") as! String,
-//                        time: time,
-//                        tags: activity.get("tags") as! [String],
-//                        isComplete: activity.get("isComplete") as! Bool,
-//                        coverPicture: image)
-//                    filteredActivities.append(currentActivity);
-//                }
-//            }
-//        }
+    func filterActivity (_ query: String?) {
+        filteredActivities = [];
+        guard let query = query else {return}
+        print("searching")
+        let text = query.lowercased();
+        for activity in allActivities {
+                let title = activity.title.lowercased()
+                let location = activity.location
+                let tags = activity.tags
+                let description = activity.description
+                //the real search part:
+            
+                if title.contains(text) {
+                    filteredActivities.append(activity);
+                } else if description != nil && description!.lowercased().contains(text) {
+                    filteredActivities.append(activity);
+                } else if tags != nil && tags!.contains(text) {
+                    //TODO: make tags lowercase
+                    filteredActivities.append(activity);
+                } else if location != nil && location!.lowercased().contains(text) {
+                    filteredActivities.append(activity);
+                }
+                    
+            filtered = true;
+            self.listOfActivities.reloadData();
+            
+            
+        }
     }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if !searchText.isEmpty {
+            filterActivity(searchText);
+        } else {
+            filteredActivities = []
+            filtered = false;
+        }
+        self.listOfActivities.reloadData();
+    }
+    
+    
 }
 

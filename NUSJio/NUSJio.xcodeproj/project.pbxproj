@@ -22,7 +22,6 @@
 		12D61A18249CA30100E657AE /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A17249CA30100E657AE /* DataController.swift */; };
 		12D61A1A249CDAC500E657AE /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A19249CDAC500E657AE /* MapViewController.swift */; };
 		12D61A1C249CE7B900E657AE /* LocationSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */; };
-		12D61A1F249DC4B900E657AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D61A1E249DC4B800E657AE /* GoogleService-Info.plist */; };
 		12D61A2324A5C2AB00E657AE /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A2224A5C2AB00E657AE /* UserManager.swift */; };
 		12D7FF9B24A9EC4E00C9552B /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7FF9A24A9EC4E00C9552B /* ExploreViewController.swift */; };
 		12D7FF9D24A9EC5E00C9552B /* ExploreDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7FF9C24A9EC5E00C9552B /* ExploreDetailViewController.swift */; };
@@ -40,6 +39,7 @@
 		12FCB7182487C91C00DA5CF7 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB7172487C91C00DA5CF7 /* Styles.swift */; };
 		12FCB79E2488F1E300DA5CF7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB79D2488F1E300DA5CF7 /* Utilities.swift */; };
 		12FCB7A02489264400DA5CF7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB79F2489264400DA5CF7 /* Constants.swift */; };
+		140052FF24AA04DC005CA5A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 140052FE24AA04DC005CA5A7 /* GoogleService-Info.plist */; };
 		43D57FDC246EC47996E2E737 /* Pods_NUSJio_NUSJioUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FFF14BCD0851B177B3EA84 /* Pods_NUSJio_NUSJioUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,7 +74,6 @@
 		12D61A17249CA30100E657AE /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		12D61A19249CDAC500E657AE /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewController.swift; sourceTree = "<group>"; };
-		12D61A1E249DC4B800E657AE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12D61A2224A5C2AB00E657AE /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		12D7FF9A24A9EC4E00C9552B /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		12D7FF9C24A9EC5E00C9552B /* ExploreDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDetailViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +97,7 @@
 		12FCB7172487C91C00DA5CF7 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		12FCB79D2488F1E300DA5CF7 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		12FCB79F2489264400DA5CF7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		140052FE24AA04DC005CA5A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		46FFF14BCD0851B177B3EA84 /* Pods_NUSJio_NUSJioUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NUSJio_NUSJioUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5287A67E733A02D338BDBEC9 /* Pods_NUSJioTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NUSJioTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2CDF45B554006B51A8B85E5 /* Pods-NUSJioTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NUSJioTests.release.xcconfig"; path = "Target Support Files/Pods-NUSJioTests/Pods-NUSJioTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -169,7 +169,6 @@
 				128DE3D02490DB92009353D5 /* MeTableViewController.swift */,
 				128DE3CE2490DB56009353D5 /* MessagesTableViewController.swift */,
 				128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */,
-				12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -198,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				12D7FF9C24A9EC5E00C9552B /* ExploreDetailViewController.swift */,
+				12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */,
 				12D7FF9A24A9EC4E00C9552B /* ExploreViewController.swift */,
 				12D7FF9E24A9EC7900C9552B /* DefaultExploreCell.swift */,
 				12D7FFA024A9EC8100C9552B /* DefaultExploreCell.xib */,
@@ -230,6 +230,7 @@
 		12FCB66524824CED00DA5CF7 /* NUSJio */ = {
 			isa = PBXGroup;
 			children = (
+				140052FE24AA04DC005CA5A7 /* GoogleService-Info.plist */,
 				128DE3C72490B768009353D5 /* ViewController */,
 				128DE3C62490B740009353D5 /* Helpers */,
 				128DE3C42490B6F6009353D5 /* Model */,
@@ -239,7 +240,6 @@
 				12FCB66F24824CF200DA5CF7 /* Assets.xcassets */,
 				12FCB67124824CF200DA5CF7 /* LaunchScreen.storyboard */,
 				12FCB67424824CF200DA5CF7 /* Info.plist */,
-				12D61A1E249DC4B800E657AE /* GoogleService-Info.plist */,
 			);
 			path = NUSJio;
 			sourceTree = "<group>";
@@ -396,7 +396,7 @@
 			files = (
 				12D7FFA124A9EC8100C9552B /* DefaultExploreCell.xib in Resources */,
 				12FCB67324824CF200DA5CF7 /* LaunchScreen.storyboard in Resources */,
-				12D61A1F249DC4B900E657AE /* GoogleService-Info.plist in Resources */,
+				140052FF24AA04DC005CA5A7 /* GoogleService-Info.plist in Resources */,
 				12FCB67024824CF200DA5CF7 /* Assets.xcassets in Resources */,
 				12FCB66E24824CEE00DA5CF7 /* Main.storyboard in Resources */,
 			);
@@ -724,6 +724,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9G7T53KWWY;
 				INFOPLIST_FILE = NUSJio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -742,6 +743,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9G7T53KWWY;
 				INFOPLIST_FILE = NUSJio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

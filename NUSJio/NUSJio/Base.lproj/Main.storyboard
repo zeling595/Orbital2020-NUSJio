@@ -409,31 +409,41 @@ nusext\userid</string>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nT-kf-4Rv">
-                                        <rect key="frame" x="0.0" y="240" width="374" height="3.5"/>
+                                        <rect key="frame" x="0.0" y="240" width="374" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="1ya-92-EHf"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="36"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bj7-DM-tVN">
-                                        <rect key="frame" x="0.0" y="264.5" width="374" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="301" width="374" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zy-KY-akz">
-                                        <rect key="frame" x="0.0" y="306" width="374" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="322" width="374" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="o4I-nw-7OE"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tags" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vi6-eZ-hye" userLabel="Tags">
-                                        <rect key="frame" x="0.0" y="347.5" width="374" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="363" width="374" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="cjf-ys-hvm"/>
+                                            <constraint firstAttribute="height" constant="20" id="xdY-za-2Ip"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Description" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aii-Lg-xoN">
-                                        <rect key="frame" x="0.0" y="389" width="374" height="136"/>
+                                        <rect key="frame" x="0.0" y="404" width="374" height="136"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="136" id="5Vl-jf-FsS"/>
@@ -443,7 +453,7 @@ nusext\userid</string>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O02-Dx-HTv">
-                                        <rect key="frame" x="0.0" y="546" width="374" height="30"/>
+                                        <rect key="frame" x="0.0" y="561" width="374" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nrd-Fm-hnL">
                                                 <rect key="frame" x="0.0" y="0.0" width="124.5" height="30"/>
@@ -463,16 +473,16 @@ nusext\userid</string>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="95G-Qw-ATv">
-                                        <rect key="frame" x="0.0" y="597" width="374" height="128"/>
+                                        <rect key="frame" x="0.0" y="612" width="374" height="113"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GHy-jd-GzD">
-                                                <rect key="frame" x="0.0" y="0.0" width="124.5" height="128"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="124.5" height="113"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gFY-6K-MAY">
-                                                <rect key="frame" x="124.5" y="0.0" width="125" height="128"/>
+                                                <rect key="frame" x="124.5" y="0.0" width="125" height="113"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xbT-IE-vOP">
-                                                <rect key="frame" x="249.5" y="0.0" width="124.5" height="128"/>
+                                                <rect key="frame" x="249.5" y="0.0" width="124.5" height="113"/>
                                             </imageView>
                                         </subviews>
                                     </stackView>
@@ -1103,23 +1113,9 @@ nusext\userid</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="search" borderStyle="line" placeholder="Search" clearsOnBeginEditing="YES" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Hdf-2T-aX1">
-                                <rect key="frame" x="20" y="110" width="323" height="50"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
-                                <connections>
-                                    <action selector="searchFieldTyped:" destination="DTE-IK-Ce6" eventType="editingChanged" id="DQe-tN-daY"/>
-                                </connections>
-                            </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5W8-Oe-9g0">
-                                <rect key="frame" x="20" y="180" width="374" height="633"/>
+                                <rect key="frame" x="20" y="144" width="374" height="669"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="633" id="1gW-Kn-fgc"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="633" id="2ID-7T-dML"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="374" id="Ey0-PU-GEM"/>
-                                    <constraint firstAttribute="width" constant="374" id="Ywm-hh-kdX"/>
-                                </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="sdw-IM-U7u" detailTextLabel="QLM-ke-o85" imageView="hCj-YX-2Mb" rowHeight="90" style="IBUITableViewCellStyleSubtitle" id="pna-os-muF">
                                         <rect key="frame" x="0.0" y="28" width="374" height="90"/>
@@ -1129,21 +1125,21 @@ nusext\userid</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sdw-IM-U7u">
-                                                    <rect key="frame" x="170" y="25" width="33.5" height="20.5"/>
+                                                    <rect key="frame" x="59" y="25" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QLM-ke-o85">
-                                                    <rect key="frame" x="170" y="48.5" width="44" height="14.5"/>
+                                                    <rect key="frame" x="59" y="48.5" width="44" height="14.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="Fine-Food" id="hCj-YX-2Mb">
-                                                    <rect key="frame" x="20" y="0.0" width="135" height="90"/>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="photo.fill" catalog="system" id="hCj-YX-2Mb">
+                                                    <rect key="frame" x="20" y="36" width="24" height="17.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
                                             </subviews>
@@ -1154,27 +1150,32 @@ nusext\userid</string>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <searchBar contentMode="redraw" text="What's on your mind?" translatesAutoresizingMaskIntoConstraints="NO" id="uot-I1-UzP">
+                                <rect key="frame" x="20" y="88" width="374" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="5W8-Oe-9g0" firstAttribute="top" secondItem="Hdf-2T-aX1" secondAttribute="bottom" constant="20" id="Aa6-gf-wIX"/>
-                            <constraint firstItem="Hdf-2T-aX1" firstAttribute="leading" secondItem="5W8-Oe-9g0" secondAttribute="leading" id="B7X-EH-Og3"/>
-                            <constraint firstItem="5W8-Oe-9g0" firstAttribute="bottom" secondItem="bwj-gT-bRF" secondAttribute="bottom" id="EJ5-M9-QhW"/>
-                            <constraint firstItem="bwj-gT-bRF" firstAttribute="trailing" secondItem="Hdf-2T-aX1" secondAttribute="trailing" constant="71" id="ESE-SK-9MD"/>
-                            <constraint firstItem="5W8-Oe-9g0" firstAttribute="leading" secondItem="h9p-ad-B8A" secondAttribute="leadingMargin" id="beP-Te-3RB"/>
-                            <constraint firstItem="Hdf-2T-aX1" firstAttribute="top" secondItem="bwj-gT-bRF" secondAttribute="top" constant="22" id="jM7-mS-mWJ"/>
+                            <constraint firstItem="uot-I1-UzP" firstAttribute="top" secondItem="bwj-gT-bRF" secondAttribute="top" id="Zd8-qK-H74"/>
+                            <constraint firstItem="uot-I1-UzP" firstAttribute="trailing" secondItem="5W8-Oe-9g0" secondAttribute="trailing" id="b8k-7h-CAT"/>
+                            <constraint firstItem="uot-I1-UzP" firstAttribute="leading" secondItem="5W8-Oe-9g0" secondAttribute="leading" id="byz-WN-YQO"/>
+                            <constraint firstItem="uot-I1-UzP" firstAttribute="trailing" secondItem="h9p-ad-B8A" secondAttribute="trailingMargin" id="ct6-LU-0pC"/>
+                            <constraint firstItem="uot-I1-UzP" firstAttribute="leading" secondItem="h9p-ad-B8A" secondAttribute="leadingMargin" id="hcU-MX-DWq"/>
+                            <constraint firstItem="5W8-Oe-9g0" firstAttribute="top" secondItem="uot-I1-UzP" secondAttribute="bottom" id="nC1-WL-li6"/>
+                            <constraint firstItem="5W8-Oe-9g0" firstAttribute="bottom" secondItem="bwj-gT-bRF" secondAttribute="bottom" id="wyH-5C-5lT"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bwj-gT-bRF"/>
                     </view>
                     <navigationItem key="navigationItem" title="Explore" id="ibZ-Me-nPw"/>
                     <connections>
-                        <outlet property="SearchField" destination="Hdf-2T-aX1" id="bqO-rs-s08"/>
                         <outlet property="listOfActivities" destination="5W8-Oe-9g0" id="B1s-cl-j11"/>
+                        <outlet property="searchBar" destination="uot-I1-UzP" id="LcH-DM-eRd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k8Z-67-c8F" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4506" y="1602"/>
+            <point key="canvasLocation" x="4505.7971014492759" y="1601.7857142857142"/>
         </scene>
         <!--Explore Detail View Controller-->
         <scene sceneID="YjI-8i-zAg">
@@ -1258,13 +1259,13 @@ nusext\userid</string>
         </scene>
     </scenes>
     <resources>
-        <image name="Fine-Food" width="1024" height="684"/>
         <image name="camera" catalog="system" width="128" height="96"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="message" catalog="system" width="128" height="113"/>
         <image name="message.fill" catalog="system" width="128" height="113"/>
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="photo.fill" catalog="system" width="128" height="93"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="sun.min" catalog="system" width="128" height="121"/>
         <image name="sun.min.fill" catalog="system" width="128" height="121"/>
