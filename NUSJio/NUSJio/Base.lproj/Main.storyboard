@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oay-Ok-K92">
-
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -273,17 +271,17 @@ nusext\userid</string>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivityCellIdentifier" id="QjX-Sp-9Wz" customClass="ActivityCell" customModule="NUSJio" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="538"/>
+                                <rect key="frame" x="0.0" y="28" width="414" height="539"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QjX-Sp-9Wz" id="N9o-jK-lMS">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="538"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="539"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P95-Az-vlQ">
-                                            <rect key="frame" x="16" y="8" width="382" height="522"/>
+                                            <rect key="frame" x="16" y="8" width="382" height="523"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KoJ-Lz-3ML">
-                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="522"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="523"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="bkI-GK-nht">
                                                             <rect key="frame" x="0.0" y="0.0" width="382" height="184"/>
@@ -385,10 +383,10 @@ nusext\userid</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQ3-FZ-6fN">
-                                                            <rect key="frame" x="0.0" y="467.5" width="382" height="54.5"/>
+                                                            <rect key="frame" x="0.0" y="467.5" width="382" height="55.5"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="2hf-dZ-3AK">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="54.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="55.5"/>
                                                                 </stackView>
                                                             </subviews>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.029999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
@@ -457,25 +455,23 @@ nusext\userid</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uZf-up-ITG">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uZf-up-ITG">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <subviews>
-
-
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SUV-ik-ewo">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SUV-ik-ewo">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="lZF-n2-b05">
-                                                <rect key="frame" x="16" y="16" width="382" height="948"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="lZF-n2-b05">
+                                                <rect key="frame" x="16" y="16" width="382" height="709"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="emE-Qq-Gev">
-                                                        <rect key="frame" x="0.0" y="0.0" width="382" height="219"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="382" height="91.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="219" id="pUf-Tt-TDH"/>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nT-kf-4Rv">
-                                                        <rect key="frame" x="0.0" y="240" width="382" height="40"/>
+                                                        <rect key="frame" x="0.0" y="112.5" width="382" height="40"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="EMx-vE-dl1"/>
                                                         </constraints>
@@ -484,20 +480,23 @@ nusext\userid</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bj7-DM-tVN">
-                                                        <rect key="frame" x="0.0" y="301" width="382" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="173.5" width="382" height="0.0"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zy-KY-akz">
-                                                        <rect key="frame" x="0.0" y="342.5" width="382" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="194.5" width="382" height="0.0"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Kl-4Z-jfh" customClass="DynamicHeightCollectionView" customModule="NUSJio" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="384" width="382" height="144.5"/>
+                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Kl-4Z-jfh" customClass="DynamicHeightCollectionView" customModule="NUSJio" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="215.5" width="382" height="144.5"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="144.5" id="jxh-Mt-fAK"/>
+                                                        </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="h96-ET-oOM" customClass="AlignedCollectionViewFlowLayout" customModule="AlignedCollectionViewFlowLayout">
                                                             <size key="itemSize" width="128" height="128"/>
                                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -545,8 +544,8 @@ nusext\userid</string>
                                                             </collectionViewCell>
                                                         </cells>
                                                     </collectionView>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" text="Description" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="aii-Lg-xoN">
-                                                        <rect key="frame" x="0.0" y="549.5" width="382" height="137"/>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Description" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="aii-Lg-xoN">
+                                                        <rect key="frame" x="0.0" y="381" width="382" height="137"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="137" placeholder="YES" id="5Vl-jf-FsS"/>
@@ -555,15 +554,18 @@ nusext\userid</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Participants" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRM-DZ-eVY">
-                                                        <rect key="frame" x="0.0" y="707.5" width="382" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participants" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRM-DZ-eVY">
+                                                        <rect key="frame" x="0.0" y="539" width="382" height="0.0"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Bd-eo-Orh" customClass="DynamicHeightCollectionView" customModule="NUSJio" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="749" width="382" height="128"/>
+                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Bd-eo-Orh" customClass="DynamicHeightCollectionView" customModule="NUSJio" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="560" width="382" height="128"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="128" id="qmY-xi-Q4Y"/>
+                                                        </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Vze-pA-VUf">
                                                             <size key="itemSize" width="50" height="50"/>
                                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -608,13 +610,12 @@ nusext\userid</string>
                                                             </collectionViewCell>
                                                         </cells>
                                                     </collectionView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O02-Dx-HTv">
-                                                        <rect key="frame" x="0.0" y="898" width="382" height="50"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O02-Dx-HTv">
+                                                        <rect key="frame" x="0.0" y="709" width="382" height="0.0"/>
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="lZF-n2-b05" secondAttribute="trailing" constant="16" id="2Zf-XE-WC1"/>
@@ -622,12 +623,11 @@ nusext\userid</string>
                                             <constraint firstItem="lZF-n2-b05" firstAttribute="top" secondItem="SUV-ik-ewo" secondAttribute="top" constant="16" id="KII-tB-j0e"/>
                                             <constraint firstItem="lZF-n2-b05" firstAttribute="leading" secondItem="SUV-ik-ewo" secondAttribute="leading" constant="16" id="SXl-Jt-INW"/>
                                         </constraints>
-
                                     </view>
-
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="SUV-ik-ewo" firstAttribute="leading" secondItem="bMZ-la-EKh" secondAttribute="leading" id="2IT-sD-Nbx"/>
+                                    <constraint firstItem="SUV-ik-ewo" firstAttribute="bottom" secondItem="sdK-1r-kCd" secondAttribute="bottom" id="Bpe-R7-shJ"/>
                                     <constraint firstItem="SUV-ik-ewo" firstAttribute="top" secondItem="bMZ-la-EKh" secondAttribute="top" id="D9g-YG-liy"/>
                                     <constraint firstItem="SUV-ik-ewo" firstAttribute="width" secondItem="sdK-1r-kCd" secondAttribute="width" id="S9t-u7-2DA"/>
                                     <constraint firstItem="SUV-ik-ewo" firstAttribute="trailing" secondItem="bMZ-la-EKh" secondAttribute="trailing" id="fil-Xa-Gcr"/>
@@ -1764,8 +1764,7 @@ nusext\userid</string>
                                             <outlet property="activityDescription" destination="wEt-6U-fwP" id="shD-92-Wtx"/>
                                             <outlet property="activityImage" destination="VhV-O8-5q5" id="vVD-3Q-QOD"/>
                                             <outlet property="activityTitle" destination="EF2-E2-3F1" id="AII-KL-CD1"/>
-                                            <segue destination="Vd6-mu-mfr" kind="show" identifier="ExploreToDetailSegue" id="AhO-kD-tfT"/>
-
+                                            <segue destination="KOi-M6-Tjr" kind="show" identifier="ExploreToDetailSegue" id="wO4-yR-MD5"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1801,7 +1800,6 @@ nusext\userid</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAY-2w-6J1">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <subviews>
@@ -1969,7 +1967,6 @@ nusext\userid</string>
                                         </constraints>
                                     </view>
                                 </subviews>
-
                                 <constraints>
                                     <constraint firstItem="JB3-8T-dcz" firstAttribute="leading" secondItem="Mem-0C-msc" secondAttribute="leading" id="1hl-iY-dak"/>
                                     <constraint firstItem="JB3-8T-dcz" firstAttribute="top" secondItem="Mem-0C-msc" secondAttribute="top" id="BdY-zh-XaS"/>
@@ -1977,7 +1974,6 @@ nusext\userid</string>
                                     <constraint firstItem="JB3-8T-dcz" firstAttribute="width" secondItem="nHR-Qg-87C" secondAttribute="width" id="OEF-9A-HWF"/>
                                     <constraint firstItem="JB3-8T-dcz" firstAttribute="trailing" secondItem="Mem-0C-msc" secondAttribute="trailing" id="Yzb-fw-VTn"/>
                                 </constraints>
-
                                 <viewLayoutGuide key="contentLayoutGuide" id="Mem-0C-msc"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="nHR-Qg-87C"/>
                             </scrollView>

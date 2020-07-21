@@ -34,12 +34,16 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var listOfActivities: UITableView!
     @IBOutlet var searchBar: UISearchBar!
     
+    
     //examples:
     // var examples = Activity.loadSampleActivities();
     var allActivities : [Activity] = [];
     var filteredActivities: [Activity] = [];
     let dataController = DataController()
     var filtered = false;
+    
+    
+
     
     override func viewWillAppear(_ animated: Bool) {
         if !searchBar.text!.isEmpty  {
@@ -73,6 +77,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
         listOfActivities.delegate = self;
         listOfActivities.dataSource = self;
         searchBar.delegate = self;
+        listOfActivities.keyboardDismissMode = .onDrag
         //let nib = UINib(nibName: "DefaultExploreCell", bundle: nil);
         
         //listOfActivities.register(nib, forCellReuseIdentifier: "DefaultExploreCell")
@@ -190,7 +195,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
             let wrappedActivity = OrderedActivity(activity: activity);
                 let title = activity.title.lowercased()
             let location = activity.location?.lowercased()
-                let tags = activity.tags
+                //let tags = activity.tags
             let description = activity.description?.lowercased()
                 //the real search part:
             //looping through splited text (i.e. all seperated words)
@@ -207,11 +212,11 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
                     sortedActivity.append(wrappedActivity);
                     print("break")
                     break
-                } else if tags != nil && tags!.contains(word) {
+                //} else if tags != nil && tags!.contains(word) {
                     //TODO: make tags lowercase
-                    sortedActivity.append(wrappedActivity);
-                    print("break")
-                    break
+                  //  sortedActivity.append(wrappedActivity);
+                    //print("break")
+                    //break
                 } else if location != nil && location!.lowercased().contains(word) {
                     print("break")
                     break
@@ -228,10 +233,10 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
                         } else if description != nil && (description!.lowercased().contains(word1) || description!.lowercased().contains(word2)) {
                             sortedActivity.append(wrappedActivity);
                             break
-                        } else if tags != nil && (tags!.contains(word1) || tags!.contains(word2)) {
+                        //} else if tags != nil && (tags!.contains(word1) || tags!.contains(word2)) {
                             //TODO: make tags lowercase
-                            sortedActivity.append(wrappedActivity);
-                            break
+                           // sortedActivity.append(wrappedActivity);
+                            //break
                         } else if location != nil && (location!.lowercased().contains(word1) || location!.lowercased().contains(word2)) {
                             //sortedActivity.append(wrappedActivity);
                         } else {
@@ -276,6 +281,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         self.listOfActivities.reloadData();
     }
+    
     
     
 }
