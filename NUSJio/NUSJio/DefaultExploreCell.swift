@@ -9,11 +9,15 @@ import UIKit
 
 class DefaultExploreCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    @IBOutlet var activityImage: UIImageView!
+    @IBOutlet var activityDescription: UILabel!
+    @IBOutlet var activityTitle: UILabel!
+    //override func awakeFromNib() {
+      //  super.awakeFromNib()
         // Initialization code
-    }
+    //}
 
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
