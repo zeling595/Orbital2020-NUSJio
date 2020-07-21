@@ -7,61 +7,43 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 protocol CustomTabBarDelegate: class {
     func goTo(index: Int, activity: Activity)
 }
 
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate, CustomTabBarDelegate {
-
-//    var myActivitiesTableViewController: MyActivitiesTableViewController!
-//    var exploreTableViewController: ExploreTableViewController!
-//    var addActivityTableViewController: AddActivityTableViewController!
-//    var messagesTableViewController: MessagesTableViewController!
-//    var meTableViewController: MeTableViewController!
     
-    var currentIndex = 0
-    
+    // not in use now
+    var userScheduleManager: ScheduleManager!
+    var currentUser: User!
+    var dataController = DataController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // fetch current user, not in use now
+        if let firebaseUser = Auth.auth().currentUser {
+            dataController.fetchUser(userId: firebaseUser.uid) { (user) in
+                if let user = user {
+                    self.currentUser = user
+                    print(user)
+                    self.userScheduleManager = ScheduleManager(currentUser: user, rootVC: self)
+                    self.userScheduleManager.checkUpcomingActivitiesForToday()
+                }
+            }
+        }
+        
+        // navigation bar
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: Styles.themeBlue]
+        UINavigationBar.appearance().tintColor = Styles.themeOrange
+        
         self.delegate = self
-    
         
-//        // define view controllers
-//        myActivitiesTableViewController = tabBarController?.viewControllers?[0] as? MyActivitiesTableViewController
-//        exploreTableViewController = tabBarController?.viewControllers?[1] as? ExploreTableViewController
-//        addActivityTableViewController = tabBarController?.viewControllers?[2] as? AddActivityTableViewController
-//        messagesTableViewController = tabBarController?.viewControllers?[3] as? MessagesTableViewController
-//        meTableViewController = tabBarController?.viewControllers?[4] as? MeTableViewController
-//
-//        // set icons
-//        myActivitiesTableViewController.tabBarItem.image = UIImage(systemName: "sun.min")
-//        myActivitiesTableViewController.tabBarItem.selectedImage = UIImage(systemName: "sun.min.fill")
-//
-//        exploreTableViewController.tabBarItem.image = UIImage(systemName: "magnifyingglass")
-//        exploreTableViewController.tabBarItem.image = UIImage(systemName: "magnifyingglass") // need change
-//
-//        addActivityTableViewController.tabBarItem.image = UIImage(systemName: "plus")
-//        addActivityTableViewController.tabBarItem.selectedImage = UIImage(systemName: "plus") // need change
-//
-//        messagesTableViewController.tabBarItem.image = UIImage(systemName: "message")
-//        messagesTableViewController.tabBarItem.selectedImage = UIImage(systemName: "message.fill")
-//
-//        meTableViewController.tabBarItem.image = UIImage(systemName: "person")
-//        meTableViewController.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
-//
-//        // set tab bar's view controller
-//        viewControllers = [myActivitiesTableViewController, exploreTableViewController, addActivityTableViewController, messagesTableViewController, meTableViewController]
-//
-//        // remove tab bar titles
-//        for tabBarItem in tabBar.items! {
-//            tabBarItem.title = ""
-//            tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
-//        }
-         
-        // print("(print from tabbar) \(self.viewControllers)")
-        
+        // tab bar
+        UITabBar.appearance().tintColor = Styles.themeOrange
+        UITabBar.appearance().unselectedItemTintColor = Styles.themeBlue
     }
     
     // UI Tab bar delegate

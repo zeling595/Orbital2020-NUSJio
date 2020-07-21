@@ -10,7 +10,8 @@ import UIKit
 import AlignedCollectionViewFlowLayout
 
 protocol ActivityCellDelegate: class {
-    func startButtonTapped(sender: ActivityCell)
+    func jioButtonTapped(cell: ActivityCell)
+    func completeButtonTapped(cell: ActivityCell)
 }
 
 class ActivityCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
@@ -24,8 +25,13 @@ class ActivityCell: UITableViewCell, UICollectionViewDataSource, UICollectionVie
     @IBOutlet var locationLabel: UILabel!
     @IBOutlet var tagsCollectionView: UICollectionView!
     @IBOutlet var countdownLabel: UILabel!
-    @IBOutlet var postponeButoon: UIButton!
-    @IBOutlet var startButton: UIButton!
+    @IBOutlet var mainView: UIView!
+    @IBOutlet var buttonStackView: UIStackView!
+    
+    var postponeButton: UIButton?
+    var jioButton: UIButton?
+    var viewButton: UIButton?
+    var completeButton: UIButton?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -36,6 +42,14 @@ class ActivityCell: UITableViewCell, UICollectionViewDataSource, UICollectionVie
         let alignedFlowLayout = tagsCollectionView.collectionViewLayout as? AlignedCollectionViewFlowLayout
         alignedFlowLayout?.horizontalAlignment = .left
         alignedFlowLayout?.minimumLineSpacing = 3
+    }
+    
+    @objc @IBAction func jioButtonTapped(sender: UIButton) {
+        self.delegate?.jioButtonTapped(cell: self)
+    }
+    
+    @objc @IBAction func completeButtonTapped(sender: UIButton) {
+        self.delegate?.completeButtonTapped(cell: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -52,10 +66,6 @@ class ActivityCell: UITableViewCell, UICollectionViewDataSource, UICollectionVie
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-
-    @IBAction func startButtonTapped() {
-        delegate?.startButtonTapped(sender: self)
     }
 }
 

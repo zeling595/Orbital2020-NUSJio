@@ -22,9 +22,9 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     let dataController = DataController()
     
     override func viewWillAppear(_ animated: Bool) {
-        dataController.fetchAllActivities { (activities) in
+        dataController.fetchActivitiesForExplore { (activities) in
             if let activities = activities {
-                print(activities)
+                // print(activities)
                 self.allActivities = activities
                 self.listOfActivities.reloadData()
             } else {

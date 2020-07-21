@@ -33,19 +33,4 @@ struct Filter {
     }
 }
 
-enum Gender: CustomStringConvertible {
-       case mixed
-       case male
-       case female
-       
-       var description: String {
-           switch self {
-           case .mixed:
-               return "Mixed Gender"
-           case .male:
-               return "Males Only"
-           case .female:
-               return "Females Only"
-       }
-    }
-}
+

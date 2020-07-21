@@ -10,8 +10,8 @@ import UIKit
 import FirebaseAuth
 
 class MyActivitiesTableViewController: UITableViewController, ActivityDetailDelegate, ActivityCellDelegate {
-
-    var activities = [Activity]()
+    
+    var activities: [[Activity]] = []
     var currentUser: User!
     let dataController = DataController()
     
@@ -26,14 +26,19 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
                 if let user = user {
                     self.currentUser = user
                     // print("(print from my activities) \(self.currentUser)")
-                    
-                    self.dataController.fetchUserActivities(user: self.currentUser) { (fetchedActivities) in
+                    self.dataController.fetchUserActivitiesSectioned(user: self.currentUser) { (fetchedActivities) in
                         if let fetchedActivities = fetchedActivities, !fetchedActivities.isEmpty {
                             self.activities = fetchedActivities
                             // print(fetchedActivities)
-                            self.tableView.reloadData()
+                            
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
                         }
-                        self.view.removeBluerLoader()
+                        DispatchQueue.main.async {
+                            self.view.removeBluerLoader()
+                        }
+                        
                     }
                     
                 } else {
@@ -47,7 +52,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         // remove separator
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
-        navigationItem.leftBarButtonItem = editButtonItem
+        // navigationItem.leftBarButtonItem = editButtonItem
         
         // self-sizing
         tableView.estimatedRowHeight = 350
@@ -55,29 +60,38 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
     
     func deleteActivity(activityIndexPath: IndexPath) {
-        dataController.deleteActivity(activityToBeDeleted: activities[activityIndexPath.row])
-        activities.remove(at: activityIndexPath.row)
+//        dataController.deleteActivity(activityToBeDeleted: activities[activityIndexPath.row])
+        dataController.deleteActivity(activityToBeDeleted: activities[activityIndexPath.section][activityIndexPath.row])
+        activities[activityIndexPath.section].remove(at: activityIndexPath.row)
         tableView.deleteRows(at: [activityIndexPath], with: .fade)
-    }
-    
-    func startButtonTapped(sender: ActivityCell) {
-        if let indexPath = tableView.indexPath(for: sender) {
-            // need to change the appearance of the button, reference the personality quiz project
-            var activity = activities[indexPath.row]
-            activity.isComplete = true
-            activities[indexPath.row] = activity
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-            
-            // save to disk
-            // Activity.saveActivities(activities)
-        }
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // learn how to do 2 sections
-        return 1
+        return activities.count
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50)
+        let label = UILabel()
+        label.frame = CGRect(x: 16, y: 10, width: headerView.frame.width - 32, height: headerView.frame.height - 10)
+        label.textColor = Styles.themeOrange
+        label.font = UIFont.boldSystemFont(ofSize: 20.0)
+        label.layer.cornerRadius = CGFloat(Constants.cellCornerRadius)
+        label.layer.masksToBounds = true
+        if section == 0 {
+            label.text = " Today"
+        } else {
+            label.text = " Upcoming"
+        }
+        headerView.addSubview(label)
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -86,7 +100,8 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         } else {
             tableView.restore()
         }
-        return activities.count
+        // return activities.count
+        return activities[section].count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -96,8 +111,9 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
 
         // Configure the cell...
         cell.delegate = self
-        cell.contentView.isUserInteractionEnabled = false
-        let activity = activities[indexPath.row]
+        cell.tagsCollectionView.isUserInteractionEnabled = false
+        // let activity = activities[indexPath.row]
+        let activity = activities[indexPath.section][indexPath.row]
         // print(activity)
         cell.tags = Activity.getTagsArray(activity: activity)
         cell.tagsCollectionView.reloadData()
@@ -107,8 +123,86 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         return cell
     }
     
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        // return true if all items are editable
+        // user should be able to quit
+        return true
+    }
+    
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            deleteActivity(activityIndexPath: indexPath)
+            
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+        performSegue(withIdentifier: Constants.Storyboard.viewActivityDetailSegue, sender: indexPath.row)
+    }
+    
+    // MARK: UI
+    func createButton(title: String) -> UIButton {
+        let button = UIButton()
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(Styles.themeOrange, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    
     func updateCellUI(cell: ActivityCell, activity: Activity) {
-        cell.layer.cornerRadius = 6
+        cell.mainView.layer.cornerRadius = CGFloat(Constants.cellCornerRadius)
+        cell.mainView.layer.masksToBounds = true
+        
+        // remove the button first
+        cell.buttonStackView.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+        if activity.hostId == currentUser.uuid {
+            // host activity, display postpone and stop looking for new people button
+            let postponeButton = createButton(title: "Postpone")
+            postponeButton.addTarget(self, action: #selector(postponeButtonTapped), for: .touchUpInside)
+            cell.postponeButton = postponeButton
+            
+            var secondButton: UIButton
+            if activity.state == .open {
+                // jio button
+                let jioButton = createButton(title: "Jio")
+                jioButton.addTarget(cell, action: #selector(ActivityCell.jioButtonTapped), for: .touchUpInside)
+                cell.jioButton = jioButton
+                secondButton = jioButton
+            } else {
+                // state == close, complete button
+                let completeButton = createButton(title: "Complete")
+                completeButton.addTarget(cell, action: #selector(ActivityCell.completeButtonTapped), for: .touchUpInside)
+                cell.completeButton = completeButton
+                secondButton = completeButton
+            }
+            
+            cell.buttonStackView.alignment = .fill
+            cell.buttonStackView.distribution = .fillEqually
+            cell.buttonStackView.spacing = 8.0
+            
+            cell.buttonStackView.addArrangedSubview(postponeButton)
+            cell.buttonStackView.addArrangedSubview(secondButton)
+        } else {
+            // joined activity, maybe can quit??
+            let viewButton = createButton(title: "View")
+            viewButton.addTarget(self, action: #selector(viewButtonTapped), for: .touchUpInside)
+            cell.viewButton = viewButton
+            
+            cell.buttonStackView.alignment = .fill
+            cell.buttonStackView.distribution = .fillEqually
+            cell.buttonStackView.spacing = 8.0
+            
+            cell.buttonStackView.addArrangedSubview(viewButton)
+        }
+        
         dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
             if let imageData = imageData {
                 cell.coverImageView.image = UIImage(data: imageData)
@@ -144,28 +238,65 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         return timeStr
     }
     
+    
+    // MARK: Button method
+    @objc func postponeButtonTapped(sender: UIButton!) {
+        
+    }
+    
+    // other user cannot join
+    // disappear from search
+    // do not allow user to change alr formed jio??
+    func jioButtonTapped(cell: ActivityCell) {
+        // display an alert
+        let title = "Finalise Jio"
+        let msg = "This action will remove your Jio from \"Explore Tab\". Press \"OK\" once you decide to stop looking for new participants."
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            // change state from open to close
+            guard let indexPath = self.tableView.indexPath(for: cell) else {return}
+            let selectedActivity = self.activities[indexPath.section][indexPath.row]
+            self.dataController.changeActivityState(activity: selectedActivity, changeTo: .closed)
+            // change jio button to complete button, preferrably with animation
+            let completeButton = self.createButton(title: "Complete")
+            completeButton.addTarget(cell, action: #selector(ActivityCell.completeButtonTapped), for: .touchUpInside)
+            cell.completeButton = completeButton
+            // remove jio button, add complete button
+            cell.buttonStackView.removeArrangedSubview(cell.jioButton!)
+            cell.jioButton?.removeFromSuperview()
+            cell.buttonStackView.addArrangedSubview(completeButton)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func completeButtonTapped(cell: ActivityCell) {
+        // display an alert
+        let title = "Complete Jio"
+        let msg = "This action will remove your Jio from \"Explore Tab\" and \"My Activities Tab\". Press \"OK\" to complete a Jio."
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
 
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        // return true if all items are editable
-        // user should be able to quit
-        return true
+            // change state from close to complete
+            guard let indexPath = self.tableView.indexPath(for: cell) else {return}
+            let selectedActivity = self.activities[indexPath.section][indexPath.row]
+            self.dataController.changeActivityState(activity: selectedActivity, changeTo: .completed)
+            // remove it from my activities, but not from database
+            self.activities[indexPath.section].remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            // TODO: transition to leave a comment page?
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
     }
     
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            deleteActivity(activityIndexPath: indexPath)
-            
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: Constants.Storyboard.viewActivityDetailSegue, sender: indexPath.row)
+    // not necessary now
+    @objc func viewButtonTapped(sender: UIButton!) {
+        
     }
 
     // MARK: - Navigation
@@ -174,7 +305,8 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         if segue.identifier == Constants.Storyboard.viewActivityDetailSegue,
             let activityDetailController = segue.destination as? ActivityDetailViewController {
             let indexPath = tableView.indexPathForSelectedRow!
-            let selectedActivity = activities[indexPath.row]
+            // let selectedActivity = activities[indexPath.row]
+            let selectedActivity = activities[indexPath.section][indexPath.row]
             activityDetailController.activity = selectedActivity
             activityDetailController.activityIndexPath = indexPath
             activityDetailController.delegate = self

@@ -17,6 +17,9 @@ class MeTableViewController: UITableViewController {
     @IBOutlet var uuidLabel: UILabel!
     @IBOutlet var emailLabel: UILabel!
     @IBOutlet var passwordLabel: UILabel!
+    @IBOutlet var profilePictureImageView: UIImageView!
+    @IBOutlet var likeButton: UIButton!
+    @IBOutlet var historyButton: UIButton!
     
     var currentUser: User!
     // implement state change listener if got time
@@ -25,6 +28,10 @@ class MeTableViewController: UITableViewController {
     let dataController = DataController()
     
     override func viewDidLoad() {
+        
+        profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.height / 2
+        profilePictureImageView.contentMode = UIView.ContentMode.scaleToFill
+        profilePictureImageView.clipsToBounds = true
         
         if let firebaseUser = Auth.auth().currentUser {
             let uuid = firebaseUser.uid
@@ -35,6 +42,12 @@ class MeTableViewController: UITableViewController {
                     self.uuidLabel.text = user.uuid
                     self.emailLabel.text = user.email
                     self.passwordLabel.text = user.password
+                    
+                    self.dataController.fetchImage(imageURL: user.profilePictureURLStr!) { (data) in
+                        if let data = data {
+                            self.profilePictureImageView.image = UIImage(data: data)
+                        }
+                    }
                 }
             }
         } else {

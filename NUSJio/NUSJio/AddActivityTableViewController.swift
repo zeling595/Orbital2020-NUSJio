@@ -188,10 +188,19 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
         // need to save the data
         var uuid = ""
+        var participantIds: [String]
+        var participantsInfo: [String: String]
+        var state: ActivityState
         if isEditEvent {
             uuid = activity!.uuid
+            participantIds = activity!.participantIds
+            participantsInfo = activity!.participantsInfo
+            state = activity!.state
         } else {
             uuid = UUID.init().uuidString
+            participantIds = []
+            participantsInfo = [:]
+            state = .open
         }
         let title = titleTextField.text!
         let description = descriptionTextView.text
@@ -207,7 +216,7 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         var unpackedFaculties: [String]?
         var unpackedSelectedFacultiesBoolArray = Array(repeating: false, count: Constants.numOfFaculties)
         
-        print("\(filter)")
+        // print("\(filter)")
         
         if let filter = filter {
             if let categories = filter.categories {
@@ -248,7 +257,7 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
                 imageURLStr = urlStr
                 print("\(imageURLStr)")
             
-                self.activity = Activity(uuid: uuid, title: title, description: description, hostId: hostId, participantIds: nil, location: location, time: time, isComplete: false, imageURLStr: imageURLStr, categories: unpackedCategories, numOfParticipants: unpackedNumOfParticipants, gender: unpackedGender, faculties: unpackedFaculties, selectedFacultiesBoolArray: unpackedSelectedFacultiesBoolArray)
+                self.activity = Activity(uuid: uuid, title: title, description: description, hostId: hostId, participantIds: participantIds, participantsInfo: participantsInfo, location: location, time: time, state: state, imageURLStr: imageURLStr, categories: unpackedCategories, numOfParticipants: unpackedNumOfParticipants, gender: unpackedGender, faculties: unpackedFaculties, selectedFacultiesBoolArray: unpackedSelectedFacultiesBoolArray)
                 
                 self.dataController.saveActivity(activity: self.activity!)
                 self.delegate?.goTo(index: 0, activity: self.activity!)
@@ -338,13 +347,13 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-           guard let selectedImage = info[.originalImage] as? UIImage else { return }
+        guard let selectedImage = info[.originalImage] as? UIImage else { return }
            
-           coverImageView.image = selectedImage
+        coverImageView.image = selectedImage
         // print("did finish picking \(isCoverImageHidden)")
         isCoverImageHidden = false
         // need to save image here
-           dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     // --- configure date picker, description and image picker ---

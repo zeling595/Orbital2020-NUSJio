@@ -9,13 +9,14 @@
 /* Begin PBXBuildFile section */
 		040C9B5795D489B422669459 /* Pods_NUSJio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2289C23A43B3C92F928A4C8 /* Pods_NUSJio.framework */; };
 		0EE7EBED0AB74E9538239F7E /* Pods_NUSJioTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5287A67E733A02D338BDBEC9 /* Pods_NUSJioTests.framework */; };
+		1239F7D624C2D64700611AD9 /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1239F7D524C2D64700611AD9 /* ScheduleManager.swift */; };
 		126A2A362494BA6F005070AE /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126A2A352494BA6F005070AE /* ActivityCell.swift */; };
+		126C25C624C5996400564959 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C25C524C5996400564959 /* Extensions.swift */; };
 		128DE3BE24908B9D009353D5 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3BD24908B9D009353D5 /* CustomTabBarController.swift */; };
 		128DE3C02490AE34009353D5 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3BF2490AE34009353D5 /* Activity.swift */; };
 		128DE3C22490B5C5009353D5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3C12490B5C5009353D5 /* User.swift */; };
 		128DE3C92490B7A5009353D5 /* MyActivitiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3C82490B7A5009353D5 /* MyActivitiesTableViewController.swift */; };
 		128DE3CB2490DAED009353D5 /* AddActivityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CA2490DAED009353D5 /* AddActivityTableViewController.swift */; };
-		128DE3CD2490DB39009353D5 /* ExploreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */; };
 		128DE3CF2490DB56009353D5 /* MessagesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CE2490DB56009353D5 /* MessagesTableViewController.swift */; };
 		128DE3D12490DB92009353D5 /* MeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3D02490DB92009353D5 /* MeTableViewController.swift */; };
 		128DE3D324921A92009353D5 /* ActivityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3D224921A92009353D5 /* ActivityDetailViewController.swift */; };
@@ -27,6 +28,7 @@
 		12CFE1DF24AF601E00190124 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFE1DE24AF601E00190124 /* Filter.swift */; };
 		12CFE1E124B06E4B00190124 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFE1E024B06E4B00190124 /* TagCollectionViewCell.swift */; };
 		12CFE1E324B7144B00190124 /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFE1E224B7144B00190124 /* DynamicHeightCollectionView.swift */; };
+		12CFE1E524BB41EB00190124 /* ParticipantCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFE1E424BB41EB00190124 /* ParticipantCollectionViewCell.swift */; };
 		12D61A18249CA30100E657AE /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A17249CA30100E657AE /* DataController.swift */; };
 		12D61A1A249CDAC500E657AE /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A19249CDAC500E657AE /* MapViewController.swift */; };
 		12D61A1C249CE7B900E657AE /* LocationSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */; };
@@ -69,13 +71,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1239F7D524C2D64700611AD9 /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
 		126A2A352494BA6F005070AE /* ActivityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
+		126C25C524C5996400564959 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		128DE3BD24908B9D009353D5 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		128DE3BF2490AE34009353D5 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		128DE3C12490B5C5009353D5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		128DE3C82490B7A5009353D5 /* MyActivitiesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActivitiesTableViewController.swift; sourceTree = "<group>"; };
 		128DE3CA2490DAED009353D5 /* AddActivityTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityTableViewController.swift; sourceTree = "<group>"; };
-		128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreTableViewController.swift; sourceTree = "<group>"; };
 		128DE3CE2490DB56009353D5 /* MessagesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesTableViewController.swift; sourceTree = "<group>"; };
 		128DE3D02490DB92009353D5 /* MeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeTableViewController.swift; sourceTree = "<group>"; };
 		128DE3D224921A92009353D5 /* ActivityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +90,7 @@
 		12CFE1DE24AF601E00190124 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = SOURCE_ROOT; };
 		12CFE1E024B06E4B00190124 /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
 		12CFE1E224B7144B00190124 /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
+		12CFE1E424BB41EB00190124 /* ParticipantCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		12D61A17249CA30100E657AE /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		12D61A19249CDAC500E657AE /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewController.swift; sourceTree = "<group>"; };
@@ -156,10 +160,13 @@
 		128DE3C42490B6F6009353D5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				12CFE1E024B06E4B00190124 /* TagCollectionViewCell.swift */,
+				12CFE1E424BB41EB00190124 /* ParticipantCollectionViewCell.swift */,
 				12CFE1E224B7144B00190124 /* DynamicHeightCollectionView.swift */,
 				12CFE1DE24AF601E00190124 /* Filter.swift */,
 				12D61A2224A5C2AB00E657AE /* UserManager.swift */,
 				12D61A17249CA30100E657AE /* DataController.swift */,
+				1239F7D524C2D64700611AD9 /* ScheduleManager.swift */,
 				128DE3BF2490AE34009353D5 /* Activity.swift */,
 				128DE3C12490B5C5009353D5 /* User.swift */,
 			);
@@ -169,6 +176,7 @@
 		128DE3C62490B740009353D5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				126C25C524C5996400564959 /* Extensions.swift */,
 				12FCB79F2489264400DA5CF7 /* Constants.swift */,
 				12FCB7172487C91C00DA5CF7 /* Styles.swift */,
 				12FCB79D2488F1E300DA5CF7 /* Utilities.swift */,
@@ -187,7 +195,6 @@
 				128DE3BD24908B9D009353D5 /* CustomTabBarController.swift */,
 				128DE3D02490DB92009353D5 /* MeTableViewController.swift */,
 				128DE3CE2490DB56009353D5 /* MessagesTableViewController.swift */,
-				128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */,
 				12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */,
 			);
 			name = ViewController;
@@ -200,7 +207,6 @@
 				126A2A352494BA6F005070AE /* ActivityCell.swift */,
 				128DE3D224921A92009353D5 /* ActivityDetailViewController.swift */,
 				128DE3CA2490DAED009353D5 /* AddActivityTableViewController.swift */,
-				12CFE1E024B06E4B00190124 /* TagCollectionViewCell.swift */,
 			);
 			name = Activity;
 			sourceTree = "<group>";
@@ -564,15 +570,16 @@
 				12CFE1E324B7144B00190124 /* DynamicHeightCollectionView.swift in Sources */,
 				128DE3BE24908B9D009353D5 /* CustomTabBarController.swift in Sources */,
 				12D61A18249CA30100E657AE /* DataController.swift in Sources */,
+				12CFE1E524BB41EB00190124 /* ParticipantCollectionViewCell.swift in Sources */,
 				12D61A1A249CDAC500E657AE /* MapViewController.swift in Sources */,
 				12D61A1C249CE7B900E657AE /* LocationSearchTableViewController.swift in Sources */,
-				128DE3CD2490DB39009353D5 /* ExploreTableViewController.swift in Sources */,
 				12FCB66B24824CEE00DA5CF7 /* LogInViewController.swift in Sources */,
 				12D7FF9D24A9EC5E00C9552B /* ExploreDetailViewController.swift in Sources */,
 				12CFE1E124B06E4B00190124 /* TagCollectionViewCell.swift in Sources */,
 				126A2A362494BA6F005070AE /* ActivityCell.swift in Sources */,
 				12CFE1D724ACBD3E00190124 /* CategoryItem.swift in Sources */,
 				12F8B88B248CE30B004D8BE9 /* SignUpViewController.swift in Sources */,
+				1239F7D624C2D64700611AD9 /* ScheduleManager.swift in Sources */,
 				12D61A2324A5C2AB00E657AE /* UserManager.swift in Sources */,
 				12CFE1D924AF2C4500190124 /* FacultyCollectionViewCell.swift in Sources */,
 				128DE3CB2490DAED009353D5 /* AddActivityTableViewController.swift in Sources */,
@@ -588,6 +595,7 @@
 				128DE3C22490B5C5009353D5 /* User.swift in Sources */,
 				12D7FF9B24A9EC4E00C9552B /* ExploreViewController.swift in Sources */,
 				12FCB66924824CEE00DA5CF7 /* SceneDelegate.swift in Sources */,
+				126C25C624C5996400564959 /* Extensions.swift in Sources */,
 				12D7FF9F24A9EC7900C9552B /* DefaultExploreCell.swift in Sources */,
 				12CFE1D524ACBBEE00190124 /* CategoryTableViewCell.swift in Sources */,
 			);

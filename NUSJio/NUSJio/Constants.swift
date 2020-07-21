@@ -34,4 +34,10 @@ struct Constants {
     // filter
     static let faculties = ["FASS", "BIZ", "SoC", "SCALE", "FoD", "SDE", "Duke-NUS", "Engineering", "NGS", "Law", "Medicine", "Music", "Public Health", "Public Policy", "Science", "USP", "Yale-NUS"]
     static let numOfFaculties = faculties.count
+    
+    // user
+    static let defaultProfilePictureURLStr = "https://firebasestorage.googleapis.com/v0/b/nusjio.appspot.com/o/users%2Fprofile_image_placeholder.jpg?alt=media&token=d2719dc2-97a8-4878-9bb5-facee6d099c9"
+    
+    // table view cell
+    static let cellCornerRadius = 8
 }
