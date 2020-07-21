@@ -35,7 +35,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var searchBar: UISearchBar!
     
     //examples:
-    var examples = Activity.loadSampleActivities();
+    // var examples = Activity.loadSampleActivities();
     var allActivities : [Activity] = [];
     var filteredActivities: [Activity] = [];
     let dataController = DataController()
@@ -55,6 +55,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
                 } else {
                     print("error fetching all activities")
                 }
+
             }
         }
         

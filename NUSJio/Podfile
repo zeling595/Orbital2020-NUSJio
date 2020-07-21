@@ -25,4 +25,6 @@ target 'NUSJio' do
   pod 'Firebase/Storage'
   pod 'MessageKit'
 
+  pod "AlignedCollectionViewFlowLayout"
+  pod "InitialsImageView"
 end

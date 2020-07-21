@@ -10,8 +10,9 @@ import UIKit
 import FirebaseAuth
 import Firebase
 import FirebaseFirestore
+import InitialsImageView
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let userIcon = UIImage(systemName: "person.crop.circle")
     let emailIcon = UIImage(systemName: "envelope.circle")
@@ -43,6 +44,8 @@ class SignUpViewController: UIViewController {
     }
     @IBOutlet var signUpButton: UIButton!
     @IBOutlet var errorLabel: UILabel!
+    @IBOutlet var profileImageView: UIImageView!
+    @IBOutlet var chooseProfilePictureButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +56,44 @@ class SignUpViewController: UIViewController {
     
     func setUpElements() {
         errorLabel.alpha = 0.0
+        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
+        profileImageView.contentMode = UIView.ContentMode.scaleToFill
+        profileImageView.clipsToBounds = true
+    }
+    
+    @IBAction func chooseProfilePictureButtonTapped(_ sender: UIButton) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
+        let alertController = UIAlertController(title: "Choose Image Source", message: nil, preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let cameraAction = UIAlertAction(title: "Camera", style: .default, handler: { action in
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)})
+            alertController.addAction(cameraAction)
+        }
+        
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default, handler:  { action in
+                imagePicker.sourceType = .photoLibrary
+                self.present(imagePicker, animated: true, completion: nil)
+            })
+            alertController.addAction(photoLibraryAction)
+        }
+        
+        alertController.popoverPresentationController?.sourceView = sender
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let selectedImage = info[.originalImage] as? UIImage else { return }
+        profileImageView.image = selectedImage
+        dismiss(animated: true, completion: nil)
     }
     
     func validateFields() -> String? {
@@ -114,34 +155,78 @@ class SignUpViewController: UIViewController {
             let username = usernameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let NUSEmail = NUSEmailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            
-            // create user
-            Auth.auth().createUser(withEmail: NUSEmail, password: password) { authResult, error in
-                // check for error
-                if error != nil {
-                    // There is a error
-                    // error.localizedDescription
-                    self.showError("Error creating user: \(error?.localizedDescription)")
-                } else {
-                    // User is created successfully
-                    let db = Firestore.firestore()
-                    let newUser = User(uuid: authResult!.user.uid, username: username, email: NUSEmail, password: password, myActivityIds: [], joinedActivityIds: [])
-                    let newUserDictionary = User.UserToDictionary(user: newUser)
-                    print("(print from sign up vc) user dictionary \(newUserDictionary)")
-                    db.collection("users").document("user-\(authResult!.user.uid)").setData(newUserDictionary) {(error) in
+            var profilePictureURLStr = ""
+            // upload user profile photo
+            let dataController = DataController()
+            if let profilePic = profileImageView.image {
+                let resizedImage = profilePic.resized(toWidth: 120)!
+                dataController.uploadProfilePictureAndGetUrl(image: resizedImage) { (urlStr) in
+                    guard let urlStr = urlStr else {return}
+                        profilePictureURLStr = urlStr
+                    // create user
+                     Auth.auth().createUser(withEmail: NUSEmail, password: password) { authResult, error in
+                        // check for error
                         if error != nil {
-                            // user account is created but cannot be saved
-                            self.showError("Username cannot be saved in database side")
-        
-                            // other option: try save again later, ask for username again
+                            // There is a error
+                            // error.localizedDescription
+                            self.showError("Error creating user: \(String(describing: error?.localizedDescription))")
                         } else {
-                            print("(print from sign up vc) add user successfully \(newUser)")
-                            // transition to home
-                            self.transitionToHomepage()
+                            // User is created successfully
+                            let db = Firestore.firestore()
+                            let newUser = User(uuid: authResult!.user.uid, username: username, email: NUSEmail, password: password, profilePictureURLStr: profilePictureURLStr, myActivityIds: [], joinedActivityIds: [])
+                            let newUserDictionary = User.UserToDictionary(user: newUser)
+                            print("(print from sign up vc) user dictionary \(newUserDictionary)")
+                            db.collection("users").document("user-\(authResult!.user.uid)").setData(newUserDictionary) {(error) in
+                                if error != nil {
+                                    // user account is created but cannot be saved
+                                    self.showError("Username cannot be saved in database side")
+                
+                                    // other option: try save again later, ask for username again
+                                } else {
+                                    print("(print from sign up vc) add user successfully \(newUser)")
+                                    // transition to home
+                                    self.transitionToHomepage()
+                                }
+                            }
                         }
                     }
-//                    // transition to home
-//                    self.transitionToHomepage()
+                }
+            } else {
+                print("no profile image chosen, generate random image")
+                profileImageView.setImageForName(username, backgroundColor: nil, circular: true, textAttributes: nil)
+                if let profilePic = profileImageView.image {
+                    let resizedImage = profilePic.resized(toWidth: 120)!
+                    dataController.uploadProfilePictureAndGetUrl(image: resizedImage) { (urlStr) in
+                        guard let urlStr = urlStr else {return}
+                            profilePictureURLStr = urlStr
+                        // create user
+                        Auth.auth().createUser(withEmail: NUSEmail, password: password) { authResult, error in
+                            // check for error
+                            if error != nil {
+                                // There is a error
+                                // error.localizedDescription
+                                self.showError("Error creating user: \(String(describing: error?.localizedDescription))")
+                            } else {
+                                // User is created successfully
+                                let db = Firestore.firestore()
+                                let newUser = User(uuid: authResult!.user.uid, username: username, email: NUSEmail, password: password, profilePictureURLStr: profilePictureURLStr, myActivityIds: [], joinedActivityIds: [])
+                                let newUserDictionary = User.UserToDictionary(user: newUser)
+                                print("(print from sign up vc) user dictionary \(newUserDictionary)")
+                                db.collection("users").document("user-\(authResult!.user.uid)").setData(newUserDictionary) {(error) in
+                                    if error != nil {
+                                        // user account is created but cannot be saved
+                                        self.showError("Username cannot be saved in database side")
+                    
+                                        // other option: try save again later, ask for username again
+                                    } else {
+                                        print("(print from sign up vc) add user successfully \(newUser)")
+                                        // transition to home
+                                        self.transitionToHomepage()
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -158,3 +243,4 @@ class SignUpViewController: UIViewController {
     */
     
 }
+

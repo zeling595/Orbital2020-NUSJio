@@ -1,15 +1,13 @@
 //
-//  ExploreTableViewController.swift
-//  NUSJio
+//  CategoriesTableViewController.swift
+//  
 //
-//  Created by Zeling Long on 2020/6/10.
-//  Copyright © 2020 Zeling Long. All rights reserved.
+//  Created by Zeling Long on 2020/7/1.
 //
 
 import UIKit
 
-// not in use
-class ExploreTableViewController: UITableViewController {
+class CategoriesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

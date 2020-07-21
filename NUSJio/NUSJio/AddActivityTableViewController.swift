@@ -8,13 +8,16 @@
 
 import UIKit
 import FirebaseAuth
+import AlignedCollectionViewFlowLayout
 
-class AddActivityTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddActivityTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
 
     var delegate: CustomTabBarDelegate?
     let dataController = DataController()
     var currentUser: User!
     var activity: Activity?
+    var tags: [String] = []
+    var filter: Filter? // filter is an intermediate model object
     var isEditEvent: Bool = false
     
     // MARK: UI
@@ -23,6 +26,7 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var timeDatePicker: UIDatePicker!
     @IBOutlet var chosenLocationLabel: UILabel!
+    @IBOutlet var filtersCollectionView: UICollectionView! // newly added
     @IBOutlet var cameraButton: UIButton!
     @IBOutlet var saveButton: UIBarButtonItem!
     @IBOutlet var coverImageView: UIImageView!
@@ -43,6 +47,15 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         }
     }
     let chosenLocationLabelIndexPath = IndexPath(row: 3, section: 1)
+    
+    // filters
+    var isFiltersCollectionViewHidden = true {
+        didSet {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+    let filtersCollectionViewIndexPath = IndexPath(row: 1, section: 2)
     
     // cover image
     var isCoverImageHidden = true {
@@ -66,19 +79,51 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     let normalCellHeight: CGFloat = 44.0
     let largeCellHeight: CGFloat = 120.0
     
+    func syncReloadData(_ collectionView: UICollectionView, completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+        group.enter()
+        DispatchQueue.main.async {
+            collectionView.reloadData()
+            collectionView.layoutIfNeeded()
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            completion()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-         uploadImageProgressView.progress = 0.0
+        // enable self-sizing cell
+        tableView.estimatedRowHeight = 44.0
+        tableView.rowHeight = UITableView.automaticDimension
+        
+        filtersCollectionView.delegate = self
+        filtersCollectionView.dataSource = self
+        let alignedFlowLayout = filtersCollectionView.collectionViewLayout as? AlignedCollectionViewFlowLayout
+        alignedFlowLayout?.horizontalAlignment = .left
+        
+        uploadImageProgressView.progress = 0.0
+        timeDatePicker.minimumDate = Date()
+        
         if let activity = activity {
+            // from edit
+            filter = Activity.getFilter(activity: activity)
+            tags = Activity.getTagsArray(activity: activity)
+            // TODO turn extract filter from activity
+            
+            isFiltersCollectionViewHidden = false
             isEditEvent = true
             navigationItem.title = "Edit Activity"
             titleTextField.text = activity.title
             descriptionTextView.text = activity.description
             if let time = activity.time {
-                 timeLabel.text = Activity.timeDateFormatter.string(from: time)
+                timeLabel.text = Activity.timeDateFormatter.string(from: time)
             } else {
                 timeLabel.text = "No fixed time yet"
             }
+            isChosenLocationHidden = false
             chosenLocationLabel.text = activity.location
             dataController.fetchImage(imageURL: activity.imageURLStr, completion: { (imageData) in
                 if let imageData = imageData {
@@ -87,9 +132,19 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
                 }
             })
         } else {
-            updateSaveButtonState()
-            timeDatePicker.date = Date().addingTimeInterval(60*30)
-            updateTimeLabel(date: timeDatePicker.date)
+            if let filter = filter {
+                // from filter
+            } else {
+                // from plus
+                updateSaveButtonState()
+                timeDatePicker.date = Date().addingTimeInterval(60*30)
+                updateTimeLabel(date: timeDatePicker.date)
+            }
+        }
+        
+        // magic line to make the cell self-sizing
+        if let collectionViewLayout = filtersCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            collectionViewLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         }
         
         // get current user
@@ -106,6 +161,20 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         
     }
     
+    // MARK: Tags collection view data source
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tags.count
+    }
+   
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tagCollectionViewCell", for: indexPath) as! TagCollectionViewCell
+        // TODO: when there is no tag, show no tag is chosen, or hide the row
+        cell.tagLabel.text = tags[indexPath.item]
+        cell.tagLabel.textColor = UIColor.white
+        
+        return cell
+    }
+    
     // --- configure title text field ---
     
     // required fields: title
@@ -119,27 +188,76 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
         // need to save the data
         var uuid = ""
+        var participantIds: [String]
+        var participantsInfo: [String: String]
+        var state: ActivityState
         if isEditEvent {
             uuid = activity!.uuid
+            participantIds = activity!.participantIds
+            participantsInfo = activity!.participantsInfo
+            state = activity!.state
         } else {
             uuid = UUID.init().uuidString
+            participantIds = []
+            participantsInfo = [:]
+            state = .open
         }
         let title = titleTextField.text!
         let description = descriptionTextView.text
         let hostId = currentUser!.uuid
         let time = timeDatePicker.date
         let location = chosenLocationLabel.text!
-        // let filters
         let coverImage = coverImageView.image
+
+        // tags, unpack from filter object
+        var unpackedCategories: [String]?
+        var unpackedNumOfParticipants: Int?
+        var unpackedGender: Gender?
+        var unpackedFaculties: [String]?
+        var unpackedSelectedFacultiesBoolArray = Array(repeating: false, count: Constants.numOfFaculties)
+        
+        // print("\(filter)")
+        
+        if let filter = filter {
+            if let categories = filter.categories {
+                unpackedCategories = categories
+            } else {
+                unpackedCategories = nil
+            }
+            
+            if let numOfParticipants = filter.numOfParticipants {
+                unpackedNumOfParticipants = numOfParticipants
+            } else {
+                unpackedNumOfParticipants = nil
+            }
+            
+            if let gender = filter.gender {
+                unpackedGender = gender
+            } else {
+                unpackedGender = nil
+            }
+            
+            if let faculties = filter.faculties {
+                unpackedFaculties = faculties
+            } else {
+                unpackedFaculties = nil
+            }
+            unpackedSelectedFacultiesBoolArray = filter.selectedFacultiesBoolArray
+        }
+        
+        // resize image
+        let resizedImage = coverImage!.resized(toWidth: 374)
         
         // upload image
+        // TODO: fix image can be optional
         var imageURLStr = ""
         isProgressViewHidden = false
-        dataController.uploadImageAndGetURL(image: coverImage!, progressView: uploadImageProgressView) {(urlStr) in
+        dataController.uploadImageAndGetURL(image: resizedImage!, progressView: uploadImageProgressView) {(urlStr) in
             if let urlStr = urlStr {
                 imageURLStr = urlStr
                 print("\(imageURLStr)")
-                self.activity = Activity(uuid: uuid, title: title, description: description, hostId: hostId, participantIds: nil, location: location, time: time, tags: nil, isComplete: false, imageURLStr:imageURLStr)
+            
+                self.activity = Activity(uuid: uuid, title: title, description: description, hostId: hostId, participantIds: participantIds, participantsInfo: participantsInfo, location: location, time: time, state: state, imageURLStr: imageURLStr, categories: unpackedCategories, numOfParticipants: unpackedNumOfParticipants, gender: unpackedGender, faculties: unpackedFaculties, selectedFacultiesBoolArray: unpackedSelectedFacultiesBoolArray)
                 
                 self.dataController.saveActivity(activity: self.activity!)
                 self.delegate?.goTo(index: 0, activity: self.activity!)
@@ -178,9 +296,24 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     // --- configure location picker ---
     // need to set is location hidden to false here
     @IBAction func unwindToAddActivity(segue: UIStoryboardSegue) {
-        // unwind from location page
-        let location = chosenLocationLabel.text ?? ""
-        isChosenLocationHidden = location.isEmpty
+        switch segue.identifier {
+        case "saveFromFilterToAddActivity":
+            // from filters
+            // print("saveFromFilterToAddActivity")
+            self.tags = Filter.filterToTags(filter: self.filter!)
+            // cannot be empty, must check before save
+            syncReloadData(filtersCollectionView) {
+                self.isFiltersCollectionViewHidden = false
+            }
+            
+        case "SaveUnwindToAddActivity":
+            // unwind from location
+            let location = chosenLocationLabel.text ?? ""
+            isChosenLocationHidden = location.isEmpty
+            
+        default:
+            print("unidentifiable segue")
+        }
     }
     
     // --- configure image picker ---
@@ -214,13 +347,13 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-           guard let selectedImage = info[.originalImage] as? UIImage else { return }
+        guard let selectedImage = info[.originalImage] as? UIImage else { return }
            
-           coverImageView.image = selectedImage
-        print("did finish picking \(isCoverImageHidden)")
+        coverImageView.image = selectedImage
+        // print("did finish picking \(isCoverImageHidden)")
         isCoverImageHidden = false
         // need to save image here
-           dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     // --- configure date picker, description and image picker ---
@@ -235,6 +368,9 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         case chosenLocationLabelIndexPath:
             return isChosenLocationHidden ? 0 : normalCellHeight
             
+        case filtersCollectionViewIndexPath:
+            return isFiltersCollectionViewHidden ? 0 : filtersCollectionView.intrinsicContentSize.height + 8
+    
         case progressViewIndexPath:
             return isProgressViewHidden ? 0 : normalCellHeight
             
@@ -255,6 +391,33 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
             }
             tableView.beginUpdates()
             tableView.endUpdates()
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "editFiltersSegue" {
+            if let filterTableVC = segue.destination as? FiltersTableViewController {
+                filterTableVC.filter = self.filter
+            }
+        }
+    }
+}
+
+extension UIImage {
+    func resized(withPercentage percentage: CGFloat, isOpaque: Bool = true) -> UIImage? {
+        let canvas = CGSize(width: size.width * percentage, height: size.height * percentage)
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: canvas, format: format).image {
+            _ in draw(in: CGRect(origin: .zero, size: canvas))
+        }
+    }
+    func resized(toWidth width: CGFloat, isOpaque: Bool = true) -> UIImage? {
+        let canvas = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: canvas, format: format).image {
+            _ in draw(in: CGRect(origin: .zero, size: canvas))
         }
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 class Utilities {
     static func isNUSNETIDValid(_ NUSNETID: String) -> Bool {
         let NUSNETIDTest1 = NSPredicate(format: "SELF MATCHES %@","^nusstu\\[a-z][0-9]{7}$")
