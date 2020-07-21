@@ -8,21 +8,54 @@
 
 import UIKit
 
-class MessagesTableViewController: UITableViewController {
+class MessageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet var chatTable : UITableView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        chatTable.register(UITableViewCell.self, forCellReuseIdentifier: "chatBubble")
+        chatTable.delegate = self
+        chatTable.dataSource = self
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1;
+    }
+    
+    func tableView (_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = chatTable.dequeueReusableCell(withIdentifier: "chatBubble", for: indexPath)
+        //TODO: change this:
+        cell.textLabel?.text = "John Doe"
+        return cell;
+    }
+    
+    func tableView (_tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        chatTable.deselectRow(at: indexPath, animated: true)
+        
+        
+        //show chat message
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    /*override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
     }
@@ -30,7 +63,7 @@ class MessagesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 0
-    }
+    }*/
 
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
