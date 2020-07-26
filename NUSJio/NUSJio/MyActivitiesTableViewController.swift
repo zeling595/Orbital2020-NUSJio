@@ -60,7 +60,6 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
     
     func deleteActivity(activityIndexPath: IndexPath) {
-//        dataController.deleteActivity(activityToBeDeleted: activities[activityIndexPath.row])
         dataController.deleteActivity(activityToBeDeleted: activities[activityIndexPath.section][activityIndexPath.row])
         activities[activityIndexPath.section].remove(at: activityIndexPath.row)
         tableView.deleteRows(at: [activityIndexPath], with: .fade)
@@ -91,11 +90,14 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if activities[0].count == 0 && activities[1].count == 0 {
+            return 0
+        }
         return 50
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if activities.count == 0 {
+        if activities[0].count == 0 && activities[1].count == 0 {
             tableView.setEmptyView(title: "Create your own or explore more activities", message: "You activities will be here")
         } else {
             tableView.restore()
@@ -182,6 +184,13 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
                 completeButton.addTarget(cell, action: #selector(ActivityCell.completeButtonTapped), for: .touchUpInside)
                 cell.completeButton = completeButton
                 secondButton = completeButton
+                let calender = Calendar.current
+                if calender.isDateInToday(activity.time!) {
+                    completeButton.isEnabled = true
+                } else {
+                    completeButton.isEnabled = false
+                    completeButton.setTitleColor(UIColor.gray, for: .disabled)
+                }
             }
             
             cell.buttonStackView.alignment = .fill
@@ -223,10 +232,16 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         
         let now = Date()
         if let time = activity.time {
-            let timeStr = calculateTimeDiffInMins(now: now, activityTime: time)
-            cell.setLabelImage(label: cell.countdownLabel, imageName: "clock", text: "Jio starts in \(timeStr)")
+            let calender = Calendar.current
+            if calender.isDateInToday(time) {
+                let timeStr = calculateTimeDiffInMins(now: now, activityTime: time)
+                cell.setLabelImage(label: cell.countdownLabel, imageName: "clock", text: " Jio starts in \(timeStr)")
+            } else {
+                cell.setLabelImage(label: cell.countdownLabel, imageName: "clock", text: " Jio starts soon")
+            }
         } else {
-            cell.setLabelImage(label: cell.countdownLabel, imageName: "clock", text: "Jio starts in the future")
+            // not really possible, all activity has time
+            cell.setLabelImage(label: cell.countdownLabel, imageName: "clock", text: " Jio starts in the future")
         }
     }
     
@@ -254,9 +269,29 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
             // change state from open to close
+            // back end
             guard let indexPath = self.tableView.indexPath(for: cell) else {return}
             let selectedActivity = self.activities[indexPath.section][indexPath.row]
             self.dataController.changeActivityState(activity: selectedActivity, changeTo: .closed)
+            // front end
+            let newActivity = Activity(
+                uuid: selectedActivity.uuid,
+                title: selectedActivity.title,
+                description: selectedActivity.description,
+                hostId: selectedActivity.hostId,
+                participantIds: selectedActivity.participantIds,
+                participantsInfo: selectedActivity.participantsInfo,
+                likedBy: selectedActivity.likedBy,
+                location: selectedActivity.location,
+                time: selectedActivity.time,
+                state: .closed,
+                imageURLStr: selectedActivity.imageURLStr,
+                categories: selectedActivity.categories,
+                numOfParticipants: selectedActivity.numOfParticipants,
+                gender: selectedActivity.gender,
+                faculties: selectedActivity.faculties,
+                selectedFacultiesBoolArray: selectedActivity.selectedFacultiesBoolArray)
+            self.activities[indexPath.section][indexPath.row] = newActivity
             // change jio button to complete button, preferrably with animation
             let completeButton = self.createButton(title: "Complete")
             completeButton.addTarget(cell, action: #selector(ActivityCell.completeButtonTapped), for: .touchUpInside)
@@ -278,10 +313,10 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         let msg = "This action will remove your Jio from \"Explore Tab\" and \"My Activities Tab\". Press \"OK\" to complete a Jio."
         let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
-
-            // change state from close to complete
+            // change state from closed to completed
             guard let indexPath = self.tableView.indexPath(for: cell) else {return}
             let selectedActivity = self.activities[indexPath.section][indexPath.row]
+            // back end
             self.dataController.changeActivityState(activity: selectedActivity, changeTo: .completed)
             // remove it from my activities, but not from database
             self.activities[indexPath.section].remove(at: indexPath.row)
@@ -305,7 +340,6 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         if segue.identifier == Constants.Storyboard.viewActivityDetailSegue,
             let activityDetailController = segue.destination as? ActivityDetailViewController {
             let indexPath = tableView.indexPathForSelectedRow!
-            // let selectedActivity = activities[indexPath.row]
             let selectedActivity = activities[indexPath.section][indexPath.row]
             activityDetailController.activity = selectedActivity
             activityDetailController.activityIndexPath = indexPath

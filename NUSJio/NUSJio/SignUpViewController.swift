@@ -17,6 +17,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     let userIcon = UIImage(systemName: "person.crop.circle")
     let emailIcon = UIImage(systemName: "envelope.circle")
     let passwordIcon = UIImage(systemName: "lock.circle")
+    var isProfileImageChosen = false
 
     @IBOutlet var usernameTextField: UITextField! {
         didSet {
@@ -93,6 +94,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let selectedImage = info[.originalImage] as? UIImage else { return }
         profileImageView.image = selectedImage
+        isProfileImageChosen = true
         dismiss(animated: true, completion: nil)
     }
     
@@ -146,7 +148,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         // validate the fields
         let error = validateFields()
-        
         if error != nil {
             // show error message
             showError(error!)
@@ -156,23 +157,26 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             let NUSEmail = NUSEmailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             var profilePictureURLStr = ""
-            // upload user profile photo
+            
+            if !isProfileImageChosen {
+                profileImageView.setImageForName(username, backgroundColor: nil, circular: true, textAttributes: nil)
+            }
+            
             let dataController = DataController()
-            if let profilePic = profileImageView.image {
-                let resizedImage = profilePic.resized(toWidth: 120)!
-                dataController.uploadProfilePictureAndGetUrl(image: resizedImage) { (urlStr) in
-                    guard let urlStr = urlStr else {return}
-                        profilePictureURLStr = urlStr
-                    // create user
-                     Auth.auth().createUser(withEmail: NUSEmail, password: password) { authResult, error in
-                        // check for error
-                        if error != nil {
-                            // There is a error
-                            // error.localizedDescription
-                            self.showError("Error creating user: \(String(describing: error?.localizedDescription))")
-                        } else {
-                            // User is created successfully
-                            let db = Firestore.firestore()
+            // create user first
+            Auth.auth().createUser(withEmail: NUSEmail, password: password) { authResult, error in
+                // check for error
+                if error != nil {
+                    // There is a error
+                    // error.localizedDescription
+                    self.showError("Error creating user: \(String(describing: error?.localizedDescription))")
+                } else {
+                    // User is created successfully
+                    let db = Firestore.firestore()
+                    let resizedImage = self.profileImageView.image!.resized(toWidth: 120)!
+                    dataController.uploadProfilePictureAndGetUrl(image: resizedImage) { (imageURL) in
+                        if let imageURL = imageURL {
+                            profilePictureURLStr = imageURL
                             let newUser = User(uuid: authResult!.user.uid, username: username, email: NUSEmail, password: password, profilePictureURLStr: profilePictureURLStr, myActivityIds: [], joinedActivityIds: [])
                             let newUserDictionary = User.UserToDictionary(user: newUser)
                             print("(print from sign up vc) user dictionary \(newUserDictionary)")
@@ -186,42 +190,15 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                                     print("(print from sign up vc) add user successfully \(newUser)")
                                     // transition to home
                                     self.transitionToHomepage()
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                print("no profile image chosen, generate random image")
-                profileImageView.setImageForName(username, backgroundColor: nil, circular: true, textAttributes: nil)
-                if let profilePic = profileImageView.image {
-                    let resizedImage = profilePic.resized(toWidth: 120)!
-                    dataController.uploadProfilePictureAndGetUrl(image: resizedImage) { (urlStr) in
-                        guard let urlStr = urlStr else {return}
-                            profilePictureURLStr = urlStr
-                        // create user
-                        Auth.auth().createUser(withEmail: NUSEmail, password: password) { authResult, error in
-                            // check for error
-                            if error != nil {
-                                // There is a error
-                                // error.localizedDescription
-                                self.showError("Error creating user: \(String(describing: error?.localizedDescription))")
-                            } else {
-                                // User is created successfully
-                                let db = Firestore.firestore()
-                                let newUser = User(uuid: authResult!.user.uid, username: username, email: NUSEmail, password: password, profilePictureURLStr: profilePictureURLStr, myActivityIds: [], joinedActivityIds: [])
-                                let newUserDictionary = User.UserToDictionary(user: newUser)
-                                print("(print from sign up vc) user dictionary \(newUserDictionary)")
-                                db.collection("users").document("user-\(authResult!.user.uid)").setData(newUserDictionary) {(error) in
-                                    if error != nil {
-                                        // user account is created but cannot be saved
-                                        self.showError("Username cannot be saved in database side")
-                    
-                                        // other option: try save again later, ask for username again
-                                    } else {
-                                        print("(print from sign up vc) add user successfully \(newUser)")
-                                        // transition to home
-                                        self.transitionToHomepage()
+                                    
+                                    // save profile image
+                                    if self.isProfileImageChosen {
+                                        
+                                        dataController.uploadProfilePictureAndGetUrl(image: resizedImage) { (urlStr) in
+                                            guard let urlStr = urlStr else {return}
+                                                profilePictureURLStr = urlStr
+                                            // update user data
+                                        }
                                     }
                                 }
                             }
@@ -231,16 +208,5 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             }
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
 }
 

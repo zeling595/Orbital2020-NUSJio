@@ -19,6 +19,7 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
     let dataController = DataController()
     var currentUser: User! // the host, havent implemented fetch yet
     
+    var liked: Bool!
     var activity: Activity!
     var activityIndexPath: IndexPath?
     var isDeleteAction = false
@@ -46,37 +47,18 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
     @IBOutlet var participantLabel: UILabel!
     
     @IBOutlet var buttonStackView: UIStackView!
-    var editButton: UIButton? {
-        didSet {
-            editButton?.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        }
-    }
-    var viewChatButton: UIButton? {
-        didSet {
-            viewChatButton?.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        }
-    }
-    var completeButton: UIButton? {
-        didSet {
-            completeButton?.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        }
-    }
-    var jioButton:UIButton? {
-        didSet {
-            jioButton?.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        }
-    }
-    var chatWithHostButton: UIButton? {
-        didSet {
-            chatWithHostButton?.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        }
-    }
-    var joinButton: UIButton?{
-        didSet {
-            joinButton?.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        }
-    }
     
+    // for my activities
+    var editButton: UIButton?
+    var viewChatButton: UIButton?
+    // middle button
+    var jioButton: UIButton?
+    var completeButton: UIButton? // can only mark complete if activity is today
+   
+    // for joined activity
+    var chatWithHostButton: UIButton?
+    var joinButton: UIButton?
+    var likeButton: UIButton?
     
     override func viewDidLoad() {
         updateUI()
@@ -87,6 +69,7 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
             dataController.fetchUser(userId: uuid) { (user) in
                 if let user = user {
                     self.currentUser = user
+                    self.liked =  self.currentUser.likedActivityIds?.contains(self.activity.uuid) ?? false
                     DispatchQueue.main.async {
                         self.setUpButtons()
                     }
@@ -112,6 +95,7 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
         tagsCollectionView.layoutIfNeeded()
     }
     
+    // MARK: UI
     func updateUI() {
         titleLabel.text = activity.title
         timeLabel.text = Activity.timeDateFormatter.string(for: activity.time)
@@ -132,96 +116,273 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
         }
     }
     
-    func setUpButtons() {
-        if activity.hostId == currentUser.uuid {
-
-            // complete
-            var middleButton: UIButton
-            if activity.state == .closed {
-                // complete button
-                completeButton = UIButton()
-                completeButton!.setTitle("Complete", for: .normal)
-                completeButton!.setTitleColor(UIColor.white, for: .normal)
-                completeButton!.translatesAutoresizingMaskIntoConstraints = false
-                middleButton = completeButton!
-                middleButton.backgroundColor = Styles.themeOrange
-                middleButton.layer.cornerRadius = CGFloat(Constants.cellCornerRadius)
-                
-                // viewChatButton.addTarget(self, action: #selector(postponeButtonTapped), for: .touchUpInside)
-            } else if activity.state == .open {
-                // jio button
-                jioButton = UIButton()
-                jioButton!.setTitle("Jio", for: .normal)
-                jioButton!.setTitleColor(UIColor.white, for: .normal)
-                jioButton!.translatesAutoresizingMaskIntoConstraints = false
-                middleButton = jioButton!
-                middleButton.backgroundColor = Styles.themeOrange
-                middleButton.layer.cornerRadius = CGFloat(Constants.cellCornerRadius)
-                
-                // jioButton.addTarget(cell, action: #selector(ActivityCell.jioButtonTapped), for: .touchUpInside)
-                // updateJioButtonState(cell: cell, activity: activity)
-            } else {
-                // this block is useless because complete will not appear here
-                completeButton = UIButton()
-                completeButton!.setTitle("Complete", for: .normal)
-                completeButton!.setTitleColor(UIColor.white, for: .normal)
-                completeButton!.translatesAutoresizingMaskIntoConstraints = false
-                completeButton!.isEnabled = true
-                middleButton = completeButton!
-                middleButton.backgroundColor = UIColor.lightGray
-                middleButton.layer.cornerRadius = CGFloat(Constants.cellCornerRadius)
-                
-            }
-            
-            let viewChatButton = UIButton()
-            viewChatButton.setTitle("View Chat", for: .normal)
-            viewChatButton.setTitleColor(Styles.themeOrange, for: .normal)
-            viewChatButton.translatesAutoresizingMaskIntoConstraints = false
-            // viewChatButton.addTarget(self, action: #selector(postponeButtonTapped), for: .touchUpInside)
-            self.viewChatButton = viewChatButton
-            
-            
-            let editButton = UIButton()
-            editButton.setTitle("Edit", for: .normal)
-            editButton.setTitleColor(Styles.themeOrange, for: .normal)
-            editButton.translatesAutoresizingMaskIntoConstraints = false
-            // jioButton.addTarget(cell, action: #selector(ActivityCell.jioButtonTapped), for: .touchUpInside)
-            self.editButton = editButton
-            // updateJioButtonState(cell: cell, activity: activity)
-            
-            buttonStackView.alignment = .fill
-            buttonStackView.distribution = .fillEqually
-            // buttonStackView.spacing = 8.0
-            
-            buttonStackView.addArrangedSubview(viewChatButton)
-            buttonStackView.addArrangedSubview(middleButton)
-            buttonStackView.addArrangedSubview(editButton)
+    func updateCompleteButtonState() {
+        if activity.state == .completed {
+            completeButton?.isEnabled = false
+            completeButton?.setTitleColor(UIColor.gray, for: .disabled)
+            completeButton?.tintColor = UIColor.gray
         } else {
-            let chatWithHostButton = UIButton()
-            chatWithHostButton.setTitle("Chat With Host", for: .normal)
-            chatWithHostButton.setTitleColor(Styles.themeOrange, for: .normal)
-            chatWithHostButton.translatesAutoresizingMaskIntoConstraints = false
-            // chatWithHostButton.addTarget(self, action: #selector(viewButtonTapped), for: .touchUpInside)
-            self.chatWithHostButton = chatWithHostButton
-            
-            let joinButton = UIButton()
-            joinButton.setTitle("Join", for: .normal)
-            joinButton.setTitleColor(UIColor.gray, for: .normal)
-            joinButton.translatesAutoresizingMaskIntoConstraints = false
-            // chatWithHostButton.addTarget(self, action: #selector(viewButtonTapped), for: .touchUpInside)
-            self.joinButton = joinButton
-            self.joinButton!.isEnabled = false
-            
-            buttonStackView.alignment = .fill
-            buttonStackView.distribution = .fillEqually
-            // buttonStackView.spacing = 8.0
-            
-            buttonStackView.addArrangedSubview(chatWithHostButton)
-            buttonStackView.addArrangedSubview(joinButton)
-            
+            print("activity is not completed")
         }
     }
     
+    func updateJoinButtonState() {
+        if !canJoin() {
+            joinButton?.isEnabled = false
+            joinButton?.setTitleColor(UIColor.gray, for: .normal)
+            joinButton?.tintColor = UIColor.gray
+        }
+    }
+    
+    func updateLikeButtonState() -> UIButton {
+        var updateLikeButton: UIButton
+        if liked {
+            updateLikeButton = createButton(title: "Unlike", imageName: "heart.fill")
+            updateLikeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        } else {
+            updateLikeButton = createButton(title: "Like", imageName: "heart")
+            updateLikeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        }
+        return updateLikeButton
+    }
+    
+    func setUpButtonForMyActivities() {
+        var middleButton: UIButton
+        if activity.state == .closed {
+            // complete button
+            let completeButton = createButton(title: "Complete", imageName: "checkmark.circle")
+            completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
+            self.completeButton = completeButton
+            updateCompleteButtonState()
+            middleButton = completeButton
+        } else if activity.state == .open {
+            // jio button
+            let jioButton = createButton(title: "Jio", imageName: "sun.min")
+            self.joinButton = jioButton
+            jioButton.addTarget(self, action: #selector(jioButtonTapped), for: .touchUpInside)
+            middleButton = jioButton
+        } else {
+            let completeButton = createButton(title: "Complete", imageName: "checkmark.circle")
+            self.completeButton = completeButton
+            updateCompleteButtonState()
+            middleButton = completeButton
+        }
+        
+        let viewChatButton = createButton(title: "Chat", imageName: "message")
+        self.viewChatButton = viewChatButton
+        // viewChatButton.addTarget(self, action: #selector(viewChatButtonTapped), for: .touchUpInside)
+        
+        
+        let editButton = createButton(title: "Edit", imageName: "pencil")
+        self.editButton = editButton
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        
+        buttonStackView.alignment = .fill
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = 20
+        
+        buttonStackView.addArrangedSubview(viewChatButton)
+        buttonStackView.addArrangedSubview(middleButton)
+        buttonStackView.addArrangedSubview(editButton)
+    }
+    
+    func setUpButtonForJoinedActivities() {
+        let chatWithHostButton = createButton(title: "Chat", imageName: "message")
+        self.chatWithHostButton = chatWithHostButton
+        
+        let joinButton = createButton(title: "Join", imageName: "person.2")
+        joinButton.addTarget(self, action: #selector(joinButtonTapped), for: .touchUpInside)
+        self.joinButton = joinButton
+        updateJoinButtonState()
+        
+        let likeButton = updateLikeButtonState()
+        self.likeButton = likeButton
+        
+        buttonStackView.alignment = .fill
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = 20
+        
+        buttonStackView.addArrangedSubview(chatWithHostButton)
+        buttonStackView.addArrangedSubview(joinButton)
+        buttonStackView.addArrangedSubview(likeButton)
+    }
+    
+    func setUpButtons() {
+        if activity.hostId == currentUser.uuid {
+            setUpButtonForMyActivities()
+        } else {
+            setUpButtonForJoinedActivities()
+        }
+    }
+    
+    // MARK: Button method
+    @objc func completeButtonTapped() {
+        // display an alert
+        let title = "Complete Jio"
+        let msg = "This action will remove your Jio from \"Explore Tab\" and \"My Activities Tab\". Press \"OK\" to complete a Jio."
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            // change state from close to complete
+            self.dataController.changeActivityState(activity: self.activity, changeTo: .completed)
+            self.completeButton?.isEnabled = false
+            self.completeButton?.setTitleColor(UIColor.gray, for: .disabled)
+            self.completeButton?.tintColor = UIColor.gray
+            // TODO: transition to leave a comment page?
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func jioButtonTapped() {
+        // display an alert
+        let title = "Finalise Jio"
+        let msg = "This action will remove your Jio from \"Explore Tab\". Press \"OK\" once you decide to stop looking for new participants."
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            // change state from open to close
+            self.dataController.changeActivityState(activity: self.activity, changeTo: .closed)
+            // create new button
+            let completeButton = self.createButton(title: "Complete", imageName: "checkmark.circle")
+            completeButton.addTarget(self, action: #selector(self.completeButtonTapped), for: .touchUpInside)
+            self.completeButton = completeButton
+            // remove jio button, add complete button
+            self.buttonStackView.removeArrangedSubview(self.jioButton!)
+            self.jioButton?.removeFromSuperview()
+            self.buttonStackView.addArrangedSubview(completeButton)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc @IBAction func joinButtonTapped(_ sender: UIButton) {
+        // update backend
+        let uuid = currentUser.uuid
+        let profilePicURL = currentUser.profilePictureURLStr!
+        
+        // check if the user already joined the activity
+        // TODO: reinforce with security rule
+        if canJoin() {
+            dataController.joinActivity(activity: activity, userId: uuid, profilePicURL: profilePicURL) { (activity) in
+                if let updatedActivity = activity {
+                    self.activity = updatedActivity
+                    // not sure whether participants array is updated when activity update
+                    // view controller not updated
+                    self.participantsCollectionView.reloadData()
+                    self.updateUI()
+                    // disable the button
+                    self.joinButton!.isEnabled = false
+                    self.joinButton!.setTitleColor(UIColor.gray, for: .normal)
+                    self.joinButton!.tintColor = UIColor.gray
+                }
+            }
+        } else {
+            // display a warning
+        }
+    }
+    
+    @objc @IBAction func likeButtonTapped(_ sender: UIButton) {
+        // update backend
+        if liked {
+            // unlike
+            dataController.unlikeActivity(activityId: activity.uuid, userId: currentUser.uuid) { (success) in
+                if success {
+                    DispatchQueue.main.async {
+                        self.liked = false
+                        self.buttonStackView.removeArrangedSubview(self.likeButton!)
+                        self.likeButton?.removeFromSuperview()
+                        let likeButton = self.updateLikeButtonState()
+                        self.likeButton = likeButton
+                        self.buttonStackView.addArrangedSubview(likeButton)
+                        
+                    }
+                }
+            }
+        } else {
+            // like
+           dataController.likeActivity(activityId: activity.uuid, userId: currentUser.uuid) { (success) in
+                if success {
+                    DispatchQueue.main.async {
+                        self.liked = true
+                        self.buttonStackView.removeArrangedSubview(self.likeButton!)
+                        self.likeButton?.removeFromSuperview()
+                        let likeButton = self.updateLikeButtonState()
+                        self.likeButton = likeButton
+                        self.buttonStackView.addArrangedSubview(likeButton)
+                    }
+                }
+            }
+        }
+    }
+    
+    func userJoinedAlready() -> Bool {
+        let participantIds = Array(activity.participantsInfo.keys)
+        if participantIds.count == 0 {
+            return false
+        } else {
+            if participantIds.contains(currentUser.uuid) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+    
+    func canJoin() -> Bool {
+       if userJoinedAlready() {
+           return false
+       } else {
+           if let numOfParticipants = activity.numOfParticipants {
+               return numOfParticipants > activity.participantsInfo.count
+           } else {
+               // no. of participants does not exist -> no limit
+               return true
+           }
+        }
+    }
+    
+    func createButton(title: String, imageName: String) -> UIButton {
+        let button = UIButton()
+        let size: CGFloat = 100
+        button.frame = CGRect(x: size, y: size, width: size, height: size)
+        button.setTitle(title, for: .normal)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .light, scale: .medium)
+        let image = UIImage(systemName: imageName, withConfiguration: largeConfig)?.withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.tintColor = Styles.themeOrange
+        button.setTitleColor(Styles.themeOrange, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.centerVertically()
+        return button
+    }
+    
+    @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
+        // show alert
+        let alertController = UIAlertController(title: nil, message: "Are you sure you want to delete this activity?", preferredStyle: .alert)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
+            self.delegate?.deleteActivity(activityIndexPath: self.activityIndexPath!)
+            self.navigationController?.popViewController(animated: false)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc @IBAction func editButtonTapped(_ sender: UIButton) {
+        let tabBarVC = view.window?.rootViewController as? CustomTabBarController
+        tabBarVC?.goTo(index: 2, activity: activity)
+    }
+    
+    // MARK: Collection view data source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.tagsCollectionView {
             return tags.count
@@ -230,7 +391,6 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
         }
     }
         
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == self.tagsCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tagCollectionViewCell", for: indexPath) as! TagCollectionViewCell
@@ -251,28 +411,6 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
             return cell
         }
         
-    }
-    
-    @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
-        // show alert
-        let alertController = UIAlertController(title: nil, message: "Are you sure you want to delete this activity?", preferredStyle: .alert)
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
-            self.delegate?.deleteActivity(activityIndexPath: self.activityIndexPath!)
-            self.navigationController?.popViewController(animated: false)
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(deleteAction)
-        
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    @IBAction func editButtonTapped(_ sender: UIButton) {
-        let tabBarVC = view.window?.rootViewController as? CustomTabBarController
-        tabBarVC?.goTo(index: 2, activity: activity)
     }
     
     // MARK: - Navigation

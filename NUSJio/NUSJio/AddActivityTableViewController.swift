@@ -120,6 +120,7 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
             descriptionTextView.text = activity.description
             if let time = activity.time {
                 timeLabel.text = Activity.timeDateFormatter.string(from: time)
+                timeDatePicker.date = time
             } else {
                 timeLabel.text = "No fixed time yet"
             }
@@ -190,16 +191,20 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         var uuid = ""
         var participantIds: [String]
         var participantsInfo: [String: String]
+        var likedBy: [String]
         var state: ActivityState
         if isEditEvent {
             uuid = activity!.uuid
             participantIds = activity!.participantIds
             participantsInfo = activity!.participantsInfo
+            likedBy = activity!.likedBy
             state = activity!.state
+            // print(state)
         } else {
             uuid = UUID.init().uuidString
             participantIds = []
             participantsInfo = [:]
+            likedBy = []
             state = .open
         }
         let title = titleTextField.text!
@@ -257,7 +262,7 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
                 imageURLStr = urlStr
                 print("\(imageURLStr)")
             
-                self.activity = Activity(uuid: uuid, title: title, description: description, hostId: hostId, participantIds: participantIds, participantsInfo: participantsInfo, location: location, time: time, state: state, imageURLStr: imageURLStr, categories: unpackedCategories, numOfParticipants: unpackedNumOfParticipants, gender: unpackedGender, faculties: unpackedFaculties, selectedFacultiesBoolArray: unpackedSelectedFacultiesBoolArray)
+                self.activity = Activity(uuid: uuid, title: title, description: description, hostId: hostId, participantIds: participantIds, participantsInfo: participantsInfo, likedBy: likedBy, location: location, time: time, state: state, imageURLStr: imageURLStr, categories: unpackedCategories, numOfParticipants: unpackedNumOfParticipants, gender: unpackedGender, faculties: unpackedFaculties, selectedFacultiesBoolArray: unpackedSelectedFacultiesBoolArray)
                 
                 self.dataController.saveActivity(activity: self.activity!)
                 self.delegate?.goTo(index: 0, activity: self.activity!)

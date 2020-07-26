@@ -18,8 +18,20 @@ class MeTableViewController: UITableViewController {
     @IBOutlet var emailLabel: UILabel!
     @IBOutlet var passwordLabel: UILabel!
     @IBOutlet var profilePictureImageView: UIImageView!
-    @IBOutlet var likeButton: UIButton!
-    @IBOutlet var historyButton: UIButton!
+    @IBOutlet var cellForTableView: UITableViewCell!
+    
+    let segmentedControl: UISegmentedControl = {
+        let sc = UISegmentedControl(items: [" Activites By Me", "Liked Activities", "History"])
+        return sc
+    }()
+    
+    let segmentedTableView = UITableView(frame: .zero, style: .plain)
+    
+    let activitiesByMe = ["dinner", "breakfast", "lunch"]
+    
+    let likedActivities = ["swimming", "running", "static exercise"]
+    
+    let history = ["shopping", "movie", "hiking with friends"]
     
     var currentUser: User!
     // implement state change listener if got time
@@ -27,11 +39,34 @@ class MeTableViewController: UITableViewController {
     
     let dataController = DataController()
     
+    func setUpSegmentedTableView() {
+        let stackView = UIStackView()
+        
+        stackView.axis  = NSLayoutConstraint.Axis.vertical
+        stackView.distribution  = UIStackView.Distribution.equalSpacing
+        stackView.alignment = UIStackView.Alignment.center
+        stackView.spacing   = 16.0
+        
+        stackView.addArrangedSubview(segmentedControl)
+        stackView.addArrangedSubview(segmentedTableView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        cellForTableView.addSubview(stackView)
+        
+        stackView.topAnchor.constraint(equalTo: cellForTableView.topAnchor).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: cellForTableView.leadingAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: cellForTableView.trailingAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: cellForTableView.bottomAnchor).isActive = true
+    }
+    
+    
     override func viewDidLoad() {
         
         profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.height / 2
         profilePictureImageView.contentMode = UIView.ContentMode.scaleToFill
         profilePictureImageView.clipsToBounds = true
+        
+        setUpSegmentedTableView()
         
         if let firebaseUser = Auth.auth().currentUser {
             let uuid = firebaseUser.uid
@@ -86,59 +121,7 @@ class MeTableViewController: UITableViewController {
         
         present(alertController, animated: true, completion: nil)
     }
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
+    
 
 }

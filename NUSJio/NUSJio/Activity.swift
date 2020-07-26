@@ -11,22 +11,22 @@ import UIKit
 import Firebase
 
 struct Activity {
-    private static var uuidKey = "uuid"
-    private static var titleKey = "title"
-    private static var descriptionKey = "description"
-    private static var hostIdKey = "hostId"
-    private static var participantIdsKey = "participantIds"
-    private static var participantsInfoKey = "participantsInfo"
-    private static var locationKey = "location"
-    private static var timeKey = "time"
-    // private static var isCompleteKey = "isComplete"
-    private static var stateKey = "state"
-    private static var imageURLStrKey = "imageURLStr"
-    private static var categoriesKey = "categories"
-    private static var numOfParticipantsKey = "numOfParticipants"
-    private static var genderKey = "gender"
-    private static var facultiesKey = "faculties"
-    private static var selectedFacultiesBoolArrayKey = "selectedFacultiesBoolArray"
+    static let uuidKey = "uuid"
+    static let titleKey = "title"
+    static let descriptionKey = "description"
+    static let hostIdKey = "hostId"
+    static let participantIdsKey = "participantIds"
+    static let participantsInfoKey = "participantsInfo"
+    static let likedByKey = "likedBy"
+    static let locationKey = "location"
+    static let timeKey = "time"
+    static let stateKey = "state"
+    static let imageURLStrKey = "imageURLStr"
+    static let categoriesKey = "categories"
+    static let numOfParticipantsKey = "numOfParticipants"
+    static let genderKey = "gender"
+    static let facultiesKey = "faculties"
+    static let selectedFacultiesBoolArrayKey = "selectedFacultiesBoolArray"
     
     var uuid: String
     var title: String
@@ -34,10 +34,10 @@ struct Activity {
     var hostId: String
     var participantIds: [String]
     var participantsInfo: [String: String] // ids and profile pic url
+    var likedBy: [String]
     var location: String?
     var time: Date?
     var state: ActivityState
-    // var isComplete: Bool
     var imageURLStr: String
     
     // tags
@@ -56,10 +56,10 @@ struct Activity {
             hostIdKey: activity.hostId,
             participantIdsKey: activity.participantIds,
             participantsInfoKey: activity.participantsInfo,
+            likedByKey: activity.likedBy,
             locationKey: activity.location ?? "",
             timeKey: activity.time ?? Date.init(),
             stateKey: activity.state.rawValue,
-            // isCompleteKey: activity.isComplete,
             imageURLStrKey: activity.imageURLStr,
             categoriesKey: activity.categories ?? NSNull(),
             numOfParticipantsKey: activity.numOfParticipants ?? NSNull(),
@@ -77,6 +77,7 @@ struct Activity {
         let hostId = dictionary[hostIdKey] as! String
         let participantIds = dictionary[participantIdsKey] as? [String] ?? []
         let participantsInfo = dictionary[participantsInfoKey] as? [String: String] ?? [:]
+        let likedBy = dictionary[likedByKey] as? [String] ?? []
         let location = dictionary[locationKey] as? String ?? ""
         var time: Date
         if let stamp = dictionary[timeKey] as? Timestamp {
@@ -86,7 +87,6 @@ struct Activity {
         }
         let stateStr = dictionary[stateKey] as! String
         let state = ActivityState(rawValue: stateStr)!
-        // let isComplete = dictionary[isCompleteKey] as! Bool
         let imageURLStr = dictionary[imageURLStrKey] as? String ?? ""
         
         // for tags
@@ -102,7 +102,7 @@ struct Activity {
         let faculties = dictionary[facultiesKey] as? [String] ?? nil
         let selectedFacultiesBoolArray = dictionary[selectedFacultiesBoolArrayKey] as? [Bool] ?? Array(repeating: false, count: 17)
         
-        return Activity(uuid: uuid, title: title, description: descripton, hostId: hostId, participantIds: participantIds, participantsInfo: participantsInfo, location: location, time: time, state: state, imageURLStr: imageURLStr, categories: categories, numOfParticipants: numOfParticipants, gender: gender, faculties: faculties, selectedFacultiesBoolArray: selectedFacultiesBoolArray)
+        return Activity(uuid: uuid, title: title, description: descripton, hostId: hostId, participantIds: participantIds, participantsInfo: participantsInfo, likedBy: likedBy, location: location, time: time, state: state, imageURLStr: imageURLStr, categories: categories, numOfParticipants: numOfParticipants, gender: gender, faculties: faculties, selectedFacultiesBoolArray: selectedFacultiesBoolArray)
     }
     
     static func getTagsArray(activity: Activity) -> [String] {

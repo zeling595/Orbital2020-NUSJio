@@ -240,6 +240,7 @@ class ExploreDetailViewController: UIViewController, UICollectionViewDelegate, U
                     // disable the button
                     self.joinButton!.isEnabled = false
                     self.joinButton!.setTitleColor(UIColor.gray, for: .normal)
+                    self.joinButton!.tintColor = UIColor.gray
                 }
             }
         } else {

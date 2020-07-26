@@ -13,11 +13,26 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class DataController {
-
+    
+    let db = Firestore.firestore()
     let activitiesCollection = Firestore.firestore().collection("activities")
     let usersCollection = Firestore.firestore().collection("users")
     
     // MARK: Fetch Activities
+    func fetchSingleActivity(activityId: String, completion: @escaping (Activity?) -> Void) {
+        let activityRef = activitiesCollection.document("activity-\(activityId)")
+        activityRef.getDocument { (snapshot, error) in
+            if let error = error {
+                print("Error getting activity: \(error.localizedDescription)")
+            } else {
+                if let snapshot = snapshot, snapshot.exists, let data = snapshot.data() {
+                    let activity = Activity.DictionaryToActivity(dictionary: data)
+                    completion(activity)
+                }
+            }
+        }
+    }
+    
     func fetchAllActivities(completion: @escaping ([Activity]?) -> Void) {
         let database = Firestore.firestore();
         var activitiesForExplore: [Activity] = []
@@ -74,7 +89,7 @@ class DataController {
             
         }
     }
-    
+
     func fetchMyActivities(user: User, resultHandler: @escaping ([[Activity]]?) -> Void) {
         var activities2DArray: [[Activity]] = []
         var todayActivities: [Activity] = []
@@ -93,34 +108,32 @@ class DataController {
              if let error = error {
                  print(error.localizedDescription)
              } else {
-                 if let snapshot = snapshot, !snapshot.isEmpty {
-                     for document in snapshot.documents {
-                         
-                         // print("\(document.documentID) => \(document.data())")
-                         let myActivity = Activity.DictionaryToActivity(dictionary: document.data())
-                         // print(myActivity)
-                         let calender = Calendar.current
-                         if let time = myActivity.time {
-                             // got time
-                             if calender.isDateInToday(time) {
-                                 todayActivities.append(myActivity)
-                             } else {
-                                 upcomingActivities.append(myActivity)
-                             }
-                         } else {
-                             // no time
-                             upcomingActivities.append(myActivity)
-                         }
-                     }
+                if let snapshot = snapshot, !snapshot.isEmpty {
+                    for document in snapshot.documents {
+                        let myActivity = Activity.DictionaryToActivity(dictionary: document.data())
+                        // print(myActivity)
+                        let calender = Calendar.current
+                        if let time = myActivity.time {
+                            // got time
+                            if calender.isDateInToday(time) {
+                                todayActivities.append(myActivity)
+                            } else {
+                                upcomingActivities.append(myActivity)
+                            }
+                        } else {
+                            // no time
+                            upcomingActivities.append(myActivity)
+                        }
+                    }
                     // completion here
                     activities2DArray.append(todayActivities)
                     activities2DArray.append(upcomingActivities)
-                    
-                    resultHandler(activities2DArray)
+                } else {
+                    print("result is empty")
                 }
+                resultHandler(activities2DArray)
             }
         }
-        
     }
     
     func fetchJoinedActivities(user: User, resultHandler: @escaping ([[Activity]]?) -> Void) {
@@ -142,7 +155,6 @@ class DataController {
             } else {
                 if let snapshot = snapshot, !snapshot.isEmpty {
                     for document in snapshot.documents {
-                        // print("\(document.documentID) => \(document.data())")
                         let joinedActivity = Activity.DictionaryToActivity(dictionary: document.data())
                         // print(myActivity)
                         let calender = Calendar.current
@@ -170,9 +182,6 @@ class DataController {
     
     func fetchUserActivitiesSectioned(user: User, completion: @escaping ([[Activity]]?) -> Void) {
         let operationQueue = OperationQueue()
-
-//        var resultMyActivities: [[Activity]]?
-//        var resultJoinedActivities: [[Activity]]?
         
         var activities2DArr: [[Activity]] = []
         var todayActivities: [Activity] = []
@@ -229,56 +238,143 @@ class DataController {
         operationQueue.addOperations([operation1, operation2, completionOperation], waitUntilFinished: false)
     }
     
-    func fetchPastActivities(user: User, completion: @escaping ([Activity]?) -> Void) {
-        var pastActivities: [Activity] = []
-    
-        // get user id
-        let userId = user.uuid
-       
+    func fetchAllMyActivities(userId: String, completion: @escaping ([Activity]?) -> Void) {
+        var allMyActivities: [Activity] = []
+        
         // query all activities where hostid == user id
-        // TODO where date is today or in the future
         activitiesCollection
-            .whereField("hostId", isEqualTo: userId)
-            .whereField("time", isLessThan: Date().onlyDate!)
-            .getDocuments { (snapshot, error) in
+             .whereField("hostId", isEqualTo: userId)
+             .getDocuments { (snapshot, error) in
+             if let error = error {
+                 print(error.localizedDescription)
+             } else {
+                 if let snapshot = snapshot, !snapshot.isEmpty {
+                     for document in snapshot.documents {
+                        let myActivity = Activity.DictionaryToActivity(dictionary: document.data())
+                        allMyActivities.append(myActivity)
+                    }
+                    completion(allMyActivities)
+                }
+            }
+        }
+    }
+    
+    func fetchLikedActivities(userId: String, completion: @escaping ([Activity]?) -> Void) {
+        var likedActivities: [Activity] = []
+
+        activitiesCollection
+             .whereField(Activity.likedByKey, arrayContains: userId)
+             .getDocuments { (snapshot, error) in
+             if let error = error {
+                 print(error.localizedDescription)
+             } else {
+                 if let snapshot = snapshot, !snapshot.isEmpty {
+                     for document in snapshot.documents {
+                        let myActivity = Activity.DictionaryToActivity(dictionary: document.data())
+                        likedActivities.append(myActivity)
+                    }
+                    completion(likedActivities)
+                }
+            }
+        }
+    }
+    
+    func fetchMyCompletedActivities(userId: String, resultHandler: @escaping ([Activity]?) -> Void) {
+        var myPastActivities: [Activity] = []
+    
+        activitiesCollection
+             .whereField("hostId", isEqualTo: userId)
+             .whereField("state", isEqualTo: "completed")
+             .getDocuments { (snapshot, error) in
+             if let error = error {
+                 print(error.localizedDescription)
+             } else {
+                 if let snapshot = snapshot, !snapshot.isEmpty {
+                     for document in snapshot.documents {
+                        let myActivity = Activity.DictionaryToActivity(dictionary: document.data())
+                        myPastActivities.append(myActivity)
+                    }
+                    resultHandler(myPastActivities)
+                 } else {
+                    resultHandler(myPastActivities)
+                }
+            }
+        }
+    }
+    
+    func fetchJoinedCompletedActivities(userId: String, resultHandler: @escaping ([Activity]?) -> Void) {
+        
+        var joinedPastActivities: [Activity] = []
+        
+        activitiesCollection
+             .whereField("participantIds", arrayContains: userId)
+             .whereField("state", isEqualTo: "completed")
+             .getDocuments { (snapshot, error) in
             if let error = error {
                 print(error.localizedDescription)
             } else {
                 if let snapshot = snapshot, !snapshot.isEmpty {
                     for document in snapshot.documents {
-                        
                         // print("\(document.documentID) => \(document.data())")
-                        let myActivity = Activity.DictionaryToActivity(dictionary: document.data())
+                        let joinedActivity = Activity.DictionaryToActivity(dictionary: document.data())
                         // print(myActivity)
-                        pastActivities.append(myActivity)
-                    }
-                    
-               }
-           }
-       }
-       
-       // query all activities where participants id contains user id
-       activitiesCollection
-            .whereField("participantIds", arrayContains: userId)
-            .whereField("time", isLessThan: Date().onlyDate!)
-            .getDocuments { (snapshot, error) in
-           if let error = error {
-               print(error.localizedDescription)
-           } else {
-               guard let snapshot = snapshot, !snapshot.isEmpty else {return}
-               for document in snapshot.documents {
-                   // print("\(document.documentID) => \(document.data())")
-                   let joinedActivity = Activity.DictionaryToActivity(dictionary: document.data())
-                   // print(myActivity)
-                   pastActivities.append(joinedActivity)
-               }
-           }
-           // sort here
-           let sortedPastActivities = pastActivities.sorted(by: { (activity1, activity2) -> Bool in
-               return activity1.time?.compare(activity2.time!) == .orderedAscending
-           })
-           completion(sortedPastActivities)
+                        joinedPastActivities.append(joinedActivity)
+                        }
+                    resultHandler(joinedPastActivities)
+                } else {
+                    resultHandler(joinedPastActivities)
+                }
+            }
         }
+    }
+    
+    func fetchCompletedActivities(userId: String, completion: @escaping ([Activity]?) -> Void) {
+        let operationQueue = OperationQueue()
+
+        var completedActivities: [Activity] = []
+
+        let operation1 = BlockOperation {
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+            self.fetchMyCompletedActivities(userId: userId) {
+                result in
+                if let result = result, !result.isEmpty {
+                    completedActivities.append(contentsOf: result)
+                }
+                dispatchGroup.leave()
+            }
+            // wait until anAsyncMethod is completed
+            dispatchGroup.wait(timeout: DispatchTime.distantFuture)
+        }
+
+        let operation2 = BlockOperation {
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+            self.fetchJoinedCompletedActivities(userId: userId) {
+                result in
+                if let result = result, !result.isEmpty {
+                    completedActivities.append(contentsOf: result)
+                }
+                dispatchGroup.leave()
+            }
+            // wait until anotherAsyncMethod is completed
+            dispatchGroup.wait(timeout: DispatchTime.distantFuture)
+        }
+
+        let completionOperation = BlockOperation {
+            // send all results to completion callback
+            let sortedCompletedActivities = completedActivities.sorted(by: { (activity1, activity2) -> Bool in
+                return activity1.time?.compare(activity2.time!) == .orderedAscending
+            })
+            
+            completion(sortedCompletedActivities)
+        }
+
+        // configuring interoperation dependencies
+        operation2.addDependency(operation1)
+        completionOperation.addDependency(operation2)
+
+        operationQueue.addOperations([operation1, operation2, completionOperation], waitUntilFinished: false)
     }
     
     // for milestone 2, currently not in use
@@ -441,8 +537,12 @@ class DataController {
     }
     
     func likeActivity(activityId: String, userId: String, completion: @escaping (Bool) -> Void) {
+        // Get new write batch
+        let batch = db.batch()
+        
+        // update user
         let userDocRef = usersCollection.document("user-\(userId)")
-        userDocRef.updateData([User.likedActivityIdsKey : FieldValue.arrayUnion([activityId])]) { (error) in
+        userDocRef.updateData([User.likedActivityIdsKey: FieldValue.arrayUnion([activityId])]) { (error) in
             if let error = error {
                 print("Error liking an activity: \(error.localizedDescription)")
             } else {
@@ -451,9 +551,32 @@ class DataController {
             }
         }
         
+        // update activity
+        let activityDocRef = activitiesCollection.document("activity-\(activityId)")
+        activityDocRef.updateData([Activity.likedByKey: FieldValue.arrayUnion([userId])]) { (error) in
+            if let error = error {
+                print("Error liking an activity: \(error.localizedDescription)")
+            } else {
+                let flag = true
+                completion(flag)
+            }
+        }
+
+        // Commit the batch
+        batch.commit() { err in
+            if let err = err {
+                print("Error writing batch \(err)")
+            } else {
+                print("Batch write succeeded.")
+            }
+        }
     }
     
     func unlikeActivity(activityId: String, userId: String, completion: @escaping (Bool) -> Void) {
+        // Get new write batch
+        let batch = db.batch()
+        
+        // update user
         let userDocRef = usersCollection.document("user-\(userId)")
         userDocRef.updateData([User.likedActivityIdsKey : FieldValue.arrayRemove([activityId])]) { (error) in
             if let error = error {
@@ -461,6 +584,25 @@ class DataController {
             } else {
                 let flag = true
                 completion(flag)
+            }
+        }
+        // update activity
+        let activityDocRef = activitiesCollection.document("activity-\(activityId)")
+        activityDocRef.updateData([Activity.likedByKey: FieldValue.arrayRemove([userId])]) { (error) in
+            if let error = error {
+                print("Error liking an activity: \(error.localizedDescription)")
+            } else {
+                let flag = true
+                completion(flag)
+            }
+        }
+ 
+        // Commit the batch
+        batch.commit() { err in
+            if let err = err {
+                print("Error writing batch \(err)")
+            } else {
+                print("Batch write succeeded.")
             }
         }
     }
