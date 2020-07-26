@@ -12,6 +12,8 @@ import AlignedCollectionViewFlowLayout
 protocol ActivityCellDelegate: class {
     func jioButtonTapped(cell: ActivityCell)
     func completeButtonTapped(cell: ActivityCell)
+    func postponeButtonTapped(cell: ActivityCell)
+    func doneButtonTapped(cell: ActivityCell)
 }
 
 class ActivityCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
@@ -50,6 +52,14 @@ class ActivityCell: UITableViewCell, UICollectionViewDataSource, UICollectionVie
     
     @objc @IBAction func completeButtonTapped(sender: UIButton) {
         self.delegate?.completeButtonTapped(cell: self)
+    }
+    
+    @objc @IBAction func postponeButtonTapped(sender: UIButton) {
+        self.delegate?.postponeButtonTapped(cell: self)
+    }
+    
+    @objc @IBAction func doneButtonTapped(sender: UIBarButtonItem) {
+        self.delegate?.doneButtonTapped(cell: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

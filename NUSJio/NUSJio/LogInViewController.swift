@@ -50,9 +50,6 @@ class LogInViewController: UIViewController {
     @IBOutlet var signUpButton: UIButton!
     @IBOutlet var orLabel: UILabel!
     
-//    var handle: AuthStateDidChangeListenerHandle?
-//    var userManager: UserManagerProtocol?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -63,12 +60,6 @@ class LogInViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
-//        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-//            if let user = user {
-//
-//            }
-//        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -110,7 +101,7 @@ class LogInViewController: UIViewController {
         let cleanNUSEmail = NUSNETIDTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !Utilities.isNUSEmailValid(cleanNUSEmail) {
-            return "Please enter your NUS email ending in @u.nus.edu or @nus.edu.sg. For default NUS email, please follow the format of e1234567@u.nus.edu"
+            return "Please enter your NUS email ending in @u.nus.edu or @nus.edu.sg."
         }
               
         
@@ -133,7 +124,6 @@ class LogInViewController: UIViewController {
             let NUSNETID = NUSNETIDTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             // sign in user
-            // userManager?.signIn(email: NUSNETID, password: password, loginVC: self)
             Auth.auth().signIn(withEmail: NUSNETID, password: password) { [weak self] authResult, error in
               guard let strongSelf = self else { return }
                 if error != nil {

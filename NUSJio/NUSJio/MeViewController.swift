@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
-class MeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
     @IBOutlet var segmentedControl: UISegmentedControl!
@@ -120,6 +120,51 @@ class MeViewController: UIViewController, UITableViewDataSource, UITableViewDele
         profilePicImageView.layer.cornerRadius = profilePicImageView.frame.height / 2
         profilePicImageView.contentMode = UIView.ContentMode.scaleToFill
         profilePicImageView.clipsToBounds = true
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        profilePicImageView.isUserInteractionEnabled = true
+        profilePicImageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        let tappedImage = tapGestureRecognizer.view as! UIImageView
+        
+        // Your action
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
+        let alertController = UIAlertController(title: "Choose Image Source", message: nil, preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let cameraAction = UIAlertAction(title: "Camera", style: .default, handler: { action in
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)})
+            alertController.addAction(cameraAction)
+        }
+        
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default, handler:  { action in
+                imagePicker.sourceType = .photoLibrary
+                self.present(imagePicker, animated: true, completion: nil)
+            })
+            alertController.addAction(photoLibraryAction)
+        }
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let selectedImage = info[.originalImage] as? UIImage else { return }
+        profilePicImageView.image = selectedImage
+        dismiss(animated: true, completion: nil)
+        let resizedImage = self.profilePicImageView.image!.resized(toWidth: 120)!
+        dataController.uploadProfilePictureAndGetUrl(image: resizedImage) { (imageURL) in
+            if let imageURL = imageURL {
+                self.dataController.updateUserProfileImageURL(userId: self.currentUser.uuid, imageURL: imageURL)
+            }
+        }
     }
     
     func setUpSegmentControl() {

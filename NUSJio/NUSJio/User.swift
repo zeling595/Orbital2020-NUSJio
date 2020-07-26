@@ -10,16 +10,15 @@ import Foundation
 import Firebase
 
 struct User {
-    private static let uuidKey = "uuid"
-    private static let usernameKey = "username"
-    private static let emailKey = "email"
-    private static let passwordKey = "password"
-    private static let profilePictureURLStrKey = "profilePictureURLStr"
-    private static let myActivityIdsKey = "myActivityIds"
-    private static let joinedActivityIdsKey = "joinedActivityIds"
+    static let uuidKey = "uuid"
+    static let usernameKey = "username"
+    static let emailKey = "email"
+    static let passwordKey = "password"
+    static let profilePictureURLStrKey = "profilePictureURLStr"
+    static let myActivityIdsKey = "myActivityIds"
+    static let joinedActivityIdsKey = "joinedActivityIds"
     static let likedActivityIdsKey = "likedActivityIds"
-    private static let scheduleKey = "schedule"
-    
+    static let scheduleKey = "schedule"
     
     var uuid: String
     var username: String

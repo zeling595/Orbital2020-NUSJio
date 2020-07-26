@@ -14,6 +14,9 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     var activities: [[Activity]] = []
     var currentUser: User!
     let dataController = DataController()
+    var toolbar: UIToolbar?
+    var datePicker: UIDatePicker?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,7 +171,7 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
         if activity.hostId == currentUser.uuid {
             // host activity, display postpone and stop looking for new people button
             let postponeButton = createButton(title: "Postpone")
-            postponeButton.addTarget(self, action: #selector(postponeButtonTapped), for: .touchUpInside)
+            postponeButton.addTarget(cell, action: #selector(ActivityCell.postponeButtonTapped), for: .touchUpInside)
             cell.postponeButton = postponeButton
             
             var secondButton: UIButton
@@ -255,8 +258,80 @@ class MyActivitiesTableViewController: UITableViewController, ActivityDetailDele
     
     
     // MARK: Button method
-    @objc func postponeButtonTapped(sender: UIButton!) {
+    func postponeButtonTapped(cell: ActivityCell) {
+        // maybe need to assign self.date picker to it
+        let datePicker = UIDatePicker()
+        let heightForDatePicker: CGFloat = 300
+        datePicker.backgroundColor = UIColor.white
+        datePicker.setValue(0.95, forKey: "alpha")
+
+        datePicker.autoresizingMask = .flexibleWidth
+        datePicker.datePickerMode = .countDownTimer
+        datePicker.minuteInterval = 5
+        datePicker.addTarget(self, action: #selector(self.dateChanged(_:)), for: .valueChanged)
+        datePicker.frame = CGRect(x: 0.0, y: UIScreen.main.bounds.size.height - heightForDatePicker, width: UIScreen.main.bounds.size.width, height: heightForDatePicker)
+        self.datePicker = datePicker
+        self.view.addSubview(datePicker)
+
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: UIScreen.main.bounds.size.height - heightForDatePicker, width: UIScreen.main.bounds.size.width, height: 60))
+        toolbar.barStyle = .default
+        // toolbar.isTranslucent = true
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonTapped))
+        cancelButton.tintColor = Styles.themeOrange
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: cell, action: #selector(ActivityCell.doneButtonTapped))
+        doneButton.tintColor = Styles.themeOrange
+        toolbar.items = [cancelButton, UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), doneButton]
+        toolbar.sizeToFit()
+        self.toolbar = toolbar
+        self.view.addSubview(toolbar)
+    }
+    
+    @objc func dateChanged(_ sender: UIDatePicker?) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .none
+
+        if let date = sender?.date {
+            print("Picked the date \(dateFormatter.string(from: date))")
+        }
+    }
+    
+    @objc func cancelButtonTapped() {
+        toolbar!.removeFromSuperview()
+        datePicker!.removeFromSuperview()
+    }
+    
+    @objc func doneButtonTapped(cell: ActivityCell) {
+        toolbar!.removeFromSuperview()
+        datePicker!.removeFromSuperview()
+        // update the activity
+        guard let timeInterval = datePicker?.countDownDuration else {return}
         
+        // front end
+        guard let indexPath = self.tableView.indexPath(for: cell) else {return}
+        let selectedActivity = activities[indexPath.section][indexPath.row]
+        let newDate = selectedActivity.time!.addingTimeInterval(timeInterval)
+        cell.timeLabel.text = Activity.timeDateFormatter.string(from: newDate)
+        let newActivity = Activity(
+            uuid: selectedActivity.uuid,
+            title: selectedActivity.title,
+            description: selectedActivity.description,
+            hostId: selectedActivity.hostId,
+            participantIds: selectedActivity.participantIds,
+            participantsInfo: selectedActivity.participantsInfo,
+            likedBy: selectedActivity.likedBy,
+            location: selectedActivity.location,
+            time: newDate,
+            state: selectedActivity.state,
+            imageURLStr: selectedActivity.imageURLStr,
+            categories: selectedActivity.categories,
+            numOfParticipants: selectedActivity.numOfParticipants,
+            gender: selectedActivity.gender,
+            faculties: selectedActivity.faculties,
+            selectedFacultiesBoolArray: selectedActivity.selectedFacultiesBoolArray)
+        self.activities[indexPath.section][indexPath.row] = newActivity
+        // backend
+        dataController.postponeActivity(activity: selectedActivity, newDate: newDate)
     }
     
     // other user cannot join

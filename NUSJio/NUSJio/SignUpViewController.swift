@@ -50,8 +50,10 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // navigation bar
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: Styles.themeBlue]
+        UINavigationBar.appearance().tintColor = Styles.themeOrange
 
-        // Do any additional setup after loading the view.
         setUpElements()
     }
     
@@ -60,6 +62,10 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
         profileImageView.contentMode = UIView.ContentMode.scaleToFill
         profileImageView.clipsToBounds = true
+        passwordTextField.isSecureTextEntry = true
+        confirmPasswordTextField.isSecureTextEntry = true
+        signUpButton.setTitleColor(Styles.themeOrange, for: .normal)
+        chooseProfilePictureButton.setTitleColor(Styles.themeOrange, for: .normal)
     }
     
     @IBAction func chooseProfilePictureButtonTapped(_ sender: UIButton) {
@@ -137,6 +143,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         errorLabel.numberOfLines = 0
         errorLabel.text = errorMessage
         errorLabel.alpha = 1.0
+        errorLabel.textColor = UIColor.red
     }
     
     func transitionToHomepage() {
@@ -166,10 +173,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
             // create user first
             Auth.auth().createUser(withEmail: NUSEmail, password: password) { authResult, error in
                 // check for error
-                if error != nil {
+                if let error = error {
                     // There is a error
-                    // error.localizedDescription
-                    self.showError("Error creating user: \(String(describing: error?.localizedDescription))")
+                    self.showError("\( error.localizedDescription)")
                 } else {
                     // User is created successfully
                     let db = Firestore.firestore()

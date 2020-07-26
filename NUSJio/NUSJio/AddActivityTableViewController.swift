@@ -106,6 +106,7 @@ class AddActivityTableViewController: UITableViewController, UIImagePickerContro
         
         uploadImageProgressView.progress = 0.0
         timeDatePicker.minimumDate = Date()
+        cameraButton.tintColor = Styles.themeOrange
         
         if let activity = activity {
             // from edit

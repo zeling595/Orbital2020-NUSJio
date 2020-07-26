@@ -158,7 +158,7 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
         } else if activity.state == .open {
             // jio button
             let jioButton = createButton(title: "Jio", imageName: "sun.min")
-            self.joinButton = jioButton
+            self.jioButton = jioButton
             jioButton.addTarget(self, action: #selector(jioButtonTapped), for: .touchUpInside)
             middleButton = jioButton
         } else {
@@ -250,7 +250,7 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
             // remove jio button, add complete button
             self.buttonStackView.removeArrangedSubview(self.jioButton!)
             self.jioButton?.removeFromSuperview()
-            self.buttonStackView.addArrangedSubview(completeButton)
+            self.buttonStackView.insertArrangedSubview(completeButton, at: 1)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(okAction)
@@ -271,12 +271,14 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
                     self.activity = updatedActivity
                     // not sure whether participants array is updated when activity update
                     // view controller not updated
-                    self.participantsCollectionView.reloadData()
-                    self.updateUI()
-                    // disable the button
-                    self.joinButton!.isEnabled = false
-                    self.joinButton!.setTitleColor(UIColor.gray, for: .normal)
-                    self.joinButton!.tintColor = UIColor.gray
+                    DispatchQueue.main.async {
+                        self.participantsCollectionView.reloadData()
+                        self.updateUI()
+                        // disable the button
+                        self.joinButton!.isEnabled = false
+                        self.joinButton!.setTitleColor(UIColor.gray, for: .normal)
+                        self.joinButton!.tintColor = UIColor.gray
+                    }
                 }
             }
         } else {
@@ -406,6 +408,7 @@ class ActivityDetailViewController: UIViewController, UICollectionViewDelegate, 
                     cell.participantImageView.image = UIImage(data: data)
                     cell.participantImageView.layer.cornerRadius = cell.participantImageView.frame.height / 2
                     cell.participantImageView.layer.masksToBounds = true
+                    cell.participantImageView.contentMode = .scaleToFill
                 }
             }
             return cell

@@ -16,7 +16,6 @@ protocol CustomTabBarDelegate: class {
 class CustomTabBarController: UITabBarController, UITabBarControllerDelegate, CustomTabBarDelegate {
     
     // not in use now
-    var userScheduleManager: ScheduleManager!
     var currentUser: User!
     var dataController = DataController()
     
@@ -29,8 +28,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate, Cu
                 if let user = user {
                     self.currentUser = user
                     print(user)
-                    self.userScheduleManager = ScheduleManager(currentUser: user, rootVC: self)
-                    self.userScheduleManager.checkUpcomingActivitiesForToday()
                 }
             }
         }

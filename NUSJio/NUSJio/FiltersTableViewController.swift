@@ -9,10 +9,6 @@
 import UIKit
 
 class FiltersTableViewController: UITableViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-//    let faculties = ["Arts & Social Science", "Business", "Computing", "Continuing and Lifelong Education", "Dentistry", "Design & Environment", "Duke-NUS", "Engineering", "Integrative Sciences & Engineering", "Law", "Medicine", "Music", "Public Health", "Public Policy", "Science", "USP", "Yale-NUS"]
-    
-//    let faculties = ["FASS", "BIZ", "SoC", "SCALE", "FoD", "SDE", "Duke-NUS", "Engineering", "NGS", "Law", "Medicine", "Music", "Public Health", "Public Policy", "Science", "USP", "Yale-NUS"]
 
     // model data
     var filter: Filter?

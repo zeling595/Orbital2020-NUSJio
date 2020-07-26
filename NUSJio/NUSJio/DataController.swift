@@ -416,7 +416,7 @@ class DataController {
         }
     }
     
-    // MARK: Fetch User
+    // MARK: User
     func fetchUser(userId: String, completion: @escaping (User?) -> Void) {
         let userDocRef = usersCollection.document("user-\(userId)")
         // print("(print from data controller) fetch user \(userId)")
@@ -426,6 +426,15 @@ class DataController {
             // get out all data and make it to an user
             let user = User.DictionaryToUser(dictionary: data)
             completion(user)
+        }
+    }
+    
+    func updateUserProfileImageURL(userId: String, imageURL: String) {
+        let userDocRef = usersCollection.document("user-\(userId)")
+        userDocRef.updateData([User.profilePictureURLStrKey : imageURL]) { (error) in
+            if let error = error {
+                print("Error saving activity to activities collection: \(error.localizedDescription)")
+            }
         }
     }
     
@@ -530,6 +539,15 @@ class DataController {
         let activityDocRef = activitiesCollection.document("activity-\(activity.uuid)")
         let stateStr = state.rawValue
         activityDocRef.updateData(["state" : stateStr]) { (error) in
+            if let error = error {
+                print("Error changing activity state: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func postponeActivity(activity: Activity, newDate: Date) {
+        let activityDocRef = activitiesCollection.document("activity-\(activity.uuid)")
+        activityDocRef.updateData([Activity.timeKey : Timestamp(date: newDate)]) { (error) in
             if let error = error {
                 print("Error changing activity state: \(error.localizedDescription)")
             }
