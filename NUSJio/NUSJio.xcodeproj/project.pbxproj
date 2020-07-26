@@ -20,6 +20,10 @@
 		128DE3C22490B5C5009353D5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3C12490B5C5009353D5 /* User.swift */; };
 		128DE3C92490B7A5009353D5 /* MyActivitiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3C82490B7A5009353D5 /* MyActivitiesTableViewController.swift */; };
 		128DE3CB2490DAED009353D5 /* AddActivityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CA2490DAED009353D5 /* AddActivityTableViewController.swift */; };
+
+		128DE3CD2490DB39009353D5 /* ExploreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */; };
+		128DE3CF2490DB56009353D5 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3CE2490DB56009353D5 /* MessageViewController.swift */; };
+
 		128DE3D12490DB92009353D5 /* MeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3D02490DB92009353D5 /* MeTableViewController.swift */; };
 		128DE3D324921A92009353D5 /* ActivityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DE3D224921A92009353D5 /* ActivityDetailViewController.swift */; };
 		12CFE1CE24AC955100190124 /* FiltersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFE1CD24AC955100190124 /* FiltersTableViewController.swift */; };
@@ -34,7 +38,6 @@
 		12D61A18249CA30100E657AE /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A17249CA30100E657AE /* DataController.swift */; };
 		12D61A1A249CDAC500E657AE /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A19249CDAC500E657AE /* MapViewController.swift */; };
 		12D61A1C249CE7B900E657AE /* LocationSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */; };
-		12D61A1F249DC4B900E657AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12D61A1E249DC4B800E657AE /* GoogleService-Info.plist */; };
 		12D61A2324A5C2AB00E657AE /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D61A2224A5C2AB00E657AE /* UserManager.swift */; };
 		12D7FF9B24A9EC4E00C9552B /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7FF9A24A9EC4E00C9552B /* ExploreViewController.swift */; };
 		12D7FF9D24A9EC5E00C9552B /* ExploreDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D7FF9C24A9EC5E00C9552B /* ExploreDetailViewController.swift */; };
@@ -51,6 +54,8 @@
 		12FCB7182487C91C00DA5CF7 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB7172487C91C00DA5CF7 /* Styles.swift */; };
 		12FCB79E2488F1E300DA5CF7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB79D2488F1E300DA5CF7 /* Utilities.swift */; };
 		12FCB7A02489264400DA5CF7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB79F2489264400DA5CF7 /* Constants.swift */; };
+		140052FF24AA04DC005CA5A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 140052FE24AA04DC005CA5A7 /* GoogleService-Info.plist */; };
+		1438FFC024C317AA0044A398 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1438FFBF24C317AA0044A398 /* PhotoViewerViewController.swift */; };
 		43D57FDC246EC47996E2E737 /* Pods_NUSJio_NUSJioUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FFF14BCD0851B177B3EA84 /* Pods_NUSJio_NUSJioUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +88,10 @@
 		128DE3C12490B5C5009353D5 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		128DE3C82490B7A5009353D5 /* MyActivitiesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActivitiesTableViewController.swift; sourceTree = "<group>"; };
 		128DE3CA2490DAED009353D5 /* AddActivityTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActivityTableViewController.swift; sourceTree = "<group>"; };
+
+		128DE3CC2490DB39009353D5 /* ExploreTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreTableViewController.swift; sourceTree = "<group>"; };
+		128DE3CE2490DB56009353D5 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+
 		128DE3D02490DB92009353D5 /* MeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeTableViewController.swift; sourceTree = "<group>"; };
 		128DE3D224921A92009353D5 /* ActivityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailViewController.swift; sourceTree = "<group>"; };
 		12CFE1CD24AC955100190124 /* FiltersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersTableViewController.swift; sourceTree = "<group>"; };
@@ -97,7 +106,6 @@
 		12D61A17249CA30100E657AE /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		12D61A19249CDAC500E657AE /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		12D61A1B249CE7B900E657AE /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewController.swift; sourceTree = "<group>"; };
-		12D61A1E249DC4B800E657AE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12D61A2224A5C2AB00E657AE /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		12D7FF9A24A9EC4E00C9552B /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		12D7FF9C24A9EC5E00C9552B /* ExploreDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreDetailViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +128,8 @@
 		12FCB7172487C91C00DA5CF7 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		12FCB79D2488F1E300DA5CF7 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		12FCB79F2489264400DA5CF7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		140052FE24AA04DC005CA5A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1438FFBF24C317AA0044A398 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		46FFF14BCD0851B177B3EA84 /* Pods_NUSJio_NUSJioUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NUSJio_NUSJioUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5287A67E733A02D338BDBEC9 /* Pods_NUSJioTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NUSJioTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2CDF45B554006B51A8B85E5 /* Pods-NUSJioTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NUSJioTests.release.xcconfig"; path = "Target Support Files/Pods-NUSJioTests/Pods-NUSJioTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -207,14 +217,20 @@
 			isa = PBXGroup;
 			children = (
 				126C25CC24C985B000564959 /* Me */,
+
+				1438FFBE24C3158C0044A398 /* Message */,
+
 				12CFE1CF24ACB35B00190124 /* Filters */,
 				128DE3D724923E04009353D5 /* Activity */,
+
 				12D7FFA224A9EC8800C9552B /* Explore */,
 				12D61A1D249CE7FB00E657AE /* Location */,
 				12FCB66A24824CEE00DA5CF7 /* LogInViewController.swift */,
 				128DE3BD24908B9D009353D5 /* CustomTabBarController.swift */,
 				128DE3D02490DB92009353D5 /* MeTableViewController.swift */,
+
 				12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */,
+
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -286,17 +302,18 @@
 		12FCB66524824CED00DA5CF7 /* NUSJio */ = {
 			isa = PBXGroup;
 			children = (
+				140052FE24AA04DC005CA5A7 /* GoogleService-Info.plist */,
 				128DE3C72490B768009353D5 /* ViewController */,
 				128DE3C62490B740009353D5 /* Helpers */,
 				128DE3C42490B6F6009353D5 /* Model */,
 				126C25CB24C9290800564959 /* Reusable Class */,
+				12F8B88A248CE30B004D8BE9 /* SignUpViewController.swift */,
 				12FCB66624824CED00DA5CF7 /* AppDelegate.swift */,
 				12FCB66824824CEE00DA5CF7 /* SceneDelegate.swift */,
 				12FCB66C24824CEE00DA5CF7 /* Main.storyboard */,
 				12FCB66F24824CF200DA5CF7 /* Assets.xcassets */,
 				12FCB67124824CF200DA5CF7 /* LaunchScreen.storyboard */,
 				12FCB67424824CF200DA5CF7 /* Info.plist */,
-				12D61A1E249DC4B800E657AE /* GoogleService-Info.plist */,
 			);
 			path = NUSJio;
 			sourceTree = "<group>";
@@ -317,6 +334,15 @@
 				12FCB68A24824CF200DA5CF7 /* Info.plist */,
 			);
 			path = NUSJioUITests;
+			sourceTree = "<group>";
+		};
+		1438FFBE24C3158C0044A398 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				128DE3CE2490DB56009353D5 /* MessageViewController.swift */,
+				1438FFBF24C317AA0044A398 /* PhotoViewerViewController.swift */,
+			);
+			path = Message;
 			sourceTree = "<group>";
 		};
 		98E6573AFF57DF744A9F8D36 /* Pods */ = {
@@ -452,7 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12FCB67324824CF200DA5CF7 /* LaunchScreen.storyboard in Resources */,
-				12D61A1F249DC4B900E657AE /* GoogleService-Info.plist in Resources */,
+				140052FF24AA04DC005CA5A7 /* GoogleService-Info.plist in Resources */,
 				12FCB67024824CF200DA5CF7 /* Assets.xcassets in Resources */,
 				12FCB66E24824CEE00DA5CF7 /* Main.storyboard in Resources */,
 			);
@@ -588,6 +614,7 @@
 				12CFE1D324ACB3B900190124 /* CategoriesTableViewController.swift in Sources */,
 				12CFE1E324B7144B00190124 /* DynamicHeightCollectionView.swift in Sources */,
 				128DE3BE24908B9D009353D5 /* CustomTabBarController.swift in Sources */,
+				1438FFC024C317AA0044A398 /* PhotoViewerViewController.swift in Sources */,
 				12D61A18249CA30100E657AE /* DataController.swift in Sources */,
 				12CFE1E524BB41EB00190124 /* ParticipantCollectionViewCell.swift in Sources */,
 				12D61A1A249CDAC500E657AE /* MapViewController.swift in Sources */,
@@ -605,6 +632,7 @@
 				12FCB66724824CED00DA5CF7 /* AppDelegate.swift in Sources */,
 				12FCB7182487C91C00DA5CF7 /* Styles.swift in Sources */,
 				128DE3C02490AE34009353D5 /* Activity.swift in Sources */,
+				128DE3CF2490DB56009353D5 /* MessageViewController.swift in Sources */,
 				128DE3C92490B7A5009353D5 /* MyActivitiesTableViewController.swift in Sources */,
 				12CFE1CE24AC955100190124 /* FiltersTableViewController.swift in Sources */,
 				126C25CE24C985DE00564959 /* MeTableViewCell.swift in Sources */,
@@ -792,6 +820,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9G7T53KWWY;
 				INFOPLIST_FILE = NUSJio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -810,6 +839,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9G7T53KWWY;
 				INFOPLIST_FILE = NUSJio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

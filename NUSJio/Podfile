@@ -1,6 +1,8 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
+workspace 'NUSJio'
+
 target 'NUSJio' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
@@ -22,6 +24,7 @@ target 'NUSJio' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
   pod 'Firebase/Functions'
+  pod 'MessageKit'
 
   pod "AlignedCollectionViewFlowLayout"
   pod "InitialsImageView"
