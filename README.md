@@ -41,7 +41,7 @@ Link to our project proposal: https://docs.google.com/document/d/1rSGMK6xikE-vby
 ![user_flow_diagram_simple](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/user_flow_diagram_simple.jpg)
 
 ## UML Diagram
-![UML_diagram](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/UML_diagram.pdf)
+![UML_diagram](https://github.com/zeling595/Orbital2020-NUSJio/blob/master/Media/UML.png)
 
 ## Our Progress (Updated)
 The app employs a classic structure with five navigation controllers embedded in a tab bar controller. After the user signs up/ logs in, the tab bar controller becomes the root view controller of the app. The followings are our current progress:
