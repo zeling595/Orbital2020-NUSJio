@@ -4,7 +4,7 @@ NUSJio is a mobile application that provides NUS students with a platform to wid
 ## Project Proposal
 Link to our project proposal: https://docs.google.com/document/d/1rSGMK6xikE-vbyGjnvrtvSmVkhmowmyEwNRcZkDbx_s/edit?usp=sharing
 
-## Core Features （this section has been edited recently)
+## Core Features (more in "Our Progress" section below)
 1. Activity:
    
    This is the most important element of our application. Users can create their own Jio (activity), while specifying the intended location (location can be anywhere within Singapore) and time. Users can also post limits on who can participate. There are two kinds of activites, private and public. Private activities can only be joined after joining requests are approved by the host. We expect this to be the more common type of activity used by users. For public activities, any user can join as long as the specific activity is still valid (i.e. has not ended). Details of activities include number of participants, faculties of participant (can be more than one), participants gender (M, F or mixed), description given by the host etc. All current participants will also be displayed for users to decide whether they want to join.
