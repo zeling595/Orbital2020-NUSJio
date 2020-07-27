@@ -63,6 +63,7 @@ Due to time constraint and limited resource, we were not able to implement some 
 2. Report function (as explained in the "core features" section
 3. Search suggestion by frequency of words searched.
 4. IOS system notification (we were not able to do this as it requires ios software development membership which costs more than 90USD per year)
+5. We used email format checks for authentication instead of NUS OpenID. In the future we might want to implement that.
 
 ## Testing
 Unit testing and UI testing are attempted for better software engineering purposes.
