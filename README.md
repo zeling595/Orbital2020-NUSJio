@@ -67,11 +67,12 @@ Due to time constraint and limited resource, we were not able to implement some 
 ## Testing
 Unit testing and UI testing are attempted for better software engineering purposes.
 Some are shown in the video below.
-(TODO: insert video link)
+https://youtu.be/GLmVvQTghrE
 
 User testing is done as shown in the updated project video.
 for core function testing:
 https://youtu.be/Oow_QF4C-ps
+https://docs.google.com/document/d/1dxs2OzHRBjJRu42xSp2SwCgxyzIsEX6frB9oCV4POm8/edit?usp=sharing
 
 for app flow (may not include some avaible function):
 https://youtu.be/sEEXFjMxYp4
