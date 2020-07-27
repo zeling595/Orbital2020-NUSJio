@@ -57,6 +57,13 @@ The app employs a classic structure with five navigation controllers embedded in
 10. Security rules in the server side allows everyone to write into the collection("users") to create user but only authenticated user can read data from collection("users"). For collection("activities"), only authenticated users are allowed to read and update activity. Furthermore, the title of the activity cannot be null for the create and updated to proceed, which is in accordance to the client code in "Add/Edit Activity" page. Only host of an activity is allowed to delete it.
 11. Splash screen and app logo are designed by ourselves. 
 
+## Possible Feature for the Future
+Due to time constraint and limited resource, we were not able to implement some of the features we intended to. The following are some of the additional feature we might implement if we have the chance in the future:
+1. Group chat function: each activity will have their own temporary group chat with all the participants. When users tap "chat" button in the activity detail page, they will be able to choose wether to have a private conversation with the host or enter the main chat.
+2. Report function (as explained in the "core features" section
+3. Search suggestion by frequency of words searched.
+4. IOS system notification (we were not able to do this as it requires ios software development membership which costs more than 90USD per year)
+
 ## Testing
 Unit testing and UI testing are attempted for better software engineering purposes.
 Some are shown in the video below.
