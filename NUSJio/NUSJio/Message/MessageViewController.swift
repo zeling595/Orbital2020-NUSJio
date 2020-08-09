@@ -7,117 +7,261 @@
 //
 
 import UIKit
+import JGProgressHUD
+import FirebaseAuth
+import FirebaseFirestore
 
 class MessageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet var chatTable : UITableView!
     
+    let dataController = DataController()
+    var allChats : [Chat] = [];
+    var displayedChats : [Chat] = [];
+    var currentUser: User!
+    
+    //= User(uuid: "", username: "", email: "", password: "", profilePictureURLStr: "", myActivityIds: [], joinedActivityIds: [], likedActivityIds: [], schedule: [])
+    
+    
+    
+    private let spinner = JGProgressHUD(style: .dark)
+    private let searchBar :UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search for chat with user:"
+        searchBar.tintColor = Styles.themeOrange
+        return searchBar
+    }()
+    private let noConversationLabel : UILabel = {
+       let label = UILabel()
+        label.text = "You don't have any conversations yet \n Go to explore to find more activities!"
+        label.textAlignment = .center
+        label.textColor = Styles.themeOrange
+        label.font = .systemFont(ofSize: 21, weight: .medium)
+        label.isHidden = false;
+        return label
+    }()
+    private let noChatFoundLabel : UILabel = {
+                let label = UILabel()
+                label.text = "No chat found :("
+                label.textAlignment = .center
+                label.textColor = Styles.themeOrange
+                label.font = .systemFont(ofSize: 21, weight: .medium)
+                label.isHidden = true;
+                return label
+        
+    }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let firebaseUser = Auth.auth().currentUser {
+            let uuid = firebaseUser.uid
+            // print("(print from my activities) uuid \(uuid)")
+            dataController.fetchUser(userId: uuid) { (user) in
+                if let user = user {
+                    self.currentUser = user
+                } else {
+                    print("oops cannot fetch user")
+                }
+                //load conversation
+                //fetchConversations();
+                self.dataController.fetchChatsForUser (userId: self.currentUser.uuid){(chats) in
+                    if let chats = chats{
+                        print(chats)
+                        self.allChats = chats
+                        if self.allChats.count != 0 {
+                            self.chatTable.isHidden = false;
+                            self.noConversationLabel.isHidden = true;
+                        }
+                        self.chatTable.reloadData()
+                    } else {
+                        print("error fetching all chats")
+                    }
+
+                }
+                
+            }
+        } else {
+            print("oops no current user")
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(chatTable)
+        view.addSubview(noConversationLabel)
+        chatTable.isHidden = true;
+        noConversationLabel.isHidden = false;
+        setUpTableView()
+        chatTable.keyboardDismissMode = .onDrag
+        //load currentUser
+        if let firebaseUser = Auth.auth().currentUser {
+            let uuid = firebaseUser.uid
+            // print("(print from my activities) uuid \(uuid)")
+            dataController.fetchUser(userId: uuid) { (user) in
+                if let user = user {
+                    self.currentUser = user
+                } else {
+                    print("oops cannot fetch user")
+                }
+                //load conversation
+                //fetchConversations();
+                self.dataController.fetchChatsForUser (userId: self.currentUser.uuid){(chats) in
+                    if let chats = chats{
+                        print(chats)
+                        self.allChats = chats
+                        if self.allChats.count != 0 {
+                            self.chatTable.isHidden = false;
+                            self.noConversationLabel.isHidden = true;
+                        }
+                        self.chatTable.reloadData()
+                    } else {
+                        print("error fetching all chats")
+                    }
 
-        chatTable.register(UITableViewCell.self, forCellReuseIdentifier: "chatBubble")
-        chatTable.delegate = self
-        chatTable.dataSource = self
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+                }
+                
+            }
+        } else {
+            print("oops no current user")
+        }
+        
+        
+        
+        
+        //print("currentid: \(self.currentUser.uuid)")
+        //print("no. of allChats: \(self.allChats.count)")
+        
+        //search bar
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearchButton))
+        navigationController?.navigationBar.topItem?.titleView = searchBar
+        
+        
+        
+        
+        
+        
+        //displayedChats = allChats;
+        
+        //print("currentid: \(currentUser.uuid)")
+        //print("otherid: \(self.allChats[0].otherUserID)")
     }
     
+    @objc private func didTapSearchButton(){
+        //let navVC = UINavigationController(rootViewController: <#T##UIViewController#>)
+        //implement search function
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        chatTable.frame = view.bounds;
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1;
+        return allChats.count;
     }
     
     func tableView (_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = chatTable.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath)
+        dataController.fetchUser(userId: allChats[indexPath.row].otherUserID) { (user) in
+            if let user = user {
+                var otherUser: User;
+                otherUser = user
+                cell.textLabel?.text = otherUser.username
+                cell.accessoryType = .disclosureIndicator;
+                //return cell;
+                }
+            }
+        self.updateCellUI(cell: cell, userId: allChats[indexPath.row].otherUserID)
         
-        let cell = chatTable.dequeueReusableCell(withIdentifier: "chatBubble", for: indexPath)
-        //TODO: change this:
-        cell.textLabel?.text = "John Doe"
+        
+        
         return cell;
     }
     
+    var username:String!
+    func updateCellUI(cell: UITableViewCell, userId: String) {
+        
+        
+        dataController.fetchUser(userId: userId) { (user) in
+            
+            self.username = user!.username
+            cell.textLabel?.text = self.username
+            self.chatTable.reloadData()
+            
+        }
+    }
+    
+   /*
     func tableView (_tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let firebaseUser = Auth.auth().currentUser {
+            let uuid = firebaseUser.uid
+            dataController.fetchUser(userId: uuid) { (user) in
+                if let user = user {
+                    self.currentUser = user
+                }
+            }
+        } else {
+            print("oops no current user")
+        }
+        
         chatTable.deselectRow(at: indexPath, animated: true)
+        let chat = displayedChats[indexPath.row]
         
-        
-        //show chat message
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-
-    // MARK: - Table view data source
-
-    /*override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        //TODO: modify to show correct message
+        let vc = ChatViewController()
+        //vc.currentUser = self.currentUser
+        vc.currentUserID = currentUser.uuid
+        vc.otherUserID = chat.otherUserID
+        vc.title = chat.otherUserID
+        self.navigationController!.pushViewController(vc, animated: true)
     }*/
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    
+    private func setUpTableView (){
+        chatTable.delegate = self
+        chatTable.dataSource = self
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    //TODO: implement this!
+    func fetchConversations() {
+        dataController.fetchChatsForUser(userId: currentUser.uuid) { (chats) in
+            if let chats = chats {
+                self.allChats = chats
+            }
+        }
+        print("no. of chats: \(allChats.count)")
+        
+        
+        
+        if allChats.count != 0 {
+            chatTable.isHidden = false;
+            noConversationLabel.isHidden = true;
+        }
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+           
+           if segue.identifier == "messageToChatSegue",
+                let chatViewController = segue.destination as? ChatViewController {
+                let indexPath = chatTable.indexPathForSelectedRow!
+            var selectedChat : Chat;
+            
+                selectedChat = allChats[indexPath.row]
+            
+            chatViewController.currentUserID = self.currentUser.uuid
+            chatViewController.otherUserID = selectedChat.otherUserID
+            chatViewController.chatID = selectedChat.chatID
+
+            }
+    
+        }
+    
+    
+    
+    
+    
+    
+    
+
+    
 
 }

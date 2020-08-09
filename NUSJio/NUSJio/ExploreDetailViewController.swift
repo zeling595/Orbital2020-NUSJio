@@ -9,6 +9,9 @@
 import UIKit
 import AlignedCollectionViewFlowLayout
 import FirebaseAuth
+import JGProgressHUD
+import Firebase
+import FirebaseFirestore
 
 class ExploreDetailViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -138,9 +141,53 @@ class ExploreDetailViewController: UIViewController, UICollectionViewDelegate, U
         }
     }
     
+    @objc private func chatButtonTapped() {
+        dataController.fetchUser(userId: self.activity.hostId) { (user) in
+            if let user = user {
+                var otherUser: User;
+                otherUser = user
+                let dc = DataController()
+                let db = Firestore.firestore()
+                var ref: DocumentReference? = nil
+                ref = db.collection("Chat").addDocument(data: ["chatID": "temporary", "threadOfMsgID": [], "uuid": [self.currentUser.uuid, otherUser.uuid]])
+                db.collection("Chat").document(ref!.documentID).updateData(["ChatID": ref!.documentID])
+                
+        
+                                //TODO:
+                let vc = ChatViewController();
+                vc.currentUserID = self.currentUser.uuid
+                vc.chatID = ref!.documentID
+                vc.currentUserSender = Sender(user: self.currentUser);
+                vc.otherUserSender = Sender(user: otherUser);
+                
+                print(self.currentUser.uuid)
+                vc.otherUserID = otherUser.uuid
+                          
+                let navVC = UINavigationController(rootViewController: vc)
+                self.present(navVC, animated: true)
+                }
+            }
+        }
+    
+    
+    func createNewConversation() {
+       dataController.fetchUser(userId: self.activity.hostId) { (user) in
+            if let user = user {
+                var otherUser: User;
+                otherUser = user
+                let vc = ChatViewController();
+                vc.currentUserSender = Sender(user: self.currentUser);
+                vc.otherUserSender = Sender(user: otherUser);
+                DataController.addNewChat(userID1: self.currentUser.uuid, userID2: otherUser.uuid)
+                let navVC = UINavigationController(rootViewController: vc)
+                self.present(navVC, animated: true)
+            }
+        }
+    }
+    
     func setUpButtons() {
         let chatWithHostButton = createButton(title: "Chat", imageName: "message")
-        // chatWithHostButton.addTarget(self, action: #selector(viewButtonTapped), for: .touchUpInside)
+        chatWithHostButton.addTarget(self, action: #selector(chatButtonTapped), for: .touchUpInside)
         self.chatWithHostButton = chatWithHostButton
         // chatWithHostButton.backgroundColor = UIColor.systemBlue
         

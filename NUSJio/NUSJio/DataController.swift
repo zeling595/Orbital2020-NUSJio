@@ -645,5 +645,140 @@ class DataController {
         }
         // can observe progress, although not necessary?
     }
-}
+    
+    
+    
+    func fetchMessageForChat(chatID: String, completion: @escaping ([Message]?) -> Void) {
+        let database = Firestore.firestore();
+        var messages: [Message] = []
+        var messageIDs: [String] = []
+        database.collection("Chat")
+            .whereField("ChatID", isEqualTo: chatID)
+            .getDocuments{ (snapshot, error) in
+            if let error = error {
+                print("error fetching activities: \(error)")
+            }
+            
+            if let snapshot = snapshot, !snapshot.isEmpty {
+                for document in snapshot.documents {
+                    messageIDs = document.get("threadOfMsgID") as! [String]
+                    print("messageID: \(messageIDs)")
+                    for id in messageIDs {
+                        print("id: \(id)")
+                        let db = Firestore.firestore()
+                        db.collection("Message").whereField("MessageID", isEqualTo: id)
+                            .getDocuments() { (snapshot, err) in
+                                if let err = err {
+                                    print("Error getting documents: \(err)")
+                                    
+                                } else {
+                                    if let snapshot = snapshot, !snapshot.isEmpty {
+                                        for document in snapshot.documents {
+                                            print(document.get("text")!)
 
+                                            let senderID = document.get("senderID") as!String
+                                            let text = document.get("text")
+                                            //let date = document.get("timeStamp") as! Date
+                                            self.fetchUser(userId: senderID) { (user) in
+                                                if let user = user {
+                                                    let message = Message(sender: Sender(user: user), messageId: id, sentDate: Date(), kind: .text(text as! String))
+                                                    messages.append(message);
+                                                    completion(messages)
+                                                }
+                                            }
+                                    }
+                                    } else {
+                                            print("chat is empty")
+                                    }
+                                    print("dc: \(snapshot!.count)")
+                                }
+                        }
+                        }
+                    }
+                } else {
+                print("snapshot is empty")
+            }
+        }
+        
+    }
+    
+    
+    /*
+    func fetchMessageFromUserID (user1: String, user2: String) -> [Message]{
+        let database = Firestore.firestore();
+        var result:[Message] = []
+        database.collection("Chat").whereField("uuid", in: [[user1, user2],[user2, user1]]).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+              if let snapshot = querySnapshot, !snapshot.isEmpty {
+                  for document in snapshot.documents {
+                    let chatID = document.get("ChatID")
+                    result = self.fetchMessagesFromIDs(messageIDs: DataController.fetchMessageIDsForChat(chatID: chatID as!
+                        String))
+                    
+                  }
+              }
+                    
+            }
+        }
+        return result
+    } */
+    
+    
+    static func addNewChat (userID1: String, userID2: String) {
+        let database = Firestore.firestore();
+        var ref: DocumentReference? = nil
+        ref = database.collection("Chat").addDocument(data: [
+            "ChatID": ref?.documentID,
+            "threadOfMsgID": "",
+            "uuid1": [userID1,userID2]
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+    }
+    
+    
+    func fetchChatsForUser(userId: String, completion: @escaping ([Chat]?) -> Void) {
+        var chats: [Chat] = []
+        let database = Firestore.firestore();
+        print("userid from dc: \(userId)")
+        database.collection("Chat").whereField("uuid", arrayContains: "oyfKVymcGsbRodKr2Zt1d58iqcl2").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+              if let snapshot = querySnapshot {
+                print("snapshot.count: \(snapshot.count)")
+                //print(snapshot)
+                if !snapshot.isEmpty {
+                    print("chat is not empty")
+                  for document in snapshot.documents {
+                    var users = document.get("uuid") as! [String]
+                    var chatId = document.get("ChatID") as! String
+                    let i = users.firstIndex(of: "oyfKVymcGsbRodKr2Zt1d58iqcl2")
+                    users.remove(at: i!)
+                    let otherUserID = users[0]
+                    let chat = Chat(newChatWith: otherUserID, chatID: chatId )
+                    self.fetchMessageForChat(chatID: chatId) { (messages) in
+                        chat.messages = messages!;
+                    }
+                    chats.append(chat)
+                    print(chats)
+                    print(chats[0].otherUserID)
+                    print("chats: \(chats.count)")
+                    completion(chats)
+                  }
+                }
+               }
+            }
+        }
+            
+        }
+    
+    
+    
+}

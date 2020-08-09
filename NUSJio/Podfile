@@ -23,7 +23,11 @@ target 'NUSJio' do
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
+  pod 'Firebase/Database'
   pod 'MessageKit'
+  pod 'JGProgressHUD'
+  pod 'RealmSwift'
+  pod 'SDWebImage'
 
   pod "AlignedCollectionViewFlowLayout"
   pod "InitialsImageView"

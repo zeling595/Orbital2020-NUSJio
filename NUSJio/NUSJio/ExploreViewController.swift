@@ -55,6 +55,8 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
                 if let activities = activities {
                     print(activities)
                     self.allActivities = activities
+                    self.filterActivity("")
+                    self.filtered = false;
                     self.listOfActivities.reloadData()
                 } else {
                     print("error fetching all activities")
@@ -62,6 +64,7 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
 
             }
         }
+        print("activity counts: \(self.allActivities.count)")
         
     }
     
@@ -73,11 +76,14 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.filterActivity("")
+        //self.filtered = false;
         filtered = false;
         listOfActivities.delegate = self;
         listOfActivities.dataSource = self;
         searchBar.delegate = self;
         listOfActivities.keyboardDismissMode = .onDrag
+        searchBar.becomeFirstResponder()
         //let nib = UINib(nibName: "DefaultExploreCell", bundle: nil);
         
         //listOfActivities.register(nib, forCellReuseIdentifier: "DefaultExploreCell")
@@ -190,65 +196,68 @@ class ExploreViewController: UIViewController, UITableViewDelegate, UITableViewD
             suffixedText.append(String(text.suffix(3)))
         }
         
-        
-        for activity in allActivities {
-            let wrappedActivity = OrderedActivity(activity: activity);
-                let title = activity.title.lowercased()
-            let location = activity.location?.lowercased()
-                //let tags = activity.tags
-            let description = activity.description?.lowercased()
-                //the real search part:
-            //looping through splited text (i.e. all seperated words)
-            print (splitedText.count)
-            for i in 0...splitedText.count-1 {
-                //if one/some of the words are contained
-                print("searching \(splitedText[i])")
-                let word = splitedText[i];
-                if title.contains(word) {
-                    sortedActivity.append(wrappedActivity);
-                    print("break")
-                    break;
-                } else if description != nil && description!.lowercased().contains(word) {
-                    sortedActivity.append(wrappedActivity);
-                    print("break")
-                    break
-                //} else if tags != nil && tags!.contains(word) {
-                    //TODO: make tags lowercase
-                  //  sortedActivity.append(wrappedActivity);
-                    //print("break")
-                    //break
-                } else if location != nil && location!.lowercased().contains(word) {
-                    print("break")
-                    break
-                    //sortedActivity.append(wrappedActivity);
-                } else {
-                    wrappedActivity.decrementPriority();
-                    //to search prefix/suffix
-                    for j in 0...splitedText.count-1 {
-                        let word1 = prefixedText[j]
-                        let word2 = suffixedText[j]
-                        if title.contains(word1) || title.contains(word2){
+            for activity in allActivities {
+                
+                    let wrappedActivity = OrderedActivity(activity: activity);
+                        let title = activity.title.lowercased()
+                    let location = activity.location?.lowercased()
+                        //let tags = activity.tags
+                    let description = activity.description?.lowercased()
+                        //the real search part:
+                    //looping through splited text (i.e. all seperated words)
+                    print (splitedText.count)
+                    for i in 0...splitedText.count-1 {
+                        //if one/some of the words are contained
+                        print("searching \(splitedText[i])")
+                        let word = splitedText[i];
+                        if title.contains(word) {
                             sortedActivity.append(wrappedActivity);
-                            break
-                        } else if description != nil && (description!.lowercased().contains(word1) || description!.lowercased().contains(word2)) {
+                            print("break")
+                            break;
+                        } else if description != nil && description!.lowercased().contains(word) {
                             sortedActivity.append(wrappedActivity);
+                            print("break")
                             break
-                        //} else if tags != nil && (tags!.contains(word1) || tags!.contains(word2)) {
+                        //} else if tags != nil && tags!.contains(word) {
                             //TODO: make tags lowercase
-                           // sortedActivity.append(wrappedActivity);
+                          //  sortedActivity.append(wrappedActivity);
+                            //print("break")
                             //break
-                        } else if location != nil && (location!.lowercased().contains(word1) || location!.lowercased().contains(word2)) {
+                        } else if location != nil && location!.lowercased().contains(word) {
+                            print("break")
+                            break
                             //sortedActivity.append(wrappedActivity);
                         } else {
                             wrappedActivity.decrementPriority();
-                            break
+                            //to search prefix/suffix
+                            for j in 0...splitedText.count-1 {
+                                let word1 = prefixedText[j]
+                                let word2 = suffixedText[j]
+                                if title.contains(word1) || title.contains(word2){
+                                    sortedActivity.append(wrappedActivity);
+                                    break
+                                } else if description != nil && (description!.lowercased().contains(word1) || description!.lowercased().contains(word2)) {
+                                    sortedActivity.append(wrappedActivity);
+                                    break
+                                //} else if tags != nil && (tags!.contains(word1) || tags!.contains(word2)) {
+                                    //TODO: make tags lowercase
+                                   // sortedActivity.append(wrappedActivity);
+                                    //break
+                                } else if location != nil && (location!.lowercased().contains(word1) || location!.lowercased().contains(word2)) {
+                                    //sortedActivity.append(wrappedActivity);
+                                } else {
+                                    wrappedActivity.decrementPriority();
+                                    break
+                                }
+                            }
                         }
                     }
-                }
-            }
+                    
             
-    
+                
         }
+        
+        
     
     sortedActivity.sort(by: compare)
     for activity in sortedActivity {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oay-Ok-K92">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -271,17 +271,17 @@ nusext\userid</string>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivityCellIdentifier" id="QjX-Sp-9Wz" customClass="ActivityCell" customModule="NUSJio" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="539"/>
+                                <rect key="frame" x="0.0" y="28" width="414" height="540.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QjX-Sp-9Wz" id="N9o-jK-lMS">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="539"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="540.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P95-Az-vlQ">
-                                            <rect key="frame" x="16" y="8" width="382" height="523"/>
+                                            <rect key="frame" x="16" y="8" width="382" height="524.5"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KoJ-Lz-3ML">
-                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="523"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="524.5"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="bkI-GK-nht">
                                                             <rect key="frame" x="0.0" y="0.0" width="382" height="184"/>
@@ -383,10 +383,10 @@ nusext\userid</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQ3-FZ-6fN">
-                                                            <rect key="frame" x="0.0" y="467.5" width="382" height="55.5"/>
+                                                            <rect key="frame" x="0.0" y="467.5" width="382" height="57"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="2hf-dZ-3AK">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="55.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="57"/>
                                                                 </stackView>
                                                             </subviews>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.029999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
@@ -724,7 +724,7 @@ nusext\userid</string>
         <!--Messages-->
         <scene sceneID="CUe-bU-wK0">
             <objects>
-                <navigationController id="khw-N7-cwK" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="messageNVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="khw-N7-cwK" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="3" title="Messages" image="message" catalog="system" selectedImage="message.fill" id="x9U-te-7VX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wBK-vw-D1m">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -1125,7 +1125,7 @@ nusext\userid</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WR6-Nf-kYs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="wgf-jm-Lr9" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5319" y="3186"/>
+            <point key="canvasLocation" x="5319" y="3209"/>
         </scene>
         <!--Location Search Table View Controller-->
         <scene sceneID="y41-j0-6zX">
@@ -1171,10 +1171,10 @@ nusext\userid</string>
             </objects>
             <point key="canvasLocation" x="6116" y="3185"/>
         </scene>
-        <!--Chat-->
+        <!--My Chats-->
         <scene sceneID="ak4-WI-xQd">
             <objects>
-                <viewController id="hMA-M8-EGf" customClass="MessageViewController" customModule="NUSJio" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="My Chats" id="hMA-M8-EGf" customClass="MessageViewController" customModule="NUSJio" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9vz-N3-Z6c">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1183,20 +1183,26 @@ nusext\userid</string>
                                 <rect key="frame" x="20" y="88" width="374" height="725"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="chatCell" id="fmo-z1-RbW">
+                                        <rect key="frame" x="0.0" y="28" width="374" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fmo-z1-RbW" id="y9K-xE-dRV">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="chatCell"/>
+                                        <connections>
+                                            <segue destination="X55-MU-NaK" kind="show" identifier="messageToChatSegue" id="6hs-6E-OUL"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="p4f-tP-WZr"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Chat" id="K0d-3R-qdX">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="BQk-FX-MNV">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yM6-Oc-Zev">
-                                <rect key="frame" x="348" y="7" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="My Chats" id="K0d-3R-qdX"/>
                     <connections>
                         <outlet property="chatTable" destination="G1v-kf-jQH" id="XGl-lx-J0p"/>
                     </connections>
@@ -1381,7 +1387,23 @@ nusext\userid</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V5T-jl-BJo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5317" y="2387"/>
+            <point key="canvasLocation" x="4506" y="3209"/>
+        </scene>
+        <!--Chat View Controller-->
+        <scene sceneID="3cT-Aw-Eg9">
+            <objects>
+                <viewController id="X55-MU-NaK" customClass="ChatViewController" customModule="NUSJio" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aPP-O5-Hmw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Eal-s3-T48"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="heO-Og-49n"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="S06-Qq-A5P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6116" y="2387"/>
         </scene>
         <!--Filters Table View Controller-->
         <scene sceneID="405-C1-ewI">
@@ -1652,7 +1674,7 @@ nusext\userid</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fYt-VM-LxQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="9fl-JU-81s" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6115.9420289855079" y="2386.6071428571427"/>
+            <point key="canvasLocation" x="5319" y="2387"/>
         </scene>
         <!--Categories Table View Controller-->
         <scene sceneID="iwb-Qc-haZ">
@@ -1725,7 +1747,7 @@ nusext\userid</string>
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fine-Food" translatesAutoresizingMaskIntoConstraints="NO" id="VhV-O8-5q5">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="VhV-O8-5q5">
                                                     <rect key="frame" x="0.0" y="-0.5" width="101" height="44.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="OFB-tV-BUb"/>
@@ -2006,7 +2028,6 @@ nusext\userid</string>
         </scene>
     </scenes>
     <resources>
-        <image name="Fine-Food" width="1024" height="684"/>
         <image name="camera" catalog="system" width="128" height="96"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="message" catalog="system" width="128" height="113"/>
